@@ -1,0 +1,10 @@
+.checkout {
+    height: 60px;
+    display: table;
+}
+
+.checkout div {
+    float: left;
+    display:table-cell;
+    vertical-align:middle;
+}
