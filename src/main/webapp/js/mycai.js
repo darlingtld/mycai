@@ -35,6 +35,10 @@ mycaiModule.controller('yinliaoController', function ($scope) {
 
 });
 
+mycaiModule.controller('checkoutController', function ($scope) {
+
+});
+
 
 mycaiModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -65,6 +69,10 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
         .when('/jiushuiyinliao/yinliao', {
             controller: 'yinliaoController',
             templateUrl: 'yinliao.html'
+        })
+        .when('/checkout', {
+            controller: 'checkoutController',
+            templateUrl: 'checkout.html'
         })
         .otherwise({
             redirectTo: '/shucaishuiguo/yecailei'

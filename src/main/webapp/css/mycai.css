@@ -5,6 +5,14 @@
 }
 
 .checkout div {
-    display:table-cell;
-    vertical-align:middle;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.checkout_info div {
+    font-size: x-large;
+}
+
+.checkout_info span {
+    color: #dc5311;
 }
