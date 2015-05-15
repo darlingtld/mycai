@@ -1,10 +1,10 @@
 .checkout {
     height: 60px;
+    width: inherit;
     display: table;
 }
 
 .checkout div {
-    float: left;
     display:table-cell;
     vertical-align:middle;
 }
