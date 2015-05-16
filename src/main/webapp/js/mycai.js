@@ -7,8 +7,10 @@ mycaiModule.controller('latestFoodController', function ($scope) {
 
 });
 
-mycaiModule.controller('yecaileiController', function ($scope) {
-
+mycaiModule.controller('yecaileiController', function ($scope, $http) {
+    $http.get('/shucaishuiguo/yecailei').success(function (data, status, headers, config) {
+        $scope.products = data;
+    });
 });
 
 mycaiModule.controller('yijibaitiaoController', function ($scope) {
@@ -38,6 +40,16 @@ mycaiModule.controller('yinliaoController', function ($scope) {
 mycaiModule.controller('checkoutController', function ($scope) {
 
 });
+
+mycaiModule.directive('spinnerInstance', function () {
+    return {
+        restrict: 'AE',
+        scope: {},
+        link: function (scope, element, attr) {
+            element.spinner({});
+        }
+    }
+})
 
 
 mycaiModule.config(['$routeProvider', function ($routeProvider) {
@@ -78,3 +90,4 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             redirectTo: '/shucaishuiguo/yecailei'
         });
 }]);
+

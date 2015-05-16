@@ -30,6 +30,7 @@
                 <a href="#" class="text-ellipsis"><i
                         class="icon-rocket icon"></i></a>
                 <a href="#" class="text-ellipsis text-xs text-muted">青菜</a>
+                <input class="spinnerInstance">
             </div>
         </div>
     </div>
@@ -209,3 +210,16 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(function () {
+        //init spinner
+        $('.spinnerInstance').spinner({
+            //set limitation here
+//            value: 0,
+//            min: 0,
+//            max: 99
+        });
+    });
+</script>

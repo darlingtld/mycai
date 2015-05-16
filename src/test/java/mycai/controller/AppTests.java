@@ -1,4 +1,4 @@
-package lingda.tang.controller;
+package mycai.controller;
 
 import org.junit.Before;
 import org.junit.Test;
