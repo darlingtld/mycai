@@ -23,7 +23,7 @@ public class ProductService {
     }
 
     @Transactional
-    public List<Product> getList(String category) {
-        return productDao.getList(category);
+    public List<Product> getList(String type, String category) {
+        return productDao.getList(type, category);
     }
 }

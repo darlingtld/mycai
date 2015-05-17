@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/shucaishuiguo/{category}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{type}/{category}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Product> getShucaishuiguoList(@PathVariable("category") String category) {
-        return productService.getList(category);
+    List<Product> getList(@PathVariable("type") String type, @PathVariable("category") String category) {
+        return productService.getList(type, category);
     }
 }

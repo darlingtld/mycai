@@ -21,7 +21,7 @@ public class ProductDao {
         return id;
     }
 
-    public List<Product> getList(String category) {
-        return sessionFactory.getCurrentSession().createQuery(String.format("from Product where category='%s'", category.toUpperCase())).list();
+    public List<Product> getList(String type, String category) {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Product where type = '%s' and category='%s'", type.toUpperCase(), category.toUpperCase())).list();
     }
 }

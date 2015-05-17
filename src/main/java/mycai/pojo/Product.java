@@ -15,6 +15,9 @@ public class Product {
     private String name;
     @Column(name = "description")
     private String description;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private Type type;
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -33,12 +36,21 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", type=" + type +
                 ", category=" + category +
                 ", price=" + price +
                 ", unit='" + unit + '\'' +
                 ", picurl='" + picurl + '\'' +
                 ", dataChangeLastTime=" + dataChangeLastTime +
                 '}';
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public String getUnit() {

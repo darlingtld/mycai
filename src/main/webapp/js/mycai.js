@@ -3,42 +3,26 @@
  */
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
 
-mycaiModule.controller('latestFoodController', function ($scope) {
+var bill = {
+    items: [],
+    totalAmount: 0,
+    totalPrice: 0
+}
 
-});
+mycaiModule.controller('mainController', function ($scope) {
 
-mycaiModule.controller('yecaileiController', function ($scope, $http) {
-    $http.get('/shucaishuiguo/yecailei').success(function (data, status, headers, config) {
+})
+;
+
+mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
+    var url = '/product/' + $routeParams.type + '/' + $routeParams.category;
+    $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
     });
 });
 
-mycaiModule.controller('yijibaitiaoController', function ($scope) {
-
-});
-
-mycaiModule.controller('haixianshuichanController', function ($scope) {
-
-});
-
-mycaiModule.controller('damiController', function ($scope) {
-
-});
-
-mycaiModule.controller('tiaoweipinController', function ($scope) {
-
-});
-
-mycaiModule.controller('zhipinshijingController', function ($scope) {
-
-});
-
-mycaiModule.controller('yinliaoController', function ($scope) {
-
-});
-
 mycaiModule.controller('checkoutController', function ($scope) {
-
+    $scope.bill = bill;
 });
 
 mycaiModule.directive('spinnerInstance', function () {
@@ -47,10 +31,6 @@ mycaiModule.directive('spinnerInstance', function () {
         scope: {},
         link: function (scope, element, attr) {
             element.spinner({});
-            console.log(attr);
-            scope.$watch(attr.value, function (value) {
-                console.log(value);
-            });
         }
     }
 })
@@ -58,40 +38,75 @@ mycaiModule.directive('spinnerInstance', function () {
 
 mycaiModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-        .when('/shucaishuiguo/yecailei', {
-            controller: 'yecaileiController',
-            templateUrl: 'yecailei.html'
-        })
-        .when('/qinroudanlei/yijibaitiao', {
-            controller: 'yijibaitiaoController',
-            templateUrl: 'yijibaitiao.html'
-        })
-        .when('/shuichandonghuo/haixianshuichan', {
-            controller: 'haixianshuichanController',
-            templateUrl: 'haixianshuichan.html'
-        })
-        .when('/mimianliangyou/dami', {
-            controller: 'damiController',
-            templateUrl: 'dami.html'
-        })
-        .when('/tiaoliaoqita/tiaoweipin', {
-            controller: 'tiaoweipinController',
-            templateUrl: 'tiaoweipin.html'
-        })
-        .when('/canchuyongpin/zhipinshijing', {
-            controller: 'zhipinshijingController',
-            templateUrl: 'zhipinshijin.html'
-        })
-        .when('/jiushuiyinliao/yinliao', {
-            controller: 'yinliaoController',
-            templateUrl: 'yinliao.html'
+        .when('/product/:type/:category', {
+            controller: 'productController',
+            templateUrl: 'product.html'
         })
         .when('/checkout', {
             controller: 'checkoutController',
             templateUrl: 'checkout.html'
         })
         .otherwise({
-            redirectTo: '/shucaishuiguo/yecailei'
+            redirectTo: '/product/shucaishuiguo/yecailei'
         });
 }]);
+
+
+function refreshCheckoutUI(totalAmount, totalPrice) {
+    $('#totalAmount').text(totalAmount);
+    $('#totalPrice').text(totalPrice);
+    console.log(bill.items);
+}
+function isFirstBuy(items, productId) {
+    for (var i = 0; i < items.length; i++) {
+        if (productId == items[i].productId) {
+            return false;
+        }
+    }
+    return true;
+}
+function changeTotalCost(_this) {
+    var ele = _this.parent().parent();
+    var amount = _this.siblings('input')[0].value;
+    var productId = $(ele.find('.product_id')[0]).data('product_id');
+    var productName = $(ele.find('.product_name')[0]).data('product_name');
+    var productPrice = $(ele.find('.product_price')[0]).data('product_price');
+    var productUnit = $(ele.find('.product_unit')[0]).data('product_unit');
+    var picurl = $(ele.find('.product_picurl')[0]).data('product_picurl');;
+    if (_this.hasClass('increase')) {
+        bill.totalAmount++;
+        bill.totalPrice += parseFloat(productPrice);
+        if (isFirstBuy(bill.items, productId)) {
+            bill.items.push({
+                productId: productId,
+                productName: productName,
+                amount: amount,
+                productPrice: productPrice,
+                picurl: picurl,
+                productUnit: productUnit
+            });
+        } else {
+            for (var i = 0; i < bill.items.length; i++) {
+                if (productId == bill.items[i].productId) {
+                    bill.items[i].amount++;
+                }
+            }
+        }
+    }
+
+    else {
+        bill.totalAmount--;
+        bill.totalPrice -= parseFloat(productPrice);
+        for (var i = 0; i < bill.items.length; i++) {
+            if (productId == bill.items[i].productId) {
+                bill.items[i].amount--;
+                if (bill.items[i].amount == 0) {
+                    bill.items.splice(i, 1);
+                }
+            }
+        }
+    }
+    refreshCheckoutUI(bill.totalAmount, bill.totalPrice.toFixed(2));
+    //console.log(totalAmount + ":" + totalPrice.toFixed(2));
+}
 

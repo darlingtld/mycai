@@ -1,12 +1,13 @@
 /**
  * Created by sarazhu on 15/5/15.
  */
-;(function ($) {
+;
+(function ($) {
     $.fn.spinner = function (opts) {
         return this.each(function () {
-            var defaults = {value:0, min:0}
+            var defaults = {value: 0, min: 0}
             var options = $.extend(defaults, opts)
-            var keyCodes = {up:38, down:40}
+            var keyCodes = {up: 38, down: 40}
             var container = $('<div style="float: right;"></div>')
             container.addClass('spinner')
             var textField = $(this).addClass('value').attr('maxlength', '2').val(options.value)
@@ -18,8 +19,14 @@
                 })
             textField.wrap(container)
 
-            var increaseButton = $('<button class="increase">+</button>').click(function () { changeValue(1) })
-            var decreaseButton = $('<button class="decrease">-</button>').click(function () { changeValue(-1) })
+            var increaseButton = $('<button class="increase">+</button>').click(function () {
+                changeValue(1);
+                changeTotalCost($(this));
+            })
+            var decreaseButton = $('<button class="decrease">-</button>').click(function () {
+                changeValue(-1);
+                changeTotalCost($(this));
+            })
 
             validate(textField)
             container.data('lastValidValue', options.value)
@@ -63,7 +70,9 @@
                 return value
             }
 
-            function isInvalid(value) { return isNaN(+value) || value < options.min; }
+            function isInvalid(value) {
+                return isNaN(+value) || value < options.min;
+            }
 
             function getValue(field) {
                 field = field || textField;
