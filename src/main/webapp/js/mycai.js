@@ -47,6 +47,10 @@ mycaiModule.directive('spinnerInstance', function () {
         scope: {},
         link: function (scope, element, attr) {
             element.spinner({});
+            console.log(attr);
+            scope.$watch(attr.value, function (value) {
+                console.log(value);
+            });
         }
     }
 })
