@@ -2,7 +2,7 @@
  * Created by darlingtld on 2015/5/14.
  */
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-
+var app = '/mycai';
 var bill = {
     items: [],
     totalAmount: 0,
@@ -15,7 +15,7 @@ mycaiModule.controller('mainController', function ($scope) {
 ;
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
-    var url = '/product/' + $routeParams.type + '/' + $routeParams.category;
+    var url = app +'/product/' + $routeParams.type + '/' + $routeParams.category;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
     });
@@ -38,16 +38,16 @@ mycaiModule.directive('spinnerInstance', function () {
 
 mycaiModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-        .when('/product/:type/:category', {
+        .when(app +'/product/:type/:category', {
             controller: 'productController',
             templateUrl: 'product.html'
         })
-        .when('/checkout', {
+        .when(app +'/checkout', {
             controller: 'checkoutController',
             templateUrl: 'checkout.html'
         })
         .otherwise({
-            redirectTo: '/product/shucaishuiguo/yecailei'
+            redirectTo: app +'/product/shucaishuiguo/yecailei'
         });
 }]);
 
@@ -72,7 +72,8 @@ function changeTotalCost(_this) {
     var productName = $(ele.find('.product_name')[0]).data('product_name');
     var productPrice = $(ele.find('.product_price')[0]).data('product_price');
     var productUnit = $(ele.find('.product_unit')[0]).data('product_unit');
-    var picurl = $(ele.find('.product_picurl')[0]).data('product_picurl');;
+    var picurl = $(ele.find('.product_picurl')[0]).data('product_picurl');
+    ;
     if (_this.hasClass('increase')) {
         bill.totalAmount++;
         bill.totalPrice += parseFloat(productPrice);
