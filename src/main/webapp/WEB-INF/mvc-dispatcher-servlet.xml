@@ -31,7 +31,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>mycai.pojo.Product</value>
-                <!--<value>com.renovator.pojo.Service</value>-->
+                <value>mycai.pojo.Order</value>
                 <!--<value>com.renovator.pojo.Product</value>-->
                 <!--<value>com.renovator.pojo.dto.material.Article</value>-->
                 <!--<value>com.renovator.pojo.dto.PushMessageTask</value>-->

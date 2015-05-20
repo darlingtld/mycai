@@ -40,9 +40,41 @@ mycaiModule.controller('confirmController', function ($scope) {
 
     $('#cur_category').hide();
     $scope.bill = bill;
+
     $('.checkout').html('<div><a class="next" href="#/submit">提交</a>');
     $('a.next').css('margin-left', '45%');
 
+    $('a.next').bind('click', function () {
+        var order = {
+            userId: 'lingda',
+            bill: JSON.stringify(bill),
+            deliveryTs: $('#delivery_ts').val(),
+            shopInfo: $('#shop_info').val(),
+            consignee: $('#consignee').val(),
+            consigneeContact: $('#consignee_contact').val()
+        };
+
+        $.ajax({
+            type: "post",
+            url: app + "/order/submit",
+            contentType: "application/json",
+            data: JSON.stringify(order),
+            success: function (data) {
+                alert('提交订单成功！');
+            },
+            error: function (data) {
+                alert(data.status);
+            }
+        });
+        console.log(order);
+    })
+
+})
+;
+
+mycaiModule.controller('submitController', function ($scope) {
+    $('#cur_category').hide();
+    $('footer.bg-dark').hide();
 });
 
 mycaiModule.directive('spinnerInstance', function () {
@@ -70,6 +102,11 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'confirmController',
             templateUrl: 'confirm.html'
         })
+        .when('/submit', {
+            controller: 'submitController',
+            templateUrl: 'success.html'
+        })
+
         .otherwise({
             redirectTo: '/product/shucaishuiguo/yecailei'
         });
