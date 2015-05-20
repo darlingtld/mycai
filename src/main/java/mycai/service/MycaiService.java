@@ -39,8 +39,8 @@ public class MycaiService {
             newsMessage.setFuncFlag(0);
             List<Article> articleList = new ArrayList<Article>();
             Article article = new Article();
-            article.setTitle("Âò²Ë");
-            article.setDescription("ÉÏº£ÈıÁÖµØÇø×î´óµÄÅ©²úÆ·ÒÆ¶¯µçÉÌÆ½Ì¨");
+            article.setTitle("ä¹°èœ");
+            article.setDescription("ä¸Šæµ·ä¸‰æ—åœ°åŒºæœ€å¤§çš„å†œäº§å“ç§»åŠ¨ç”µå•†å¹³å°Ì¨");
             article.setPicUrl(PropertyHolder.SERVER + "/images/logo.jpg");
             article.setUrl(PropertyHolder.SERVER + "/index.html");
             articleList.add(article);
