@@ -38,16 +38,16 @@ mycaiModule.directive('spinnerInstance', function () {
 
 mycaiModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-        .when(app +'/product/:type/:category', {
+        .when('/product/:type/:category', {
             controller: 'productController',
             templateUrl: 'product.html'
         })
-        .when(app +'/checkout', {
+        .when('/checkout', {
             controller: 'checkoutController',
             templateUrl: 'checkout.html'
         })
         .otherwise({
-            redirectTo: app +'/product/shucaishuiguo/yecailei'
+            redirectTo: '/product/shucaishuiguo/yecailei'
         });
 }]);
 
