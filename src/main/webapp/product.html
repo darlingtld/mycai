@@ -4,19 +4,24 @@
             <div class="pos-rlt">
                 <div class="bottom">
                     <span class="badge bg-info m-l-sm m-b-sm">
-                        <span ng-bind="product.price"></span>元/<span ng-bind="product.unit"></span></span>
+                        <span ng-bind="product.price"></span>元/<span ng-bind="product.unit"></span>
+                    </span>
+                    <span class="badge bg-danger m-r-sm m-b-sm">
+                        <span ng-bind="product.name"></span>
+                    </span>
                 </div>
                 <a href="#"><img ng-src="images/{{product.picurl}}" alt="" class="r r-2x img-full"></a>
             </div>
             <div class="padder-v">
-                <a><i class="icon-rocket icon"></i></a>
-                <a class="text-xs text-muted" ng-bind="product.name"></a>
+                <!--<a><i class="icon-rocket icon"></i></a>-->
+                <!--<a class="text-xs text-muted" ng-bind="product.name"></a>-->
                 <input class="product_id" data-product_id="{{product.id}}" type="hidden"/>
                 <input class="product_name" data-product_name="{{product.name}}" type="hidden"/>
                 <input class="product_price" data-product_price="{{product.price}}" type="hidden"/>
                 <input class="product_unit" data-product_unit="{{product.unit}}" type="hidden"/>
                 <input class="product_picurl" data-product_picurl="{{product.picurl}}" type="hidden"/>
                 <input spinner-instance/>
+                <span class="text-xs text-muted" ng-bind="product.description"></span>
             </div>
         </div>
     </div>
