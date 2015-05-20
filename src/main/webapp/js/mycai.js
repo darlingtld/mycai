@@ -15,14 +15,34 @@ mycaiModule.controller('mainController', function ($scope) {
 ;
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
-    var url = app +'/product/' + $routeParams.type + '/' + $routeParams.category;
+    var url = app + '/product/' + $routeParams.type + '/' + $routeParams.category;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
     });
 });
 
 mycaiModule.controller('checkoutController', function ($scope) {
+    $('#cur_category').hide();
     $scope.bill = bill;
+    $('a.next').text('确认订单');
+    $('a.next').attr('href', '#/confirm');
+});
+
+mycaiModule.controller('confirmController', function ($scope) {
+    $('.datetime').mobiscroll().datetime({
+        theme: 'sense-ui',     // Specify theme like: theme: 'ios' or omit setting to use default
+        mode: 'scroller',       // Specify scroller mode like: mode: 'mixed' or omit setting to use default
+        lang: 'zh',       // Specify language like: lang: 'pl' or omit setting to use default
+        minDate: new Date(),  // More info about minDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-minDate
+        maxDate: new Date(2020, 1, 1, 1, 1),   // More info about maxDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-maxDate
+        stepMinute: 5  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
+    });
+
+    $('#cur_category').hide();
+    $scope.bill = bill;
+    $('.checkout').html('<div><a class="next" href="#/submit">提交</a>');
+    $('a.next').css('margin-left', '45%');
+
 });
 
 mycaiModule.directive('spinnerInstance', function () {
@@ -45,6 +65,10 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
         .when('/checkout', {
             controller: 'checkoutController',
             templateUrl: 'checkout.html'
+        })
+        .when('/confirm', {
+            controller: 'confirmController',
+            templateUrl: 'confirm.html'
         })
         .otherwise({
             redirectTo: '/product/shucaishuiguo/yecailei'

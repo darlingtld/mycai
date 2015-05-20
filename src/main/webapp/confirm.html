@@ -1,0 +1,57 @@
+<section id="content">
+    <section class="vbox">
+        <section class="scrollable bg-light lter" data-spy="scroll" data-target=".nav-primary">
+            <section id="docs">
+                <div class="clearfix padder">
+                    <h3>订单详情</h3>
+
+                    <h4 class="m-t-lg">购物清单</h4>
+
+                    <p>品类数：<span ng-bind="bill.totalAmount"></span> 总价：<span ng-bind="bill.totalPrice"></span>元</p>
+
+                    <h4 class="m-t-lg">备注</h4>
+
+                    <p>如有问题请您直接拨打客服电话：1234567890</p>
+
+                    <h4 class="m-t-lg">收货信息</h4>
+
+                    <div class="input-group">
+                        <span class="input-group-addon" id="delivery_ts">收货日期</span>
+                        <input type="text" class="form-control datetime" placeholder="填写收货日期">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">送货时间</span>
+                        <input type="text" class="form-control" value="2015-06-01 10:10:00" disabled>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon" id="shop_info">门店信息</span>
+                        <input type="text" class="form-control" placeholder="填写门店信息">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon" id="consignee">收货人</span>
+                        <input type="text" class="form-control" placeholder="填写收货人">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon" id="consignee_contact">联系方式</span>
+                        <input type="text" class="form-control" placeholder="填写联系方式">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon" id="pay_method">付款方式</span>
+                        <input type="text" class="form-control" value="货到付款" disabled>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="delivery_fee">运费</span>
+                        <input type="text" class="form-control" value="0元" disabled>
+                    </div>
+
+                </div>
+            </section>
+        </section>
+    </section>
+</section>
+
