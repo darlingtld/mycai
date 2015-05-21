@@ -15,6 +15,7 @@ mycaiModule.controller('mainController', function ($scope) {
 ;
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
+    init();
     var url = app + '/product/' + $routeParams.type + '/' + $routeParams.category;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
@@ -111,6 +112,13 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             redirectTo: '/product/shucaishuiguo/yecailei'
         });
 }]);
+
+function init() {
+    $('#cur_category').hide();
+    //$('#cur_category').text();
+    $('footer.bg-dark').show();
+    $('.checkout').html('<div><a class="basket"><i class="icon-basket-loaded i-lg"></i></a></div><div>物件数：<span id="totalAmount">0</span>件 </div> <div>总价：<span id="totalPrice">0</span>元</div><div><a class="next" href="#/checkout">下一步</a></div>');
+}
 
 
 function refreshCheckoutUI(totalAmount, totalPrice) {
