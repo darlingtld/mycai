@@ -9,21 +9,25 @@ var bill = {
     totalPrice: 0
 }
 
+var trace = 0;
+
 mycaiModule.controller('mainController', function ($scope) {
 
 })
 ;
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
-    init();
     var url = app + '/product/' + $routeParams.type + '/' + $routeParams.category;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
     });
+    if (trace > 0) {
+        setTimeout("$('#main_nav').click()", 300);
+    }
+    trace++;
 });
 
 mycaiModule.controller('checkoutController', function ($scope) {
-    $('#cur_category').hide();
     $scope.bill = bill;
     $('a.next').text('确认订单');
     $('a.next').attr('href', '#/confirm');
@@ -36,7 +40,7 @@ mycaiModule.controller('confirmController', function ($scope) {
         lang: 'zh',       // Specify language like: lang: 'pl' or omit setting to use default
         minDate: new Date(),  // More info about minDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-minDate
         maxDate: new Date(2020, 1, 1, 1, 1),   // More info about maxDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-maxDate
-        stepMinute: 5  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
+        stepMinute: 10  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
     });
 
     $('#cur_category').hide();
@@ -74,7 +78,7 @@ mycaiModule.controller('confirmController', function ($scope) {
 ;
 
 mycaiModule.controller('submitController', function ($scope) {
-    $('#cur_category').hide();
+    //$('#cur_category').hide();
     $('footer.bg-dark').hide();
 });
 
@@ -114,7 +118,7 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 function init() {
-    $('#cur_category').hide();
+    //$('#cur_category').hide();
     //$('#cur_category').text();
     $('footer.bg-dark').show();
     $('.checkout').html('<div><a class="basket"><i class="icon-basket-loaded i-lg"></i></a></div><div>物件数：<span id="totalAmount">0</span>件 </div> <div>总价：<span id="totalPrice">0</span>元</div><div><a class="next" href="#/checkout">下一步</a></div>');
