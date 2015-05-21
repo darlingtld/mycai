@@ -1,7 +1,6 @@
 /**
  * Created by sarazhu on 15/5/15.
  */
-;
 (function ($) {
     $.fn.spinner = function (opts) {
         return this.each(function () {
