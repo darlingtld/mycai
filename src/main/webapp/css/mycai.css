@@ -16,3 +16,12 @@
 .checkout_info span {
     color: #dc5311;
 }
+
+.basic_info {
+    margin: 30px 0 30px 0;
+}
+
+.inc_dec {
+    margin: 30px 0 30px 0;
+    float: left;
+}

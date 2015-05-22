@@ -53,6 +53,15 @@ mycaiModule.controller('checkoutController', function ($scope, $location) {
         $location.path('/');
     } else {
         $scope.bill = bill;
+
+        //console.log($('input[spinner-instance]'));
+        //for (var i = 0; i < $('.product_amount').length; i++) {
+        //    var amount = $('.product_amount')[i].innerText;
+        //    console.log(amount);
+        //    $('input[spinner-instance]')[i].val(amount);
+        //
+        //}
+
         $('a.next').text('确认订单');
         $('a.next').attr('href', '#/confirm');
         curStatus = pageStatus.checkout;
@@ -187,6 +196,7 @@ function changeTotalCost(_this) {
     var amount = _this.siblings('input')[0].value;
     var productId = $(ele.find('.product_id')[0]).data('product_id');
     var productName = $(ele.find('.product_name')[0]).data('product_name');
+    var productDescription = $(ele.find('.product_description')[0]).data('product_description');
     var productPrice = $(ele.find('.product_price')[0]).data('product_price');
     var productUnit = $(ele.find('.product_unit')[0]).data('product_unit');
     var picurl = $(ele.find('.product_picurl')[0]).data('product_picurl');
@@ -198,6 +208,7 @@ function changeTotalCost(_this) {
             bill.items.push({
                 productId: productId,
                 productName: productName,
+                description: productDescription,
                 amount: amount,
                 productPrice: productPrice,
                 picurl: picurl,
