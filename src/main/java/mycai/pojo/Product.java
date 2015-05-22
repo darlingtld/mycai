@@ -27,6 +27,8 @@ public class Product {
     private String unit;
     @Column(name = "picurl")
     private String picurl;
+    @Column(name = "onsale")
+    private int onsale;
     @Column(name = "data_change_last_time")
     private Timestamp dataChangeLastTime;
 
@@ -41,8 +43,17 @@ public class Product {
                 ", price=" + price +
                 ", unit='" + unit + '\'' +
                 ", picurl='" + picurl + '\'' +
+                ", onsale=" + onsale +
                 ", dataChangeLastTime=" + dataChangeLastTime +
                 '}';
+    }
+
+    public int getOnsale() {
+        return onsale;
+    }
+
+    public void setOnsale(int onsale) {
+        this.onsale = onsale;
     }
 
     public Type getType() {

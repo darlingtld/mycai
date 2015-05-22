@@ -29,6 +29,6 @@ public class NavController {
     public
     @ResponseBody
     List<Product> getOnsale(@PathVariable("limit") int limit) {
-        return productService.getLatest(limit);
+        return productService.getOnsaleList(limit);
     }
 }

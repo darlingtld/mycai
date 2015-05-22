@@ -29,4 +29,8 @@ public class ProductDao {
         return sessionFactory.getCurrentSession().createQuery("from Product p order by p.dataChangeLastTime desc").setMaxResults(limit).list();
 
     }
+
+    public List<Product> getOnsaleList(int limit) {
+        return sessionFactory.getCurrentSession().createQuery("from Product p where p.onsale = 1 order by p.dataChangeLastTime desc").setMaxResults(limit).list();
+    }
 }

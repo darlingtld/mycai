@@ -31,4 +31,9 @@ public class ProductService {
     public List<Product> getLatest(int limit) {
         return productDao.getLatest(limit);
     }
+
+    @Transactional
+    public List<Product> getOnsaleList(int limit) {
+        return productDao.getOnsaleList(limit);
+    }
 }
