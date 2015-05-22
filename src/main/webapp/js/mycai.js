@@ -101,8 +101,19 @@ mycaiModule.controller('confirmController', function ($scope) {
         curStatus = pageStatus.confirm;
     })
 
-})
-;
+});
+
+mycaiModule.controller('orderController', function ($http, $scope) {
+    var url = app + '/order/get/' + 'lingda';
+    $http.get(url).success(function (data, status, headers, config) {
+        $scope.orders = data;
+    });
+    if (curStatus != pageStatus.first_open) {
+        setTimeout("$('#main_nav').click()", 300);
+    } else {
+        curStatus = pageStatus.view_product;
+    }
+});
 
 mycaiModule.controller('submitController', function ($scope) {
     $('footer.bg-dark').hide();
@@ -141,6 +152,10 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
         .when('/nav/:nav', {
             controller: 'navController',
             templateUrl: 'product.html'
+        })
+        .when('/order/history', {
+            controller: 'orderController',
+            templateUrl: 'orderHistory.html'
         })
 
         .otherwise({

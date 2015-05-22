@@ -23,6 +23,6 @@ public class OrderDao {
     }
 
     public List<Order> getList(String userid) {
-        return sessionFactory.getCurrentSession().createQuery(String.format("from Order where userid = '%s'", userid)).list();
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Order where userid = '%s' order by id desc", userid)).list();
     }
 }
