@@ -9,9 +9,17 @@ var bill = {
     totalPrice: 0
 }
 
+var pageStatus = {
+    first_open: 0,
+    view_product: 1,
+    checkout: 2,
+    confirm: 3,
+    submit: 4
+};
+var curStatus = pageStatus.first_open;
 
 mycaiModule.controller('mainController', function ($scope) {
-
+    curStatus = pageStatus.first_open;
 });
 
 mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
@@ -19,7 +27,11 @@ mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
     });
-    setTimeout("$('#main_nav').click()", 300);
+    if (curStatus != pageStatus.first_open) {
+        setTimeout("$('#main_nav').click()", 300);
+    } else {
+        curStatus = pageStatus.view_product;
+    }
 });
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
@@ -27,13 +39,18 @@ mycaiModule.controller('productController', function ($scope, $http, $routeParam
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
     });
-    setTimeout("$('#main_nav').click()", 300);
+    if (curStatus != pageStatus.first_open) {
+        setTimeout("$('#main_nav').click()", 300);
+    } else {
+        curStatus = pageStatus.view_product;
+    }
 });
 
 mycaiModule.controller('checkoutController', function ($scope) {
     $scope.bill = bill;
     $('a.next').text('确认订单');
     $('a.next').attr('href', '#/confirm');
+    curStatus = pageStatus.checkout;
 });
 
 mycaiModule.controller('confirmController', function ($scope) {
@@ -46,7 +63,6 @@ mycaiModule.controller('confirmController', function ($scope) {
         stepMinute: 10  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
     });
 
-    $('#cur_category').hide();
     $scope.bill = bill;
 
     $('.checkout').html('<div><a class="next" href="#/submit">提交</a>');
@@ -74,15 +90,17 @@ mycaiModule.controller('confirmController', function ($scope) {
                 alert(data.status);
             }
         });
-        console.log(order);
+        //console.log(order);
+
+        curStatus = pageStatus.confirm;
     })
 
 })
 ;
 
 mycaiModule.controller('submitController', function ($scope) {
-    //$('#cur_category').hide();
     $('footer.bg-dark').hide();
+    curStatus = pageStatus.submit;
 });
 
 mycaiModule.directive('spinnerInstance', function () {
@@ -125,8 +143,6 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 function init() {
-    //$('#cur_category').hide();
-    //$('#cur_category').text();
     $('footer.bg-dark').show();
     $('.checkout').html('<div><a class="basket"><i class="icon-basket-loaded i-lg"></i></a></div><div>物件数：<span id="totalAmount">0</span>件 </div> <div>总价：<span id="totalPrice">0</span>元</div><div><a class="next" href="#/checkout">下一步</a></div>');
 }
