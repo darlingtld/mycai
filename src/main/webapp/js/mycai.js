@@ -9,22 +9,25 @@ var bill = {
     totalPrice: 0
 }
 
-var trace = 0;
 
 mycaiModule.controller('mainController', function ($scope) {
 
-})
-;
+});
+
+mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
+    var url = app + '/nav/' + $routeParams.nav + '/20';
+    $http.get(url).success(function (data, status, headers, config) {
+        $scope.products = data;
+    });
+    setTimeout("$('#main_nav').click()", 300);
+});
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
     var url = app + '/product/' + $routeParams.type + '/' + $routeParams.category;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
     });
-    if (trace > 0) {
-        setTimeout("$('#main_nav').click()", 300);
-    }
-    trace++;
+    setTimeout("$('#main_nav').click()", 300);
 });
 
 mycaiModule.controller('checkoutController', function ($scope) {
@@ -111,9 +114,13 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'submitController',
             templateUrl: 'success.html'
         })
+        .when('/nav/:nav', {
+            controller: 'navController',
+            templateUrl: 'product.html'
+        })
 
         .otherwise({
-            redirectTo: '/product/shucaishuiguo/yecailei'
+            redirectTo: '/nav/zuixincaipin'
         });
 }]);
 

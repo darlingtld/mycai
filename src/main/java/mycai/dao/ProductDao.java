@@ -24,4 +24,9 @@ public class ProductDao {
     public List<Product> getList(String type, String category) {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Product where type = '%s' and category='%s'", type.toUpperCase(), category.toUpperCase())).list();
     }
+
+    public List<Product> getLatest(int limit) {
+        return sessionFactory.getCurrentSession().createQuery("from Product p order by p.dataChangeLastTime desc").setMaxResults(limit).list();
+
+    }
 }
