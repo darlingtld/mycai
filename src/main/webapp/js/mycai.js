@@ -46,11 +46,17 @@ mycaiModule.controller('productController', function ($scope, $http, $routeParam
     }
 });
 
-mycaiModule.controller('checkoutController', function ($scope) {
-    $scope.bill = bill;
-    $('a.next').text('确认订单');
-    $('a.next').attr('href', '#/confirm');
-    curStatus = pageStatus.checkout;
+mycaiModule.controller('checkoutController', function ($scope, $location) {
+    if (bill.totalAmount == 0) {
+        alert('您还未购买任何物品');
+        curStatus = pageStatus.first_open;
+        $location.path('/');
+    } else {
+        $scope.bill = bill;
+        $('a.next').text('确认订单');
+        $('a.next').attr('href', '#/confirm');
+        curStatus = pageStatus.checkout;
+    }
 });
 
 mycaiModule.controller('confirmController', function ($scope) {
