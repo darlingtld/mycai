@@ -53,15 +53,6 @@ mycaiModule.controller('checkoutController', function ($scope, $location, $docum
         $location.path('/');
     } else {
         $scope.bill = bill;
-        //$document.ready(function () {
-        //    console.log($('input[spinner-instance]'));
-        //    for (var i = 0; i < $('.product_amount').length; i++) {
-        //        var amount = $('.product_amount')[i].innerText;
-        //        console.log(amount);
-        //        $('input[spinner-instance]')[i].val(amount);
-        //    }
-        //});
-
 
         $('a.next').text('确认订单');
         $('a.next').attr('href', '#/confirm');
@@ -190,7 +181,7 @@ function init() {
 function refreshCheckoutUI(totalAmount, totalPrice) {
     $('#totalAmount').text(totalAmount);
     $('#totalPrice').text(totalPrice);
-    console.log(bill.items);
+    //console.log(bill.items);
 }
 function isFirstBuy(items, productId) {
     for (var i = 0; i < items.length; i++) {
