@@ -22,7 +22,7 @@
                 <input class="product_unit" data-product_unit="{{product.unit}}" type="hidden"/>
                 <input class="product_picurl" data-product_picurl="{{product.picurl}}" type="hidden"/>
 
-                <div><input spinner-instance/></div>
+                <div><input spinner-instance="{{product.purchaseAmount}}"/></div>
                 <span class="text-xs text-muted" ng-bind="product.description"></span>
             </div>
         </div>
