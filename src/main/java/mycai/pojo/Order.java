@@ -15,6 +15,8 @@ public class Order {
     private int id;
     @Column(name = "userid")
     private String userId;
+    @Column(name = "wechat_id")
+    private String wechatId;
     @Column(name = "bill")
     private String bill;
     @Column(name = "delivery_ts")
@@ -33,13 +35,22 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", userId='" + userId + '\'' +
+                ", wechatId='" + wechatId + '\'' +
                 ", bill='" + bill + '\'' +
-                ", deliveryTs=" + deliveryTs +
+                ", deliveryTs='" + deliveryTs + '\'' +
                 ", shopInfo='" + shopInfo + '\'' +
                 ", consignee='" + consignee + '\'' +
                 ", consigneeContact='" + consigneeContact + '\'' +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public String getWechatId() {
+        return wechatId;
+    }
+
+    public void setWechatId(String wechatId) {
+        this.wechatId = wechatId;
     }
 
     public int getId() {
