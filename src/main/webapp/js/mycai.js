@@ -46,21 +46,22 @@ mycaiModule.controller('productController', function ($scope, $http, $routeParam
     }
 });
 
-mycaiModule.controller('checkoutController', function ($scope, $location) {
+mycaiModule.controller('checkoutController', function ($scope, $location, $document) {
     if (bill.totalAmount == 0) {
         alert('您还未购买任何物品');
         curStatus = pageStatus.first_open;
         $location.path('/');
     } else {
         $scope.bill = bill;
+        //$document.ready(function () {
+        //    console.log($('input[spinner-instance]'));
+        //    for (var i = 0; i < $('.product_amount').length; i++) {
+        //        var amount = $('.product_amount')[i].innerText;
+        //        console.log(amount);
+        //        $('input[spinner-instance]')[i].val(amount);
+        //    }
+        //});
 
-        //console.log($('input[spinner-instance]'));
-        //for (var i = 0; i < $('.product_amount').length; i++) {
-        //    var amount = $('.product_amount')[i].innerText;
-        //    console.log(amount);
-        //    $('input[spinner-instance]')[i].val(amount);
-        //
-        //}
 
         $('a.next').text('确认订单');
         $('a.next').attr('href', '#/confirm');
@@ -134,7 +135,15 @@ mycaiModule.directive('spinnerInstance', function () {
         restrict: 'AE',
         scope: {},
         link: function (scope, element, attr) {
-            element.spinner({});
+            var value = attr.spinnerInstance;
+            if (value == undefined || value == "") {
+                value = 0;
+            }
+            element.spinner({
+                    value: value,
+                }
+            )
+            ;
         }
     }
 })
@@ -191,8 +200,15 @@ function isFirstBuy(items, productId) {
     }
     return true;
 }
+function refreshCheckoutItemUI(ele, amount, productPrice) {
+    if (ele.find('.amount>span').length == 0) {
+        return;
+    }
+    $(ele.find('.amount>span')[0]).text(amount);
+    $(ele.find('.price>span')[0]).text(amount * productPrice);
+}
 function changeTotalCost(_this) {
-    var ele = _this.parent().parent();
+    var ele = _this.parent().parent().parent();
     var amount = _this.siblings('input')[0].value;
     var productId = $(ele.find('.product_id')[0]).data('product_id');
     var productName = $(ele.find('.product_name')[0]).data('product_name');
@@ -200,7 +216,6 @@ function changeTotalCost(_this) {
     var productPrice = $(ele.find('.product_price')[0]).data('product_price');
     var productUnit = $(ele.find('.product_unit')[0]).data('product_unit');
     var picurl = $(ele.find('.product_picurl')[0]).data('product_picurl');
-    ;
     if (_this.hasClass('increase')) {
         bill.totalAmount++;
         bill.totalPrice += parseFloat(productPrice);
@@ -236,6 +251,7 @@ function changeTotalCost(_this) {
         }
     }
     refreshCheckoutUI(bill.totalAmount, bill.totalPrice.toFixed(2));
+    refreshCheckoutItemUI(ele, amount, productPrice);
     //console.log(totalAmount + ":" + totalPrice.toFixed(2));
 }
 
