@@ -106,8 +106,6 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                         alert(data.status);
                     }
                 });
-                //console.log(order);
-
                 curStatus = pageStatus.confirm;
             })
 
@@ -127,9 +125,18 @@ mycaiModule.controller('orderController', function ($http, $scope) {
     }
 });
 
+function clearBill() {
+    bill = {
+        items: [],
+        totalAmount: 0,
+        totalPrice: 0
+    }
+}
+
 mycaiModule.controller('submitController', function ($scope) {
     $('footer.bg-dark').hide();
     curStatus = pageStatus.submit;
+    clearBill();
 });
 
 mycaiModule.directive('spinnerInstance', function () {
