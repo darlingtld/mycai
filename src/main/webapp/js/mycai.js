@@ -136,6 +136,7 @@ mycaiModule.controller('orderDetailController', function ($http, $scope, $routeP
     $http.get(url).success(function (data, status, headers, config) {
         $scope.orderDetail= data;
         $scope.items=JSON.parse($scope.orderDetail.bill).items;
+        $scope.total=JSON.parse($scope.orderDetail.bill);
     });
     if (curStatus != pageStatus.first_open) {
         setTimeout("$('#main_nav').click()", 300);
