@@ -64,6 +64,7 @@ mycaiModule.controller('checkoutController', function ($scope, $location, $docum
     }
 });
 
+
 mycaiModule.controller('confirmController', function ($scope, $location) {
         if (bill.totalAmount == 0) {
             alert('您还未购买任何物品');
@@ -81,32 +82,37 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
 
             $scope.bill = bill;
 
-            $('.checkout').html('<div><a class="next" href="#/submit">提交</a>');
+            $('.checkout').html('<div><a class="next">提交</a>');
             $('a.next').css('margin-left', '45%');
 
             $('a.next').bind('click', function () {
+
                 var order = {
                     userId: 'lingda',
                     bill: JSON.stringify(bill),
+                    orderTs: new Date(),
                     deliveryTs: $('#delivery_ts').val(),
                     shopInfo: $('#shop_info').val(),
                     consignee: $('#consignee').val(),
                     consigneeContact: $('#consignee_contact').val()
                 };
 
-                $.ajax({
-                    type: "post",
-                    url: app + "/order/submit",
-                    contentType: "application/json",
-                    data: JSON.stringify(order),
-                    success: function (data) {
-                        alert('提交订单成功！');
-                    },
-                    error: function (data) {
-                        alert(data.status);
-                    }
-                });
-                curStatus = pageStatus.confirm;
+                if (validateOrder(order)) {
+                    $.ajax({
+                        type: "post",
+                        url: app + "/order/submit",
+                        contentType: "application/json",
+                        data: JSON.stringify(order),
+                        success: function (data) {
+                            alert('提交订单成功！');
+                            $location.path('/order/history');
+                        },
+                        error: function (data) {
+                            alert(data.status);
+                        }
+                    });
+                    curStatus = pageStatus.confirm;
+                }
             })
 
         }
@@ -170,10 +176,10 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'confirmController',
             templateUrl: 'confirm.html'
         })
-        .when('/submit', {
-            controller: 'submitController',
-            templateUrl: 'success.html'
-        })
+        //.when('/submit', {
+        //    controller: 'submitController',
+        //    templateUrl: 'success.html'
+        //})
         .when('/nav/:nav', {
             controller: 'navController',
             templateUrl: 'product.html'
@@ -182,7 +188,6 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'orderController',
             templateUrl: 'orderHistory.html'
         })
-
         .otherwise({
             redirectTo: '/nav/zuixincaipin'
         });
@@ -201,6 +206,7 @@ function fillSpinner(products) {
 
     }
 }
+
 function init() {
     $('footer.bg-dark').show();
     $('.checkout').html('<div><a class="basket"><i class="icon-basket-loaded i-lg"></i></a></div><div>物件数：<span id="totalAmount">0</span>件 </div> <div>总价：<span id="totalPrice">0</span>元</div><div><a class="next" href="#/checkout">下一步</a></div>');
@@ -222,6 +228,24 @@ function isFirstBuy(items, productId) {
         }
     }
     return true;
+}
+
+function validateOrder(order) {
+    if (order.deliveryTs.trim() == '') {
+        alert('请选择配送时间');
+        return false;
+    } else if (order.shopInfo.trim() == '') {
+        alert('请输入商店信息');
+        return false;
+    } else if (order.consignee.trim() == '') {
+        alert('请输入收货人姓名');
+        return false;
+    } else if (order.consigneeContact.trim() == '') {
+        alert('请输入收货人联系方式');
+        return false;
+    } else {
+        return true;
+    }
 }
 
 function refreshCheckoutItemUI(ele, amount, productPrice) {
