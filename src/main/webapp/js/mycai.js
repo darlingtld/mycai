@@ -105,7 +105,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                         data: JSON.stringify(order),
                         success: function (data) {
                             alert('提交订单成功！');
-                            $location.path('/order/history');
+                            window.location = app + '#/order/history';
                         },
                         error: function (data) {
                             alert(data.status);
@@ -132,7 +132,7 @@ mycaiModule.controller('orderController', function ($http, $scope) {
 });
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
-    var url = app + '/order/detail/'+$routeParams.id;
+    var url = app + '/order/detail/' + $routeParams.id;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.orderDetail= data;
         $scope.items=JSON.parse($scope.orderDetail.bill).items;
