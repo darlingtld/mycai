@@ -90,7 +90,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                 var order = {
                     userId: 'lingda',
                     bill: JSON.stringify(bill),
-                    orderTs: new Date().pattern("yyyy-MM-dd hh:mm:ss"),
+                    orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                     deliveryTs: $('#delivery_ts').val(),
                     shopInfo: $('#shop_info').val(),
                     consignee: $('#consignee').val(),
