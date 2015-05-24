@@ -21,6 +21,8 @@ public class Order {
     private String bill;
     @Column(name = "delivery_ts")
     private String deliveryTs;
+    @Column(name = "order_ts")
+    private String orderTs;
     @Column(name = "shop_info")
     private String shopInfo;
     @Column(name = "consignee")
@@ -38,11 +40,20 @@ public class Order {
                 ", wechatId='" + wechatId + '\'' +
                 ", bill='" + bill + '\'' +
                 ", deliveryTs='" + deliveryTs + '\'' +
+                ", orderTs='" + orderTs + '\'' +
                 ", shopInfo='" + shopInfo + '\'' +
                 ", consignee='" + consignee + '\'' +
                 ", consigneeContact='" + consigneeContact + '\'' +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public String getOrderTs() {
+        return orderTs;
+    }
+
+    public void setOrderTs(String orderTs) {
+        this.orderTs = orderTs;
     }
 
     public String getWechatId() {
