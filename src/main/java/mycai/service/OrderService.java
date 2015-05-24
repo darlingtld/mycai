@@ -28,4 +28,9 @@ public class OrderService {
     public List<Order> getList(String userid) {
         return orderDao.getList(userid);
     }
+
+    @Transactional
+    public Order getById(int orderId) {
+        return orderDao.getById(orderId);
+    }
 }

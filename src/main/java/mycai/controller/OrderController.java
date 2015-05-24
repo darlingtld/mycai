@@ -29,4 +29,11 @@ public class OrderController {
     List<Order> getOrders(@PathVariable("userid") String userid) {
         return orderService.getList(userid);
     }
+
+    @RequestMapping(value = "/detail/{orderid}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Order getOrderDetail(@PathVariable("orderid") int orderId) {
+        return orderService.getById(orderId);
+    }
 }
