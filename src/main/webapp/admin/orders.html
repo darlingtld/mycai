@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Service Management For Renovator">
+    <meta name="author" content="Sara Zhu">
+    <title>管理订单信息</title>
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pagination.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+    <!--pagination-->
+    <div id="pagination" style="float: right;" class="pagination"></div>
+    <span class="pagination" style="float: right;">
+        每页显示：<input type="text" style="width: 40%" id="numPerPage" onkeydown="paginationEnter(event, $(this).val());" value="10"> 个
+    </span>
+
+    <!--Service Table-->
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>用户名</th>
+            <th>订单时间</th>
+            <th>配送时间</th>
+            <th>门店信息</th>
+            <th>收货人</th>
+            <th>联系方式</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="orderList">
+        <script id="orderTemplate" type="text/x-jquery-tmpl">
+          <tr>
+            <td>${userId}</td>
+            <td>${orderTs}</td>
+            <td>${deliveryTs}</td>
+			<td>${shopInfo}</td>
+            <td>${consignee}</td>
+            <td>${consigneeContact}</td>
+            <td>${status}</td>
+            <td>
+                <button class="update-order btn btn-warning btn-md-width" data-toggle="modal" data-target="#updateModal" data-id=${id}>修改</button>
+                <a href="orderDetails.html?id=${id}" class="btn btn-danger btn-md-width">查看详单</a>
+            </td>
+          </tr>
+        </script>
+        </tbody>
+    </table>
+
+
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">更新订单信息</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tr>
+                        <td>配送时间：</td>
+                        <td><input id="orderTs"></td>
+                    </tr>
+                    <tr>
+                        <td>订单状态</td>
+                        <td><input id="orderStatus"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="_updateOrder()">提交更改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="../js/jquery.min.js"></script>
+<script src="../js/pagination.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery.tmpl.min.js"></script>
+<script src="js/service.js"></script>
+
+</body>
+</html>
