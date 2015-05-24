@@ -23,11 +23,11 @@ public class OrderController {
         return orderService.save(order);
     }
 
-    @RequestMapping(value = "/get/{userid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{wechatid}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Order> getOrders(@PathVariable("userid") String userid) {
-        return orderService.getList(userid);
+    List<Order> getOrders(@PathVariable("wechatid") String wechatid) {
+        return orderService.getList(wechatid);
     }
 
     @RequestMapping(value = "/detail/{orderid}", method = RequestMethod.GET)

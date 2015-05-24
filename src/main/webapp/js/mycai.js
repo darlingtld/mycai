@@ -90,7 +90,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
             $('a.next').bind('click', function () {
 
                 var order = {
-                    userId: 'lingda',
+                    //userId: 'lingda',
                     wechatId: wechatId,
                     bill: JSON.stringify(bill),
                     orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
@@ -124,7 +124,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
 );
 
 mycaiModule.controller('orderController', function ($http, $scope) {
-    var url = app + '/order/get/' + 'lingda';
+    var url = app + '/order/get/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.orders = data;
     });
@@ -142,11 +142,7 @@ mycaiModule.controller('orderDetailController', function ($http, $scope, $routeP
         $scope.items = JSON.parse($scope.orderDetail.bill).items;
         $scope.total = JSON.parse($scope.orderDetail.bill);
     });
-    if (curStatus != pageStatus.first_open) {
-        setTimeout("$('#main_nav').click()", 300);
-    } else {
-        curStatus = pageStatus.view_product;
-    }
+
 });
 
 function clearBill() {

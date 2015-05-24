@@ -1,7 +1,6 @@
 package mycai.dao;
 
 import mycai.pojo.Order;
-import mycai.pojo.Product;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,8 +21,8 @@ public class OrderDao {
         return id;
     }
 
-    public List<Order> getList(String userid) {
-        return sessionFactory.getCurrentSession().createQuery(String.format("from Order where userid = '%s' order by id desc", userid)).list();
+    public List<Order> getList(String wechatid) {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Order where wechatId = '%s' order by id desc", wechatid)).list();
     }
 
     public Order getById(int orderId) {

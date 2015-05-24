@@ -1,9 +1,7 @@
 package mycai.service;
 
 import mycai.dao.OrderDao;
-import mycai.dao.ProductDao;
 import mycai.pojo.Order;
-import mycai.pojo.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +23,8 @@ public class OrderService {
     }
 
     @Transactional
-    public List<Order> getList(String userid) {
-        return orderDao.getList(userid);
+    public List<Order> getList(String wechatid) {
+        return orderDao.getList(wechatid);
     }
 
     @Transactional
