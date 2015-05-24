@@ -43,4 +43,11 @@ public class OrderController {
     List<Order> getOrdersAll() {
         return orderService.getAll();
     }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST, headers = "Content-Type=application/json")
+    public
+    @ResponseBody
+    boolean updateOrder(@RequestBody Order order) {
+        return orderService.update(order);
+    }
 }

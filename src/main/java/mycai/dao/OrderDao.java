@@ -34,4 +34,14 @@ public class OrderDao {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Order order by orderTs desc")).list();
 
     }
+
+    public boolean update(Order order) {
+        try {
+            sessionFactory.getCurrentSession().update(order);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

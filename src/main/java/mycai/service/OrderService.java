@@ -38,4 +38,9 @@ public class OrderService {
     public List<Order> getAll() {
         return orderDao.getAll();
     }
+
+    @Transactional
+    public boolean update(Order order) {
+        return orderDao.update(order);
+    }
 }
