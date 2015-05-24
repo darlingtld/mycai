@@ -131,6 +131,18 @@ mycaiModule.controller('orderController', function ($http, $scope) {
     }
 });
 
+mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
+    var url = app + '/order/detail/'+$routeParams.id;
+    $http.get(url).success(function (data, status, headers, config) {
+        $scope.orderDetails = data;
+    });
+    if (curStatus != pageStatus.first_open) {
+        setTimeout("$('#main_nav').click()", 300);
+    } else {
+        curStatus = pageStatus.view_product;
+    }
+});
+
 function clearBill() {
     bill = {
         items: [],
@@ -187,6 +199,10 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
         .when('/order/history', {
             controller: 'orderController',
             templateUrl: 'orderHistory.html'
+        })
+        .when('/order/details/:id', {
+            controller: 'orderController',
+            templateUrl: 'orderDetails.html'
         })
         .otherwise({
             redirectTo: '/nav/zuixincaipin'
