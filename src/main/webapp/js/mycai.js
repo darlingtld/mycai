@@ -134,7 +134,8 @@ mycaiModule.controller('orderController', function ($http, $scope) {
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
     var url = app + '/order/detail/'+$routeParams.id;
     $http.get(url).success(function (data, status, headers, config) {
-        $scope.orderDetails = data;
+        $scope.orderDetail= data;
+        $scope.items=JSON.parse($scope.orderDetail.bill).items;
     });
     if (curStatus != pageStatus.first_open) {
         setTimeout("$('#main_nav').click()", 300);
@@ -201,7 +202,7 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'orderHistory.html'
         })
         .when('/order/details/:id', {
-            controller: 'orderController',
+            controller: 'orderDetailController',
             templateUrl: 'orderDetails.html'
         })
         .otherwise({
