@@ -18,6 +18,8 @@ var pageStatus = {
 };
 var curStatus = pageStatus.first_open;
 
+var wechatId = getURLParameter('wechat_id');
+
 mycaiModule.controller('mainController', function ($scope) {
     curStatus = pageStatus.first_open;
 });
@@ -89,6 +91,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
 
                 var order = {
                     userId: 'lingda',
+                    wechatId: wechatId,
                     bill: JSON.stringify(bill),
                     orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                     deliveryTs: $('#delivery_ts').val(),
@@ -135,9 +138,9 @@ mycaiModule.controller('orderController', function ($http, $scope) {
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
     var url = app + '/order/detail/' + $routeParams.id;
     $http.get(url).success(function (data, status, headers, config) {
-        $scope.orderDetail= data;
-        $scope.items=JSON.parse($scope.orderDetail.bill).items;
-        $scope.total=JSON.parse($scope.orderDetail.bill);
+        $scope.orderDetail = data;
+        $scope.items = JSON.parse($scope.orderDetail.bill).items;
+        $scope.total = JSON.parse($scope.orderDetail.bill);
     });
     if (curStatus != pageStatus.first_open) {
         setTimeout("$('#main_nav').click()", 300);
@@ -337,5 +340,12 @@ Date.prototype.Format = function (fmt) { //author: meizz
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+}
+
+function getURLParameter(key) {
+    var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
 }
 
