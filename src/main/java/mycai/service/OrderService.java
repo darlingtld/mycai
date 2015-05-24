@@ -33,4 +33,9 @@ public class OrderService {
     public Order getById(int orderId) {
         return orderDao.getById(orderId);
     }
+
+    @Transactional
+    public List<Order> getAll() {
+        return orderDao.getAll();
+    }
 }

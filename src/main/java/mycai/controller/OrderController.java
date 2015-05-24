@@ -36,4 +36,11 @@ public class OrderController {
     Order getOrderDetail(@PathVariable("orderid") int orderId) {
         return orderService.getById(orderId);
     }
+
+    @RequestMapping(value = "/getall", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Order> getOrdersAll() {
+        return orderService.getAll();
+    }
 }

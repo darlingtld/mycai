@@ -82,7 +82,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
 
             $scope.bill = bill;
 
-            $('.checkout').html('<div><a class="next">提交</a>');
+            $('.checkout').html('<div><a class="next" href="#/submit">提交</a>');
             $('a.next').css('margin-left', '45%');
 
             $('a.next').bind('click', function () {
@@ -90,7 +90,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                 var order = {
                     userId: 'lingda',
                     bill: JSON.stringify(bill),
-                    orderTs: new Date(),
+                    orderTs: new Date().pattern("yyyy-MM-dd hh:mm:ss"),
                     deliveryTs: $('#delivery_ts').val(),
                     shopInfo: $('#shop_info').val(),
                     consignee: $('#consignee').val(),
@@ -105,7 +105,8 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                         data: JSON.stringify(order),
                         success: function (data) {
                             alert('提交订单成功！');
-                            window.location = app + '#/order/history';
+                            //window.location = app + '#/order/history';
+                            //$location.path('/order/history');
                         },
                         error: function (data) {
                             alert(data.status);
@@ -190,10 +191,10 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'confirmController',
             templateUrl: 'confirm.html'
         })
-        //.when('/submit', {
-        //    controller: 'submitController',
-        //    templateUrl: 'success.html'
-        //})
+        .when('/submit', {
+            controller: 'submitController',
+            templateUrl: 'success.html'
+        })
         .when('/nav/:nav', {
             controller: 'navController',
             templateUrl: 'product.html'
@@ -320,5 +321,21 @@ function changeTotalCost(_this) {
     refreshCheckoutUI(bill.totalAmount, bill.totalPrice.toFixed(2));
     refreshCheckoutItemUI(ele, amount, productPrice);
     //console.log(totalAmount + ":" + totalPrice.toFixed(2));
+}
+
+Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
 }
 

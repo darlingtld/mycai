@@ -42,7 +42,7 @@ public class MycaiService {
             article.setTitle("买菜");
             article.setDescription("上海三林地区最大的农产品移动电商平台̨");
             article.setPicUrl(PropertyHolder.SERVER + "/images/logo.jpg");
-            article.setUrl(PropertyHolder.SERVER + "/index.html");
+            article.setUrl(PropertyHolder.SERVER + "/index.html?wechat_id=" + fromUserName);
             articleList.add(article);
             newsMessage.setArticleCount(articleList.size());
             newsMessage.setArticles(articleList);

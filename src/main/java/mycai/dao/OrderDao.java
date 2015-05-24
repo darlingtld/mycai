@@ -29,4 +29,9 @@ public class OrderDao {
     public Order getById(int orderId) {
         return (Order) sessionFactory.getCurrentSession().get(Order.class, orderId);
     }
+
+    public List<Order> getAll() {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Order order by orderTs desc")).list();
+
+    }
 }
