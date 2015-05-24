@@ -84,7 +84,15 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
 
             $scope.bill = bill;
 
-            $('.checkout').html('<div><a class="next" href="#/submit">提交</a>');
+            var sendTs = DateAdd("d ", 1, new Date());
+            sendTs.setHours(7);
+            sendTs.setMinutes(0);
+            sendTs.setSeconds(0);
+            $scope.send={
+                ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
+            }
+
+            $('.checkout').html('<div><a class="next">提交</a>');
             $('a.next').css('margin-left', '45%');
 
             $('a.next').bind('click', function () {
@@ -108,7 +116,8 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                         data: JSON.stringify(order),
                         success: function (data) {
                             alert('提交订单成功！');
-                            //window.location = app + '#/order/history';
+                            curStatus=pageStatus.first_open;
+                            window.location = app + '/index.html?wechat_id=' + wechatId + '#/order/history';
                             //$location.path('/order/history');
                         },
                         error: function (data) {
@@ -343,5 +352,55 @@ function getURLParameter(key) {
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
     return null;
+}
+
+function DateAdd(interval, number, date) {
+    switch (interval) {
+        case "y ": {
+            date.setFullYear(date.getFullYear() + number);
+            return date;
+            break;
+        }
+        case "q ": {
+            date.setMonth(date.getMonth() + number * 3);
+            return date;
+            break;
+        }
+        case "m ": {
+            date.setMonth(date.getMonth() + number);
+            return date;
+            break;
+        }
+        case "w ": {
+            date.setDate(date.getDate() + number * 7);
+            return date;
+            break;
+        }
+        case "d ": {
+            date.setDate(date.getDate() + number);
+            return date;
+            break;
+        }
+        case "h ": {
+            date.setHours(date.getHours() + number);
+            return date;
+            break;
+        }
+        case "m ": {
+            date.setMinutes(date.getMinutes() + number);
+            return date;
+            break;
+        }
+        case "s ": {
+            date.setSeconds(date.getSeconds() + number);
+            return date;
+            break;
+        }
+        default: {
+            date.setDate(d.getDate() + number);
+            return date;
+            break;
+        }
+    }
 }
 
