@@ -3,17 +3,32 @@
  */
 
 var _order;
+var _dadaId=0;
+var app='/mycai';
 
 $(function () {
     _initialPage();
 });
 
+
+function saveId(id){
+    _dadaId=id;
+}
+
 function _initialPage() {
+    $('#deliveryTs').mobiscroll().datetime({
+        theme: 'sense-ui',     // Specify theme like: theme: 'ios' or omit setting to use default
+        mode: 'scroller',       // Specify scroller mode like: mode: 'mixed' or omit setting to use default
+        lang: 'zh',       // Specify language like: lang: 'pl' or omit setting to use default
+        minDate: new Date(),  // More info about minDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-minDate
+        maxDate: new Date(2020, 1, 1, 1, 1),   // More info about maxDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-maxDate
+        stepMinute: 10  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
+    });
 
     //init table
     $.ajax({
         type: "get",
-        url: "/mycai/order/getall",
+        url: app+"/order/getall",
         dataType: "json",
         success: function (data) {
             $("#orderTemplate").tmpl(data).appendTo("#orderList");
@@ -35,22 +50,25 @@ function _initialPage() {
 
 
 function _updateOrder() {
-    var service = _getServiceBySerivceId($("#serviceId").val());
-    service.orderId = $("#orderId").val();
-    service.type = $("#orderType").val();
-    service.price = $("#orderPrice").val();
-    service.ts = $("#orderTs").val();
+    console.log(_dadaId);
+    //var eleSiblings = $('#orderList').find('tr>input[value='+_dadaId+']').siblings();
+    var order={
+        id:_dadaId,
+        deliveryTs: $('#deliveryTs').val(),
+        status:$('#orderStatus').val()
+    }
+
+
     $.ajax({
         type: "post",
-        url: "/service/update",
+        url: app+"/order/update",
         contentType: "application/json",
-        data: JSON.stringify(service),
+        data: JSON.stringify(order),
         success: function (data) {
-            $("#loading").addClass("hidden");
+            alert('保存成功！');
             location.reload();
         },
         error: function (data) {
-            $("#loading").addClass("hidden");
             alert(data.status);
         }
     });
