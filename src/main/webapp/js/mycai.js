@@ -116,7 +116,9 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                         data: JSON.stringify(order),
                         success: function (data) {
                             alert('提交订单成功！');
+                            clearBill();
                             curStatus=pageStatus.first_open;
+                            init();
                             window.location = app + '/index.html?wechat_id=' + wechatId + '#/order/history';
                             //$location.path('/order/history');
                         },
@@ -137,7 +139,7 @@ mycaiModule.controller('orderController', function ($http, $scope) {
     $http.get(url).success(function (data, status, headers, config) {
         $scope.orders = data;
     });
-    init();
+
     if (curStatus != pageStatus.first_open) {
         setTimeout("$('#main_nav').click()", 300);
     } else {
