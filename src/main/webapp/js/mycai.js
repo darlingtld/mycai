@@ -52,7 +52,8 @@ mycaiModule.controller('productController', function ($scope, $http, $routeParam
     }
 });
 
-mycaiModule.controller('checkoutController', function ($scope, $location, $document) {
+mycaiModule.controller('checkoutController', function ($scope, $location, $document, $routeParams) {
+    var from = $routeParams.from;
     if (bill.totalAmount == 0) {
         alert('您还未购买任何物品');
         curStatus = pageStatus.first_open;
@@ -63,6 +64,9 @@ mycaiModule.controller('checkoutController', function ($scope, $location, $docum
         $('a.next').text('确认订单');
         $('a.next').attr('href', '#/confirm');
         curStatus = pageStatus.checkout;
+    }
+    if(from == 'menu'){
+        setTimeout("$('#main_nav').click()", 300);
     }
 });
 
@@ -194,7 +198,7 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'productController',
             templateUrl: 'product.html'
         })
-        .when('/checkout', {
+        .when('/checkout/:from', {
             controller: 'checkoutController',
             templateUrl: 'checkout.html'
         })
@@ -239,7 +243,7 @@ function fillSpinner(products) {
 
 function init() {
     $('footer.bg-dark').show();
-    $('.checkout').html('<div><a class="basket"><i class="icon-basket-loaded i-lg"></i></a></div><div>物件数：<span id="totalAmount">0</span>件 </div> <div>总价：<span id="totalPrice">0</span>元</div><div><a class="next" href="#/checkout">下一步</a></div>');
+    $('.checkout').html('<div><a class="basket"><i class="icon-basket-loaded i-lg"></i></a></div><div>物件数：<span id="totalAmount">0</span>件 </div> <div>总价：<span id="totalPrice">0</span>元</div><div><a class="next" href="#/checkout/footer">下一步</a></div>');
     refreshCheckoutUI(bill.totalAmount, bill.totalPrice.toFixed(2));
 
 }
