@@ -2,9 +2,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
     <context:component-scan base-package="mycai"/>
 
@@ -32,11 +33,6 @@
             <list>
                 <value>mycai.pojo.Product</value>
                 <value>mycai.pojo.Order</value>
-                <!--<value>com.renovator.pojo.Product</value>-->
-                <!--<value>com.renovator.pojo.dto.material.Article</value>-->
-                <!--<value>com.renovator.pojo.dto.PushMessageTask</value>-->
-                <!--<value>com.renovator.pojo.Administrator</value>-->
-                <!--<value>com.renovator.pojo.ProductDetails</value> -->
             </list>
         </property>
         <property name="hibernateProperties">
@@ -51,5 +47,10 @@
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
+
+    <task:scheduled-tasks scheduler="myScheduler">
+        <task:scheduled ref="productCrawler" method="crawl" cron="0 0 1 * * ?"/>
+    </task:scheduled-tasks>
+    <task:scheduler id="myScheduler" pool-size="4"/>
 
 </beans>

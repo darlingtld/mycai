@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -35,5 +36,11 @@ public class ProductService {
     @Transactional
     public List<Product> getOnsaleList(int limit) {
         return productDao.getOnsaleList(limit);
+    }
+
+    @Transactional
+    public void upsert(Product product) {
+        product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
+        productDao.saveOrUpdateByName(product);
     }
 }

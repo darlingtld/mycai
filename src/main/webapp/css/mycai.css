@@ -10,7 +10,7 @@
 }
 
 .checkout_info div {
-    font-size: x-large;
+    font-size: 120%;
 }
 
 .checkout_info span {
@@ -28,4 +28,12 @@
 
 span {
     font-size: 120%;
+}
+
+.height-normalize {
+    height: 300px;
+}
+
+.height-normalize-checkout{
+    height: 200px;
 }

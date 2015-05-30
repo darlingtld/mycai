@@ -21,6 +21,27 @@ public class ProductDao {
         return id;
     }
 
+    public Product getById(int id) {
+        return (Product) sessionFactory.getCurrentSession().get(Product.class, id);
+    }
+
+    public Product getByName(String name) {
+        return (Product) sessionFactory.getCurrentSession().createQuery(String.format("from Product where name = '%s'", name)).uniqueResult();
+    }
+
+    public void saveOrUpdateByName(Product product) {
+        Product productInDB = getByName(product.getName());
+        if (productInDB != null) {
+            productInDB.setPrice(product.getPrice());
+            productInDB.setPicurl(product.getPicurl());
+            productInDB.setUnit(product.getUnit());
+            productInDB.setDataChangeLastTime(product.getDataChangeLastTime());
+            sessionFactory.getCurrentSession().saveOrUpdate(productInDB);
+        } else {
+            sessionFactory.getCurrentSession().save(product);
+        }
+    }
+
     public List<Product> getList(String type, String category) {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Product where type = '%s' and category='%s'", type.toUpperCase(), category.toUpperCase())).list();
     }
