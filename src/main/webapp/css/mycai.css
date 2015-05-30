@@ -26,14 +26,17 @@
     float: left;
 }
 
-div.checkout span {
+
+div.checkout_info div {
     font-size: 120%;
+    display: inline-block;
+
 }
 
 .height-normalize {
     height: 300px;
 }
 
-.height-normalize-checkout{
+.height-normalize-checkout {
     height: 200px;
 }
