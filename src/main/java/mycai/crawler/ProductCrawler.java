@@ -28,7 +28,6 @@ public class ProductCrawler {
 
     private static final int TIME_TO_WAIT_FOR_RESULTS = 45;
 
-    @PostConstruct
     public void crawl() {
         productMap = new ConcurrentHashMap<>();
         logger.info("Crawling vegetables and fruits");
