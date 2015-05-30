@@ -10,10 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -25,7 +23,6 @@ public class VegFruitCrawler {
     private static final Logger logger = LoggerFactory.getLogger(ProductCrawler.class);
 
     private static final int CONNECTION_TIME_OUT = 30 * 1000;
-    private static final double PIC_PROPORTION = 1.5;
     private static final String host = "http://www.vegnet.com.cn/";
     private static final String SHUCAISHUIGUO_IN_SH = host + "Price/list_ar310000.html?marketID=71";
     private ThreadPoolExecutor threadPoolExecutor;
@@ -95,7 +92,7 @@ public class VegFruitCrawler {
             product.setUnit(eles.get(4).text().replace("元/", "").replace("(kg)", ""));
             product.setType(Type.SHUCAISHUIGUO);
             product.setOnsale(0);
-            getProductImg(product);
+            ImageCrawler.getProductImg(product);
             return product;
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -103,26 +100,5 @@ public class VegFruitCrawler {
         return null;
     }
 
-    private void getProductImg(Product product) {
-        String googleImgUrl = "https://image.glgoo.com/search?site=imghp&tbm=isch&q=%s&gws_rd=cr";
-        Document doc;
-        try {
-            String url = String.format(googleImgUrl, URLEncoder.encode(product.getName(), "utf-8"));
-            doc = Jsoup.connect(url).userAgent("Mozilla").timeout(CONNECTION_TIME_OUT).get();
-            Elements eles = doc.select("img");
-            TreeMap<Double, String> sizeImgUrlMap = new TreeMap<>();
-            for (Element element : eles) {
-//                System.out.println(element);
-                double height = Double.parseDouble(element.attr("height"));
-                double width = Double.parseDouble(element.attr("width"));
-                String src = element.attr("src");
-                Double size = height / width < PIC_PROPORTION ? PIC_PROPORTION - height / width : height / width - PIC_PROPORTION;
-                sizeImgUrlMap.put(size, src);
-            }
-//            System.out.println(sizeImgUrlMap);
-            product.setPicurl(sizeImgUrlMap.firstEntry().getValue());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-    }
+
 }

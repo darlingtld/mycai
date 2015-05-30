@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Created by tangld on 2015/5/26.
@@ -24,14 +21,18 @@ public class ProductCrawler {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductCrawler.class);
     private static ConcurrentHashMap<String, Product> productMap = new ConcurrentHashMap<>();
-    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 20, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(20));
+    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 20, 0, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
     private static final int TIME_TO_WAIT_FOR_RESULTS = 45;
 
+    @PostConstruct
     public void crawl() {
         productMap = new ConcurrentHashMap<>();
         logger.info("Crawling vegetables and fruits");
         new VegFruitCrawler(threadPoolExecutor, productMap).execute();
+
+        logger.info("Crawling from shian");
+        new ShianGovCrawler(threadPoolExecutor, productMap).execute();
 
         new Thread() {
             @Override
