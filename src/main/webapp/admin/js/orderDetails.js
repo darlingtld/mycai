@@ -27,7 +27,7 @@ function _initialPage() {
             for(var i=0;i<bill.items.length;i++){
                 html+="<tr>"+
                 "<td style=\"width: 50%; text-align: center; vertical-align: middle\" rowspan=\"3\">"+
-                "<img class=\"img\" src=\"../images/"+bill.items[i].picurl+"\" style=\"width: 30%;\"/>"+
+                "<img class=\"img\" src=\""+bill.items[i].picurl+"\" style=\"width: 30%;\"/>"+
                 "</td>"+
                 "<td>商品名称：<span class=\"productName\">"+bill.items[i].productName+"</span></td>"+
                 "</tr>"+
