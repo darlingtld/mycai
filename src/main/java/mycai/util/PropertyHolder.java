@@ -24,4 +24,9 @@ public class PropertyHolder {
     public static final String APPSECRET = prop.getProperty("wechat.app_secret");
     public static final String SERVER = prop.getProperty("wechat.server");
 
+    public static final String MENU_GO_ORDER = "我要下单";
+    public static final String MENU_MY_ORDER = "我的订单";
+    public static final String MENU_NEW_PRODUCT = "新鲜资讯";
+    public static final String MENU_ABOUT_US = "关于我们";
+
 }
