@@ -52,7 +52,7 @@ public class VegFruitCrawler {
                                     logger.error("Error occurred!");
                                     continue;
                                 }
-                                productMap.putIfAbsent(product.getName(), product);
+//                                productMap.putIfAbsent(product.getName(), product);
                                 System.out.println(String.format("%s [%s]", Thread.currentThread(), product));
                             }
                         } catch (IOException e) {

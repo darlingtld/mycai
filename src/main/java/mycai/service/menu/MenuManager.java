@@ -35,11 +35,11 @@ public class MenuManager {
     private static Menu getMenu() {
         ViewButton btn11 = new ViewButton();
         btn11.setName(PropertyHolder.MENU_GO_ORDER);
-        btn11.setUrl(PropertyHolder.SERVER + "/index.html");
+        btn11.setUrl(PropertyHolder.SERVER);
 
         ViewButton btn21 = new ViewButton();
         btn21.setName(PropertyHolder.MENU_MY_ORDER);
-        btn21.setUrl(PropertyHolder.SERVER + "/index.html");
+        btn21.setUrl(PropertyHolder.SERVER + "#/order/history");
 
         ClickButton btn31 = new ClickButton();
         btn31.setName(PropertyHolder.MENU_ABOUT_US);

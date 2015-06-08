@@ -43,4 +43,9 @@ public class ProductService {
         product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
         productDao.saveOrUpdateByName(product);
     }
+
+    @Transactional
+    public List<Product> getAll() {
+        return productDao.getAll();
+    }
 }
