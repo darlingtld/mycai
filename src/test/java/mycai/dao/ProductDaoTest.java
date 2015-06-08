@@ -41,8 +41,9 @@ public class ProductDaoTest {
     public void updateProductImages() {
         List<Product> productList = productService.getAll();
         for (Product product : productList) {
-            ImageCrawler.getProductImg(product);
-//            productService.upsert(product);
+//            ImageCrawler.getProductImg(product);
+//            product.setPicurl();
+            productService.upsert(product);
         }
     }
 
