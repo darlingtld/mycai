@@ -7,7 +7,7 @@ package mycai.pojo.button;
 /**
  * 按钮的基类
  */
-public class ClickButton extends Button {
+public class ClickButton extends CommonButton {
     private String type = TYPE_CLICK;
     private String key;
 

@@ -8,13 +8,13 @@ package mycai.pojo.button;
  * 菜单
  */
 public class Menu {
-    private Button[] button;
+    private CommonButton[] button;
 
-    public Button[] getButton() {
+    public CommonButton[] getButton() {
         return button;
     }
 
-    public void setButton(Button[] button) {
+    public void setButton(CommonButton[] button) {
         this.button = button;
     }
 }

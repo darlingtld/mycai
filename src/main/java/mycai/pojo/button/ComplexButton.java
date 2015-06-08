@@ -8,13 +8,13 @@ package mycai.pojo.button;
  * ∏¥‘”∞¥≈•£®∏∏∞¥≈•£©
  */
 public class ComplexButton extends Button {
-    private Button[] sub_button;
+    private CommonButton[] sub_button;
 
-    public Button[] getSub_button() {
+    public CommonButton[] getSub_button() {
         return sub_button;
     }
 
-    public void setSub_button(Button[] sub_button) {
+    public void setSub_button(CommonButton[] sub_button) {
         this.sub_button = sub_button;
     }
 }

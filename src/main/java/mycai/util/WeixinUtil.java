@@ -150,13 +150,11 @@ public class WeixinUtil {
      * @param accessToken 有效的access_token
      * @return 0表示成功，其他值表示失败
      */
-    public static int createMenu(Menu menu, String accessToken) {
+    public static int createMenu(String jsonMenu, String accessToken) {
         int result = 0;
 
         // 拼装创建菜单的url
         String url = menu_create_url.replace("ACCESS_TOKEN", accessToken);
-        // 将菜单对象转换成json字符串
-        String jsonMenu = JSONObject.toJSONString(menu);
         // 调用接口创建菜单
         JSONObject jsonObject = httpRequest(url, "POST", jsonMenu);
 

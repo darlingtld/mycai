@@ -1,12 +1,16 @@
-package mycai.service.menu;
+package mycai.service;
 
 /**
  * Created by darlingtld on 2015/2/20.
  */
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import mycai.pojo.AccessToken;
-import mycai.pojo.button.*;
+import mycai.pojo.button.ClickButton;
+import mycai.pojo.button.ComplexButton;
+import mycai.pojo.button.ViewButton;
 import mycai.util.PropertyHolder;
 import mycai.util.WeixinUtil;
 import org.slf4j.Logger;
@@ -20,9 +24,10 @@ public class MenuManager {
         String appSecret = PropertyHolder.APPSECRET;
 
         AccessToken at = WeixinUtil.getAccessToken(appId, appSecret);
-
+        String jsonMenu = getMenu().toJSONString();
+        log.debug(jsonMenu);
         if (null != at) {
-            int result = WeixinUtil.createMenu(getMenu(), at.getToken());
+            int result = WeixinUtil.createMenu(jsonMenu, at.getToken());
 
             if (0 == result) {
                 log.info("菜单创建成功");
@@ -32,7 +37,8 @@ public class MenuManager {
         }
     }
 
-    private static Menu getMenu() {
+    private static JSONObject getMenu() {
+
         ViewButton btn11 = new ViewButton();
         btn11.setName(PropertyHolder.MENU_GO_ORDER);
         btn11.setUrl(PropertyHolder.SERVER);
@@ -49,13 +55,25 @@ public class MenuManager {
         btn32.setName(PropertyHolder.MENU_NEW_PRODUCT);
         btn32.setKey(PropertyHolder.MENU_NEW_PRODUCT);
 
+        ComplexButton mainBtn1 = new ComplexButton();
+        mainBtn1.setName(PropertyHolder.MENU_GO_ORDER);
+        mainBtn1.setSub_button(new ViewButton[]{btn11});
+
+        ComplexButton mainBtn2 = new ComplexButton();
+        mainBtn2.setName(PropertyHolder.MENU_MY_ORDER);
+        mainBtn2.setSub_button(new ViewButton[]{btn21});
+
         ComplexButton mainBtn3 = new ComplexButton();
         mainBtn3.setName(PropertyHolder.MENU_ABOUT_US);
-        mainBtn3.setSub_button(new Button[]{btn31, btn32});
+        mainBtn3.setSub_button(new ClickButton[]{btn31, btn32});
 
-        Menu menu = new Menu();
-        menu.setButton(new Button[]{btn11, btn21, mainBtn3});
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(btn11);
+        jsonArray.add(btn21);
+        jsonArray.add(mainBtn3);
 
+        JSONObject menu = new JSONObject();
+        menu.put("button", jsonArray);
         return menu;
     }
 }

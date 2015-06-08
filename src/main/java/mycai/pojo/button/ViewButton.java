@@ -3,7 +3,7 @@ package mycai.pojo.button;
 /**
  * Created by tangld on 2015/3/30.
  */
-public class ViewButton extends Button {
+public class ViewButton extends CommonButton {
     private String type = TYPE_VIEW;
     private String url;
 
