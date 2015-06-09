@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -50,8 +51,12 @@ public class ShianGovCrawler {
                         product.setUnit("千克");
                         product.setType(Type.SHUCAISHUIGUO);
                         product.setOnsale(0);
-                        ImageCrawler.getProductImg(product);
-                        productMap.putIfAbsent(product.getName(), product);
+                        try {
+                            ImageCrawler.getProductImg(product, product.generatePicurlHash());
+                            productMap.putIfAbsent(product.getName(), product);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 

@@ -1,13 +1,16 @@
 package mycai.other;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * Created by darlingtld on 2015/5/30 0030.
  */
 public class Test {
 
     @org.junit.Test
-    public void testReplace() {
-        String text = "元/千克";
-        System.out.println(text.replace("元/", ""));
+    public void testReplace() throws UnsupportedEncodingException {
+        String text = "千克";
+        System.out.println(URLEncoder.encode(text, "utf-8"));
     }
 }

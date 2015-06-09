@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -92,7 +93,7 @@ public class VegFruitCrawler {
             product.setUnit(eles.get(4).text().replace("元/", "").replace("(kg)", ""));
             product.setType(Type.SHUCAISHUIGUO);
             product.setOnsale(0);
-            ImageCrawler.getProductImg(product);
+            ImageCrawler.getProductImg(product, product.getName().hashCode()+product.getType().toString().hashCode()+"");
             return product;
         } catch (Exception e) {
             logger.error(e.getMessage());

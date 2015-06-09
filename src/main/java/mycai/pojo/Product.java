@@ -128,4 +128,8 @@ public class Product {
         this.dataChangeLastTime = dataChangeLastTime;
     }
 
+    public String generatePicurlHash() {
+        return name.hashCode() + type.toString().hashCode() + "";
+    }
+
 }

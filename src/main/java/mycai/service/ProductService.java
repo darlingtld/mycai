@@ -48,4 +48,24 @@ public class ProductService {
     public List<Product> getAll() {
         return productDao.getAll();
     }
+
+    @Transactional
+    public Product getById(int id) {
+        return productDao.getById(id);
+    }
+
+    @Transactional
+    public void update(Product product) {
+        Product productInDB = productDao.getById(product.getId());
+        if (productInDB != null) {
+            productInDB.setName(product.getName());
+            productInDB.setDescription(product.getDescription());
+            productInDB.setType(product.getType());
+            productInDB.setCategory(product.getCategory());
+            productInDB.setPrice(product.getPrice());
+            productInDB.setUnit(product.getUnit());
+            productInDB.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
+        }
+        productDao.update(productInDB);
+    }
 }

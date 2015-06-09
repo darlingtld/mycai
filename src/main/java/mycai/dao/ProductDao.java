@@ -58,4 +58,8 @@ public class ProductDao {
     public List<Product> getAll() {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Product")).list();
     }
+
+    public void update(Product product) {
+        sessionFactory.getCurrentSession().update(product);
+    }
 }

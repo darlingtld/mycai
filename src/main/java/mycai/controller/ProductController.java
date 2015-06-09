@@ -5,10 +5,7 @@ import mycai.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +28,26 @@ public class ProductController {
     @ResponseBody
     List<Product> getLatest(@PathVariable("limit") int limit) {
         return productService.getLatest(limit);
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Product> getAll() {
+        return productService.getAll();
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Content-Type=application/json")
+    public
+    @ResponseBody
+    void create(@RequestBody Product product) {
+        productService.save(product);
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST, headers = "Content-Type=application/json")
+    public
+    @ResponseBody
+    void update(@RequestBody Product product) {
+        productService.update(product);
     }
 }

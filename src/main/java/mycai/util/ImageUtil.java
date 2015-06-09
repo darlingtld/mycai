@@ -15,17 +15,17 @@ public class ImageUtil {
 
     public static final String basedir = "D:\\Users\\tangld\\IdeaProjects\\mycai_dev\\src\\main\\webapp\\images\\";
 
-    public static String download(String productName, String imgUrl) {
+    public static String download(String picUUID, String imgUrl) {
         byte[] btImg = getImageFromNetByUrl(imgUrl);
         String format = getFormatFromUrl(imgUrl);
         if (null != btImg && btImg.length > 0) {
             System.out.println("Read：" + btImg.length + " bytes");
-            String fileName = basedir + productName + "." + format;
+            String fileName = basedir + picUUID + "." + format;
             writeImageToDisk(btImg, fileName);
         } else {
             System.out.println("Nothing");
         }
-        return productName + "." + format;
+        return picUUID + "." + format;
     }
 
     private static String getFormatFromUrl(String imgUrl) {

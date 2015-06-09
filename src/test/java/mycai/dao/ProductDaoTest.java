@@ -12,8 +12,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * Created by darlingtld on 2015/5/16.
@@ -41,11 +43,34 @@ public class ProductDaoTest {
     public void updateProductImages() {
         List<Product> productList = productService.getAll();
         for (Product product : productList) {
-//            ImageCrawler.getProductImg(product);
-//            product.setPicurl();
-            productService.upsert(product);
+            String picUUID = product.generatePicurlHash();
+            try {
+                ImageCrawler.getProductImg(product, picUUID);
+                product.setPicurl("images/" + picUUID + ".jpg");
+                productService.upsert(product);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+//            break;
+//
         }
     }
 
-
+    @Test
+    public void updateProductImageById() {
+        for (int i = 127; i < 212; i++) {
+            try {
+                Product product = productService.getById(i);
+                String picUUID = product.generatePicurlHash();
+                ImageCrawler.getProductImg(product, picUUID);
+                product.setPicurl("images/" + picUUID + ".jpg");
+                productService.upsert(product);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+    }
 }
+
