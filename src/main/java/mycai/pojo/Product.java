@@ -129,7 +129,7 @@ public class Product {
     }
 
     public String generatePicurlHash() {
-        return name.hashCode() + type.toString().hashCode() + "";
+        return "pic" + name.hashCode() + type.toString().hashCode();
     }
 
 }

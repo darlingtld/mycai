@@ -43,6 +43,9 @@ public class ProductDaoTest {
     public void updateProductImages() {
         List<Product> productList = productService.getAll();
         for (Product product : productList) {
+            if (null != product.getPicurl() && product.getPicurl().contains("pic")) {
+                continue;
+            }
             String picUUID = product.generatePicurlHash();
             try {
                 ImageCrawler.getProductImg(product, picUUID);
@@ -59,18 +62,18 @@ public class ProductDaoTest {
 
     @Test
     public void updateProductImageById() {
-        for (int i = 127; i < 212; i++) {
-            try {
-                Product product = productService.getById(i);
-                String picUUID = product.generatePicurlHash();
-                ImageCrawler.getProductImg(product, picUUID);
-                product.setPicurl("images/" + picUUID + ".jpg");
-                productService.upsert(product);
-            } catch (Exception e) {
-                e.printStackTrace();
-                continue;
-            }
+//        for (int i = 127; i < 212; i++) {
+        try {
+            Product product = productService.getById(125);
+            String picUUID = product.generatePicurlHash();
+            ImageCrawler.getProductImg(product, picUUID);
+            product.setPicurl("images/" + picUUID + ".jpg");
+            productService.upsert(product);
+        } catch (Exception e) {
+            e.printStackTrace();
+//                continue;
         }
+//        }
     }
 }
 
