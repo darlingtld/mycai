@@ -51,4 +51,27 @@ productModule.controller('productController', function ($scope, $http) {
             }
         });
     }
+    $scope.save = function () {
+        var product = {
+            name: $('#name').val(),
+            description: $('#description').val(),
+            type: $('#type').val(),
+            category: $('#category').val(),
+            price: $('#price').val(),
+            unit: $('#unit').val()
+        };
+        $.ajax({
+            type: "post",
+            url: app + "/product/create",
+            contentType: "application/json",
+            data: JSON.stringify(product),
+            success: function (data) {
+                alert('保存成功！');
+                location.reload();
+            },
+            error: function (data) {
+                alert('保存失败');
+            }
+        });
+    }
 });
