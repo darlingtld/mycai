@@ -15,6 +15,7 @@ adminModule.controller('productController', function ($scope, $http) {
     });
     $scope.modify = function (id) {
         $('#dialog').modal('show');
+        $('#dialog').attr('method', 'update');
         for (var i = 0; i < $scope.products.length; i++) {
             var product;
             if (id == $scope.products[i].id) {
@@ -31,9 +32,14 @@ adminModule.controller('productController', function ($scope, $http) {
         $('#unit').val(product.unit);
 
     };
+
+    $scope.create = function () {
+        $('#dialog').modal('show');
+        $('#dialog').attr('method', 'create');
+    };
     $scope.save = function () {
+        var method = $('#dialog').attr('method');
         var product = {
-            id: $('#pid').val(),
             name: $('#name').val(),
             description: $('#description').val(),
             type: $('#type').val(),
@@ -41,9 +47,12 @@ adminModule.controller('productController', function ($scope, $http) {
             price: $('#price').val(),
             unit: $('#unit').val()
         };
+        if (method == 'update') {
+            product.id = $('#pid').val();
+        }
         $.ajax({
             type: "post",
-            url: app + "/product/update",
+            url: app + "/product/" + method,
             contentType: "application/json",
             data: JSON.stringify(product),
             success: function (data) {
@@ -52,6 +61,7 @@ adminModule.controller('productController', function ($scope, $http) {
             },
             error: function (data) {
                 alert('保存失败');
+                location.reload();
             }
         });
     }

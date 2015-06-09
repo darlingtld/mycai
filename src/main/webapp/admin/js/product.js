@@ -51,7 +51,7 @@ productModule.controller('productController', function ($scope, $http) {
             }
         });
     }
-    $scope.save = function () {
+    $scope.create = function () {
         var product = {
             name: $('#name').val(),
             description: $('#description').val(),
