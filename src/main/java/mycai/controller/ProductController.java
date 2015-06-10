@@ -1,13 +1,19 @@
 package mycai.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import mycai.pojo.Category;
 import mycai.pojo.Product;
+import mycai.pojo.Type;
 import mycai.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/product")
@@ -49,5 +55,29 @@ public class ProductController {
     @ResponseBody
     void update(@RequestBody Product product) {
         productService.update(product);
+    }
+
+    @RequestMapping(value = "/type_map", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    JSONArray getTypeMap() {
+        JSONArray jsonArray = new JSONArray();
+        Map<Type, List<Category>> typeMap = productService.getTypeMap();
+        for (Type key : typeMap.keySet()) {
+            List<Category> categoryList = typeMap.get(key);
+            JSONArray categoryJsonArray = new JSONArray();
+            for (Category category : categoryList) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("key", category.getCategory());
+                jsonObject.put("value", category.toString());
+                categoryJsonArray.add(jsonObject);
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", key.getType());
+            jsonObject.put("value", key.toString());
+            jsonObject.put("list", categoryJsonArray);
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
     }
 }

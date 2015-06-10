@@ -9,8 +9,13 @@ adminModule.controller('productController', function ($scope, $http) {
     $('li[role]').removeClass('active');
     $('li[role="manage_product"]').addClass('active');
 
-    var url = app + '/product/all';
-    $http.get(url).success(function (data, status, headers, config) {
+    var typeUrl = app + '/product/type_map';
+    $http.get(typeUrl).success(function (data, status, headers, config) {
+        $scope.typeMap = data;
+    });
+
+    var productUrl = app + '/product/all';
+    $http.get(productUrl).success(function (data, status, headers, config) {
         $scope.products = data;
     });
     $scope.modify = function (id) {
@@ -26,8 +31,9 @@ adminModule.controller('productController', function ($scope, $http) {
         $('#pid').val(product.id);
         $('#name').val(product.name);
         $('#description').val(product.description);
-        $('#type').val(product.type);
-        $('#category').val(product.category);
+        //$("#type").find("option[value='" + product.type + "']").attr("selected", true);
+        //$('#type').val(product.type);
+        //$('#category').find("option[value='" + product.category + "']").attr("selected", true);
         $('#price').val(product.price);
         $('#unit').val(product.unit);
 

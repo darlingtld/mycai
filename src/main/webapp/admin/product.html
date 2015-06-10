@@ -9,7 +9,7 @@
     <link href="http://www.w3cschool.cc/try/bootstrap/twitter-bootstrap-v2/docs/assets/css/bootstrap.css"
           rel="stylesheet">
     <style>
-        input {
+        input, select {
             width: 100%;
         }
     </style>
@@ -69,11 +69,17 @@
         </div>
         <div class="input-group input-group-lg">
             <span class="input-group-addon">大类:</span>
-            <input type="text" class="form-control" id="type">
+            <!--<input type="text" class="form-control" id="type">-->
+            <select id="type" ng-model="select3" ng-options="t.name for t in typeMap track by t.value">
+                <option value="">--- 请选择 ---</option>
+            </select>
         </div>
         <div class="input-group input-group-lg">
             <span class="input-group-addon">小类:</span>
-            <input type="text" class="form-control" id="category">
+            <!--<input type="text" class="form-control" id="category">-->
+            <select id="category" ng-model="select4" ng-options="c.key for c in select3.list track by c.value">
+                <option value="">--- 请选择 ---</option>
+            </select>
         </div>
         <div class="input-group input-group-lg">
             <span class="input-group-addon">价格:</span>
