@@ -64,7 +64,7 @@ public class ProductDaoTest {
     public void updateProductImageById() {
 //        for (int i = 127; i < 212; i++) {
         try {
-            Product product = productService.getById(125);
+            Product product = productService.getById(211);
             String picUUID = product.generatePicurlHash();
             ImageCrawler.getProductImg(product, picUUID);
             product.setPicurl("images/" + picUUID + ".jpg");
