@@ -1,6 +1,7 @@
 package mycai.crawler;
 
 import mycai.pojo.Product;
+import mycai.service.ProductService;
 import mycai.util.ImageUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,15 +9,22 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.TreeMap;
 
 /**
  * Created by darlingtld on 2015/5/30 0030.
  */
+@Component
 public class ImageCrawler {
+
+    @Autowired
+    private ProductService productService;
 
     private static final Logger logger = LoggerFactory.getLogger(ProductCrawler.class);
 
@@ -46,5 +54,23 @@ public class ImageCrawler {
         System.out.println("images/" + imgLocation);
         product.setPicurl("images/" + imgLocation);
 
+    }
+
+    public void fullfillImages(){
+        List<Product> productList = productService.getAll();
+        for (Product product : productList) {
+            if (null != product.getPicurl() && product.getPicurl().contains("pic")) {
+                continue;
+            }
+            String picUUID = product.generatePicurlHash();
+            try {
+                ImageCrawler.getProductImg(product, picUUID);
+                product.setPicurl("images/" + picUUID + ".jpg");
+                productService.upsert(product);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
     }
 }
