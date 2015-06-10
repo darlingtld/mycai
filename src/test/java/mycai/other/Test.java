@@ -10,7 +10,7 @@ public class Test {
 
     @org.junit.Test
     public void testReplace() throws UnsupportedEncodingException {
-        String text = "千克";
-        System.out.println(URLEncoder.encode(text, "utf-8"));
+        String t = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+        System.out.println("t---" + t);
     }
 }

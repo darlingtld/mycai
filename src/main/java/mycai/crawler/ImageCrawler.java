@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -56,7 +57,8 @@ public class ImageCrawler {
 
     }
 
-    public void fullfillImages(){
+    public void fullfillImages() {
+        logger.info("Start to fullfill images at {}", new Date());
         List<Product> productList = productService.getAll();
         for (Product product : productList) {
             if (null != product.getPicurl() && product.getPicurl().contains("pic")) {

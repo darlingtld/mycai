@@ -4,18 +4,16 @@ package mycai.util;
  * Created by tangld on 2015/6/8.
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ImageUtil {
 
-    public static final String basedir = "D:\\Users\\tangld\\IdeaProjects\\mycai_dev\\src\\main\\webapp\\images\\";
+    //    public static final String basedir = "D:\\Users\\tangld\\IdeaProjects\\mycai_dev\\src\\main\\webapp\\images\\";
+    public static final String basedir = "/root/apache-tomcat-8.0.15/webapps/mycai/images/";
 
-    public static String download(String picUUID, String imgUrl) {
+    public static String download(String picUUID, String imgUrl) throws IOException {
         byte[] btImg = getImageFromNetByUrl(imgUrl);
         String format = getFormatFromUrl(imgUrl);
         if (null != btImg && btImg.length > 0) {
@@ -38,17 +36,14 @@ public class ImageUtil {
     }
 
 
-    private static void writeImageToDisk(byte[] img, String fileName) {
-        try {
-            File file = new File(fileName);
-            FileOutputStream fops = new FileOutputStream(file);
-            fops.write(img);
-            fops.flush();
-            fops.close();
-            System.out.println("image was written to " + fileName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static void writeImageToDisk(byte[] img, String fileName) throws IOException {
+        File file = new File(fileName);
+        FileOutputStream fops = new FileOutputStream(file);
+        fops.write(img);
+        fops.flush();
+        fops.close();
+        System.out.println("image was written to " + fileName);
+
     }
 
 
@@ -78,4 +73,5 @@ public class ImageUtil {
         inStream.close();
         return outStream.toByteArray();
     }
+
 }
