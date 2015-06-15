@@ -36,7 +36,7 @@ public class MycaiService {
 
             String msgType = requestMap.get("MsgType");
 
-            String content = requestMap.get("Content").trim();
+            String content = requestMap.containsKey("Content") ? requestMap.get("Content").trim() : "";
 
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
                 String eventType = requestMap.get("Event");
