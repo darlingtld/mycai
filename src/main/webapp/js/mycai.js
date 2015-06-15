@@ -65,7 +65,7 @@ mycaiModule.controller('checkoutController', function ($scope, $location, $docum
         $('a.next').attr('href', '#/confirm');
         curStatus = pageStatus.checkout;
     }
-    if(from == 'menu'){
+    if (from == 'menu') {
         setTimeout("$('#main_nav').click()", 300);
     }
 });
@@ -92,14 +92,15 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
             sendTs.setHours(7);
             sendTs.setMinutes(0);
             sendTs.setSeconds(0);
-            $scope.send={
+            $scope.send = {
                 ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
             }
 
             $('.checkout').html('<div><a class="next">提交</a>');
             $('a.next').css('margin-left', '45%');
 
-            $('a.next').bind('click', function () {
+            //$('a.next').bind('click', function () {
+            $('div.checkout').on('click', 'a.next', function () {
 
                 var order = {
                     //userId: 'lingda',
@@ -121,7 +122,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                         success: function (data) {
                             alert('提交订单成功！');
                             clearBill();
-                            curStatus=pageStatus.first_open;
+                            curStatus = pageStatus.first_open;
                             init();
                             window.location = app + '/index.html?wechat_id=' + wechatId + '#/order/history';
                             //$location.path('/order/history');
@@ -190,7 +191,6 @@ mycaiModule.directive('spinnerInstance', function () {
         }
     }
 })
-
 
 mycaiModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -363,47 +363,56 @@ function getURLParameter(key) {
 
 function DateAdd(interval, number, date) {
     switch (interval) {
-        case "y ": {
+        case "y ":
+        {
             date.setFullYear(date.getFullYear() + number);
             return date;
             break;
         }
-        case "q ": {
+        case "q ":
+        {
             date.setMonth(date.getMonth() + number * 3);
             return date;
             break;
         }
-        case "m ": {
+        case "m ":
+        {
             date.setMonth(date.getMonth() + number);
             return date;
             break;
         }
-        case "w ": {
+        case "w ":
+        {
             date.setDate(date.getDate() + number * 7);
             return date;
             break;
         }
-        case "d ": {
+        case "d ":
+        {
             date.setDate(date.getDate() + number);
             return date;
             break;
         }
-        case "h ": {
+        case "h ":
+        {
             date.setHours(date.getHours() + number);
             return date;
             break;
         }
-        case "m ": {
+        case "m ":
+        {
             date.setMinutes(date.getMinutes() + number);
             return date;
             break;
         }
-        case "s ": {
+        case "s ":
+        {
             date.setSeconds(date.getSeconds() + number);
             return date;
             break;
         }
-        default: {
+        default:
+        {
             date.setDate(d.getDate() + number);
             return date;
             break;
