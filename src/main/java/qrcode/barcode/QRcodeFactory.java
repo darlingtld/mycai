@@ -150,6 +150,8 @@ public class QRcodeFactory {
     }
 
     public static void main(String[] args) {
-        QRcodeFactory.encode("lingda test", 300, 300, "d:\\Desert.jpg", "d:\\test.jpg");
+        QRcodeFactory.encode("http://wwww.baidu.com", 300, 300, "d:\\zz.jpg", "test.jpg");
     }
+
+
 }
