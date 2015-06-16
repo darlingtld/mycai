@@ -162,6 +162,14 @@
             <version>1.1.15</version>
         </dependency>
 
+        <!--qrcode-->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>2.2</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
