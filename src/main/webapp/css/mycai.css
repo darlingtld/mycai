@@ -26,7 +26,6 @@
     float: left;
 }
 
-
 div.checkout_info div {
     font-size: 120%;
     display: inline-block;
@@ -39,4 +38,18 @@ div.checkout_info div {
 
 .height-normalize-checkout {
     height: 200px;
+}
+
+.food_main {
+    width: 100%;
+    overflow: scroll; /* 触发滚动条 */
+    -webkit-overflow-scrolling: touch; /* 设置触摸也可以滚动 */
+    -webkit-transition: left 0.2s ease-in;
+    transition: left 0.2s ease-in;
+}
+
+#nav{
+    box-shadow: inset -20px 0 30px rgba(0,0,0,0.2);
+    -webkit-transition: left 0.2s ease-in;
+    transition: left 0.2s ease-in;
 }

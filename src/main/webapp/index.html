@@ -124,7 +124,7 @@
     <section>
         <section class="hbox stretch">
             <!-- .aside -->
-            <aside class="bg-black dk nav-xs aside hidden-print" id="nav">
+            <div class="bg-black dk nav-xs aside hidden-print slide-in" id="nav">
                 <section class="vbox">
                     <section class="w-f-md scrollable">
                         <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0"
@@ -564,7 +564,7 @@
                         </div>
                     </footer>
                 </section>
-            </aside>
+            </div>
             <!-- /.aside -->
             <section id="content">
                 <section class="hbox stretch">
@@ -572,9 +572,7 @@
                         <section class="vbox">
                             <section class="scrollable padder-lg w-f-md" id="bjax-target">
 
-                                <!--<h2 id="cur_category" class="font-thin m-b">菜品</h2>-->
-
-                                <div class="food_main">
+                                <div class="food_main" id="main-container">
                                     <ng-view></ng-view>
                                 </div>
 
@@ -607,6 +605,7 @@
     </section>
 </section>
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/hammer.js"></script>
 <!-- Bootstrap -->
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <!-- Angular -->
