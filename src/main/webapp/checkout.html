@@ -12,7 +12,7 @@
 
                 </div>
 
-                <img ng-src="{{item.picurl}}" alt="" class="r r-2x img-full height-normalize-checkout" >
+                <img ng-src="{{item.picurl}}" alt="" class="r r-2x img-full height-normalize-checkout">
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
             <div class="basic_info" ng-bind="item.description"></div>
             <div class="amount">购买：<span ng-bind="item.amount"></span> <span ng-bind="item.productUnit"></span></div>
             <div class="price">价格：<span ng-bind="item.amount*item.productPrice | number : 2"></span> 元</div>
-            <div class="inc_dec"><input spinner-instance="{{item.amount}}"/></div>
+            <div class="inc_dec"><input spinner-instance="{{item.amount}}" disabled/></div>
             <input class="product_id" data-product_id="{{item.productId}}" type="hidden"/>
             <input class="product_description" data-product_description="{{item.description}}" type="hidden"/>
             <input class="product_name" data-product_name="{{item.productName}}" type="hidden"/>
