@@ -16,10 +16,13 @@ import mycai.util.WeixinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class MenuManager {
     private static Logger log = LoggerFactory.getLogger(MenuManager.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         String appId = PropertyHolder.APPID;
         String appSecret = PropertyHolder.APPSECRET;
 
@@ -37,15 +40,20 @@ public class MenuManager {
         }
     }
 
-    private static JSONObject getMenu() {
+    private static JSONObject getMenu() throws UnsupportedEncodingException {
+
+        /**
+         * https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0e81c3bee622d60&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+         */
+        String oauthUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=$appid&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 
         ViewButton btn11 = new ViewButton();
         btn11.setName(PropertyHolder.MENU_GO_ORDER);
-        btn11.setUrl(PropertyHolder.SERVER);
+        btn11.setUrl(oauthUrl.replace("$appid", PropertyHolder.APPID).replace("$redirect_uri", URLEncoder.encode(PropertyHolder.SERVER, "UTF-8")));
 
         ViewButton btn21 = new ViewButton();
         btn21.setName(PropertyHolder.MENU_MY_ORDER);
-        btn21.setUrl(PropertyHolder.SERVER + "#/order/history");
+        btn21.setUrl(oauthUrl.replace("$appid", PropertyHolder.APPID).replace("$redirect_uri", URLEncoder.encode(PropertyHolder.SERVER + "#/order/history", "UTF-8")));
 
         ClickButton btn31 = new ClickButton();
         btn31.setName(PropertyHolder.MENU_ABOUT_US);
@@ -74,6 +82,7 @@ public class MenuManager {
 
         JSONObject menu = new JSONObject();
         menu.put("button", jsonArray);
+        System.out.println(menu);
         return menu;
     }
 }

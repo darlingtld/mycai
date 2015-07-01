@@ -1,5 +1,7 @@
 package mycai.other;
 
+import mycai.util.PropertyHolder;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -10,7 +12,7 @@ public class Test {
 
     @org.junit.Test
     public void testReplace() throws UnsupportedEncodingException {
-        String t = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        System.out.println("t---" + t);
+        String t = URLEncoder.encode(PropertyHolder.SERVER, "UTF-8");
+        System.out.println(t);
     }
 }

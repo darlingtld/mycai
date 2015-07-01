@@ -2,6 +2,8 @@
  * Created by darlingtld on 2015/5/14.
  */
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
+var user;
+var wechatId;
 var app = '/mycai';
 var bill = {
     items: [],
@@ -16,13 +18,31 @@ var pageStatus = {
     confirm: 3,
     submit: 4
 };
+
+
 var curStatus = pageStatus.first_open;
 
-var wechatId = getURLParameter('wechat_id');
 
 mycaiModule.controller('mainController', function ($scope) {
-    curStatus = pageStatus.first_open;
+    //curStatus = pageStatus.first_open;
+    getUserInfo();
 });
+
+function getUserInfo() {
+    var code = getURLParameter('code');
+    console.log("code:" + code);
+    $.ajax({
+        type: 'get',
+        url: app + "/user/code/" + code,
+        success: function (data) {
+            //alert(data);
+            user = data;
+            wechatId = data.openid;
+            console.log(user);
+
+        }
+    });
+}
 
 mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
     var url = app + '/nav/' + $routeParams.nav + '/20';
@@ -105,7 +125,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
             $('div.checkout').on('click', 'a.next', function () {
 
                 var order = {
-                    //userId: 'lingda',
+                    userId: user.nickname,
                     wechatId: wechatId,
                     bill: JSON.stringify(bill),
                     orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
@@ -126,7 +146,7 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                             clearBill();
                             curStatus = pageStatus.first_open;
                             init();
-                            window.location = app + '/index.html?wechat_id=' + wechatId + '#/order/history';
+                            window.location = app + '/index.html?wechatId=' + wechatId + '#/order/history';
                             //$location.path('/order/history');
                         },
                         error: function (data) {
@@ -142,6 +162,9 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
 );
 
 mycaiModule.controller('orderController', function ($http, $scope) {
+    if (wechatId == undefined) {
+        wechatId = getURLParameter('wechatId');
+    }
     var url = app + '/order/get/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.orders = data;
@@ -422,70 +445,16 @@ function DateAdd(interval, number, date) {
     }
 }
 
-$(document).ready(function(e) {
-
-    var startX, curX, startY, curY; // Variables
-    var newXScroll, newYScroll, genXScroll; // More Variables!
-
-    // Change the height of the sidebar, as well as a few things to do with the main content area, so the user
-    // can actually scroll in the content area.
-    function sideBarHeight() {
-
-        var docHeight = $(document).height();
-        var winHeight = $(window).height();
-
-        $('.slide-in').height(winHeight);
-        $('#main-container').height(winHeight);
-        $('#sub-container').height($('#sub-container').height());
-    }
-
-    //sideBarHeight();
-
-    var outIn = 'in';
-
-    Hammer(document.getElementById('main-container')).on('swiperight', function(e) {
-        $('.slide-in').toggleClass('on');
-        $('#main-container').toggleClass('on');
-        outIn = 'out';
-
-    });
-
-    Hammer(document.getElementById('main-container')).on('swipeleft', function(e) {
-        $('.slide-in').toggleClass('on');
-        $('#main-container').toggleClass('on');
-        outIn = 'in';
-    });
-
-
-    function runAnimation() {
-
-        if(outIn == 'out') {
-
-            $('.slide-in').toggleClass('on');
-            $('#main-container').toggleClass('on');
-            outIn = 'in';
-
-        } else if(outIn == 'in') {
-
-            $('.slide-in').toggleClass('on');
-            $('#main-container').toggleClass('on');
-            outIn = 'out';
-
-        }
-
-    }
-
-    $('#main_nav')[0].addEventListener('touchend', function(e) {
-        $('.slide-in').toggleClass('on');
-        $('#main-container').toggleClass('on');
-    });
-
-    $('#main_nav').click(function() {
-        $('.slide-in').toggleClass('on');
-        $('#main-container').toggleClass('on');
-    });
-
-
-
-});
+//$(function () {
+//    var code = getURLParameter('code');
+//    console.log("code:" + code);
+//    $.ajax({
+//        type: 'get',
+//        url: app + "/user/code/" + code,
+//        success: function (data) {
+//            alert(data);
+//            wechatId = data.openid;
+//        }
+//    });
+//})
 
