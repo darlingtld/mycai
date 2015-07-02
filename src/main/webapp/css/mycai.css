@@ -53,3 +53,10 @@ div.checkout_info div {
     -webkit-transition: left 0.2s ease-in;
     transition: left 0.2s ease-in;
 }
+
+.user_icon{
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    max-height: 35px;
+}

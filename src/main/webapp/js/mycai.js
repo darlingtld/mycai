@@ -23,7 +23,7 @@ var pageStatus = {
 var curStatus = pageStatus.first_open;
 
 
-mycaiModule.controller('mainController', function ($scope) {
+mycaiModule.controller('mainController', function ($http) {
     //curStatus = pageStatus.first_open;
     getUserInfo();
 });
@@ -38,8 +38,8 @@ function getUserInfo() {
             //alert(data);
             user = data;
             wechatId = data.openid;
-            console.log(user);
-
+            //console.log(user);
+            $('img.user_icon').attr('src', user.headimgurl);
         }
     });
 }
@@ -444,17 +444,4 @@ function DateAdd(interval, number, date) {
         }
     }
 }
-
-//$(function () {
-//    var code = getURLParameter('code');
-//    console.log("code:" + code);
-//    $.ajax({
-//        type: 'get',
-//        url: app + "/user/code/" + code,
-//        success: function (data) {
-//            alert(data);
-//            wechatId = data.openid;
-//        }
-//    });
-//})
 
