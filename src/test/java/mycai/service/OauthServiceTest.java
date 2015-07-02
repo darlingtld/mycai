@@ -32,7 +32,7 @@ public class OauthServiceTest {
 
     @Test
     public void messyCodeTest() throws UnsupportedEncodingException {
-        String data = "{openid='o5Irvt5957jQ4xmdHmDp59epk0UU', nickname='çµè¾¾', sex='1', province='ä¸æµ·', city='', country='ä¸\u00ADå ½', headimgurl='http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0', privilege=[], unionid='null'}";
+        String data = "哈哈哈哈哈喽\uF61A\\xF0\\x9F\\x98\\x9A";
         System.out.println(new String(data.getBytes(), "utf-8"));
     }
 

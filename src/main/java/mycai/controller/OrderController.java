@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -20,6 +21,11 @@ public class OrderController {
     @ResponseBody
     int submitOrder(@RequestBody Order order) {
         order.setStatus("未配送");
+        try {
+            order.setUserId(new String(order.getUserId().getBytes(), "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            order.setUserId("unknown");
+        }
         return orderService.save(order);
     }
 
