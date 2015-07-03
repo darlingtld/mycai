@@ -268,7 +268,7 @@ function fillSpinner(products) {
 
 function init() {
     $('footer.bg-dark').show();
-    $('.checkout').html('<div><a class="basket"><i class="icon-basket-loaded i-lg"></i></a></div><div>物件数：<span id="totalAmount">0</span>件 </div> <div>总价：<span id="totalPrice">0</span>元</div><div><a class="next" href="#/checkout/footer">下一步</a></div>');
+    $('.checkout').html('<div><a class="basket"><i class="icon-basket-loaded i-lg"></i></a></div><div>物件数：<span id="totalAmount">0</span>件 </div> <div>总价：<span id="totalPrice">0</span>元</div><div><a class="next btn btn-info" href="#/checkout/footer">下一步</a></div>');
     refreshCheckoutUI(bill.totalAmount, bill.totalPrice.toFixed(2));
 
 }
