@@ -1,37 +1,30 @@
-<div class="row row-sm">
-    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" ng-repeat="product in products">
+<div>
+    <div ng-repeat="product in products">
         <div class="item">
-            <div class="pos-rlt">
-                <div class="bottom">
-                    <span class="badge bg-info m-l-sm m-b-sm">
-                        <span ng-bind="product.price"></span>元/<span ng-bind="product.unit"></span>
-                    </span>
-                    <span class="badge bg-danger m-l-sm m-b-sm">
-                        <span ng-bind="product.name"></span>
-                    </span>
-                </div>
-                <img ng-src="{{product.picurl}}" alt="" class="r r-2x img-full height-normalize">
+            <div style="float: left;">
+                <img ng-src="{{product.picurl}}" class="product-img">
+
+                <p class="product_content">
+                    <span class="block" ng-bind="product.name"></span>
+                    <span class="block" ng-bind="product.description"></span>
+                    <span style="color: red;" ng-bind="product.price"></span>元/<span ng-bind="product.unit"></span>
+                </p>
             </div>
-            <div class="padder-v">
-                <!--<a><i class="icon-rocket icon"></i></a>-->
-                <!--<a class="text-xs text-muted" ng-bind="product.name"></a>-->
+            <div class="incr_decr_bar">
+                <span>已购买<span class="item_bought">0</span>斤</span>
+                <input spinner-instance="{{product.purchaseAmount}}" disabled/></div>
+            <div>
                 <input class="product_id" data-product_id="{{product.id}}" type="hidden"/>
                 <input class="product_description" data-product_description="{{product.description}}" type="hidden"/>
                 <input class="product_name" data-product_name="{{product.name}}" type="hidden"/>
                 <input class="product_price" data-product_price="{{product.price}}" type="hidden"/>
                 <input class="product_unit" data-product_unit="{{product.unit}}" type="hidden"/>
                 <input class="product_picurl" data-product_picurl="{{product.picurl}}" type="hidden"/>
-
-                <div><input spinner-instance="{{product.purchaseAmount}}" disabled/></div>
-                <span class="text-xs text-muted" ng-bind="product.description"></span>
             </div>
         </div>
-    </div>
-    <div ng-if="$index%2==0">
-        <div class="clearfix visible-xs"></div>
     </div>
 </div>
 
 <div class="row row-sm">
-    <div style="height: 80px;"></div>
+    <div style="height: 120px;"></div>
 </div>

@@ -22,11 +22,18 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/{type}/{category}", method = RequestMethod.GET)
+//    @RequestMapping(value = "/{type}/{category}", method = RequestMethod.GET)
+//    public
+//    @ResponseBody
+//    List<Product> getList(@PathVariable("type") String type, @PathVariable("category") String category) {
+//        return productService.getList(type, category);
+//    }
+
+    @RequestMapping(value = "/category/{category}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Product> getList(@PathVariable("type") String type, @PathVariable("category") String category) {
-        return productService.getList(type, category);
+    List<Product> getList(@PathVariable("category") String category) {
+        return productService.getList(category);
     }
 
     @RequestMapping(value = "/zuixincaipin/{limit}", method = RequestMethod.GET)

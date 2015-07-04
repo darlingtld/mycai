@@ -34,6 +34,11 @@ public class ProductService {
     }
 
     @Transactional
+    public List<Product> getList(String category) {
+        return productDao.getList(category);
+    }
+
+    @Transactional
     public List<Product> getLatest(int limit) {
         return productDao.getLatest(limit);
     }

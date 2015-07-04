@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="MycaiModule">
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!--<meta charset="utf-8">-->
+    <meta http-equiv="pragma" content="no-cache"/>
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <meta name="format-detection" content="telephone=no"/>
+    <title>菜品列表</title>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/preview.css">
+    <link rel="stylesheet" href="css/main.css">
+
+</head>
+<body ng-controller="mainController">
+<div style='padding: 5px 10px;text-align: center;' class="js-search-bar bg-info">
+
+    <div class="menu-icon">
+        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+    </div>
+
+    <!--<div class="back">-->
+    <!--<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>-->
+    <!--</div>-->
+    <div class="logo">
+        <img class="user-icon" src="images/head.jpg"/>
+    </div>
+</div>
+
+<div class="js-menu-bar" id="ma-menu-bar"
+     style="height:47px; width:100%; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling: touch; position:relative;">
+    <div class="menu-mask"
+         style="height:37px; background-color:rgba(0,0,0,0.6); text-align:center; line-height:37px; color:#fff; font-size:14px; font-weight:bold; position:absolute; top:0; left:0; width:100%;">
+        <-- 左右滑动切换分类哦~ -->
+    </div>
+    <ul class="menu fl"></ul>
+
+    <div class="clear"></div>
+</div>
+<div class="js-content">
+    <div id="subCategoryBlock" class="fl scroll-y leftSider" style="height:100%;width:25%; position:relative;">
+        <ul class="js-category" style="margin-bottom:80px;">
+        </ul>
+    </div>
+    <div id="mainListBlock" class="fl scroll-y"
+         style="position:relative;height:100%;width:75%;-webkit-overflow-scrolling: touch;">
+
+        <ng-view></ng-view>
+    </div>
+    <div class="clear"></div>
+</div>
+<footer class="footer bg-dark nav-bar-fixed-bottom">
+    <div class="checkout">
+        <div><span class="glyphicon glyphicon-shopping-cart"></span>
+        </div>
+        <div>
+            物件数：<span id="totalAmount">0</span>件
+        </div>
+
+        <div>
+            总价：<span id="totalPrice">0</span>元
+        </div>
+        <div style="text-align: center;"><a class="next btn btn-info" href="#/checkout">下一步</a>
+        </div>
+    </div>
+</footer>
+
+<!--js load -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="js/all.js"></script>
+<!--<script src="bower_components/hammer.js"></script>-->
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="javascript/main.js"></script>
+<script src="javascript/spinner.js"></script>
+</body>
+</html>

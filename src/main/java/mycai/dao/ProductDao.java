@@ -62,4 +62,8 @@ public class ProductDao {
     public void update(Product product) {
         sessionFactory.getCurrentSession().update(product);
     }
+
+    public List<Product> getList(String category) {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Product where category='%s'", category.toUpperCase())).list();
+    }
 }
