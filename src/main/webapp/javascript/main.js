@@ -136,8 +136,9 @@
 function restoreBuyPage() {
     $('#subCategoryBlock').show();
     $('#mainListBlock').css('width', '75%');
-    $('a.next').attr('href', '#/checkout');
-    $('a.next').text('下一步');
+    //$('a.next').attr('href', '#/checkout');
+    //$('a.next').text('下一步');
+    init();
 }
 
 function goToCheckout() {
@@ -170,7 +171,7 @@ var curStatus = pageStatus.first_open;
 
 mycaiModule.controller('mainController', function () {
     //curStatus = pageStatus.first_open;
-    //getUserInfo();
+    getUserInfo();
     //var startX, curX, startY, curY; // Variables
     //var newXScroll, newYScroll, genXScroll; // More Variables!
     //
@@ -333,7 +334,6 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                             alert(data.status);
                         }
                     });
-                    curStatus = pageStatus.confirm;
                 }
             })
 
@@ -350,11 +350,6 @@ mycaiModule.controller('orderController', function ($http, $scope) {
         $scope.orders = data;
     });
 
-    if (curStatus != pageStatus.first_open) {
-        setTimeout("$('#main_nav').click()", 300);
-    } else {
-        curStatus = pageStatus.view_product;
-    }
 });
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
@@ -377,7 +372,6 @@ function clearBill() {
 
 mycaiModule.controller('submitController', function ($scope) {
     $('footer.bg-dark').hide();
-    curStatus = pageStatus.submit;
     clearBill();
 });
 
