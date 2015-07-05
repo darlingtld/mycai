@@ -5,9 +5,6 @@
     $('.menu-mask').on('touchstart click', function () {
         $(this).hide();
     })
-    // clear old data
-    window.clearCache();
-
     //global variables
     var $category = $(".js-category");
     var $navga = $('.menu');
@@ -15,6 +12,12 @@
     var ccat1, ccat2;
     $(".js-content").css("height", ($(window).height() - $(".js-reminder").height() - $(".js-menu-bar").height() - $(".js-footer").height()) + "px");
     $(".js-search-content").css("height", $(window).height() - 90);
+
+    if (PlusMinus.isLowerAndriod3()) {
+        PlusMinus.touchScroll("subCategoryBlock");
+        PlusMinus.touchScroll("mainListBlock");
+        PlusMinus.touchScrollY("ma-menu-bar");
+    }
 
     function geneLevel2DOM(data, ccat1) {
         var level2HTML = "";
@@ -57,7 +60,7 @@
             "特菜": "tecai"
         },
         "禽肉蛋类": {
-            "一级白条": "yijibaitiaon",
+            "一级白条": "yijibaitiao",
             "二级白条": "erjibaitiao",
             "冻猪肉": "dongzhurou",
             "羊肉": "yangrou",

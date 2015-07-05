@@ -2,8 +2,6 @@
     $('.menu-mask').on('touchstart click', function () {
         $(this).hide();
     })
-    // clear old data
-    window.clearCache();
 
     //global variables
     var $category = $(".js-category");

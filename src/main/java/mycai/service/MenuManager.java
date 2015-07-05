@@ -29,15 +29,15 @@ public class MenuManager {
         AccessToken at = WeixinUtil.getAccessToken(appId, appSecret);
         String jsonMenu = getMenu().toJSONString();
         log.debug(jsonMenu);
-        if (null != at) {
-            int result = WeixinUtil.createMenu(jsonMenu, at.getToken());
-
-            if (0 == result) {
-                log.info("菜单创建成功");
-            } else {
-                log.info("菜单创建失败，错误码：{}", result);
-            }
-        }
+//        if (null != at) {
+//            int result = WeixinUtil.createMenu(jsonMenu, at.getToken());
+//
+//            if (0 == result) {
+//                log.info("菜单创建成功");
+//            } else {
+//                log.info("菜单创建失败，错误码：{}", result);
+//            }
+//        }
     }
 
     private static JSONObject getMenu() throws UnsupportedEncodingException {
