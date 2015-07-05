@@ -80,13 +80,14 @@
 }
 
 .product-img {
-    width: 30%;
+    width: 90px;
     float: left;
     margin: 5px 10px 0px 10px
 }
 
 .product_content {
     font-size: medium;
+    float: left;
 }
 
 button.increase {
@@ -110,6 +111,7 @@ button.decrease {
 .incr_decr_bar {
     text-align: right;
     margin-right: 10px;
+    display: inline-block;
 
 }
 
