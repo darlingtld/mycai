@@ -23,29 +23,31 @@
 
 </head>
 <body ng-controller="mainController">
-<div style='padding: 5px 10px;text-align: center;' class="js-search-bar bg-info">
+<div class="navbar-fixed-top">
+    <div style='padding: 5px 10px;text-align: center;' class="js-search-bar bg-info">
 
-    <div class="menu-icon">
-        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+        <div class="menu-icon">
+            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+        </div>
+
+        <!--<div class="back">-->
+        <!--<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>-->
+        <!--</div>-->
+        <div class="logo">
+            <img class="user-icon" src="images/head.jpg"/>
+        </div>
     </div>
 
-    <!--<div class="back">-->
-    <!--<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>-->
-    <!--</div>-->
-    <div class="logo">
-        <img class="user-icon" src="images/head.jpg"/>
-    </div>
-</div>
+    <div class="js-menu-bar" id="ma-menu-bar"
+         style="height:47px; width:100%; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling: touch; position:relative;">
+        <div class="menu-mask"
+             style="height:37px; background-color:rgba(0,0,0,0.6); text-align:center; line-height:37px; color:#fff; font-size:14px; font-weight:bold; position:absolute; top:0; left:0; width:100%;">
+            <-- 左右滑动切换分类哦~ -->
+        </div>
+        <ul class="menu fl"></ul>
 
-<div class="js-menu-bar" id="ma-menu-bar"
-     style="height:47px; width:100%; overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling: touch; position:relative;">
-    <div class="menu-mask"
-         style="height:37px; background-color:rgba(0,0,0,0.6); text-align:center; line-height:37px; color:#fff; font-size:14px; font-weight:bold; position:absolute; top:0; left:0; width:100%;">
-        <-- 左右滑动切换分类哦~ -->
+        <div class="clear"></div>
     </div>
-    <ul class="menu fl"></ul>
-
-    <div class="clear"></div>
 </div>
 <div class="js-content">
     <div id="subCategoryBlock" class="fl scroll-y leftSider" style="height:100%;width:25%; position:relative;">

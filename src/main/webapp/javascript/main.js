@@ -177,6 +177,10 @@ var pageStatus = {
 
 var curStatus = pageStatus.first_open;
 
+mycaiModule.config(function(){
+
+});
+
 
 mycaiModule.controller('mainController', function () {
     //curStatus = pageStatus.first_open;
@@ -249,7 +253,7 @@ function getUserInfo() {
         success: function (data) {
             user = data;
             wechatId = data.openid;
-            $('img.user_icon').attr('src', user.headimgurl);
+            $('img.user-icon').attr('src', user.headimgurl);
         }
     });
 }

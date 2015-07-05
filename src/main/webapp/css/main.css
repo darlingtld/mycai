@@ -1,39 +1,3 @@
-body {
-    margin: 0;
-    /*font-size: 62.5%;*/
-    padding: 0;
-    background-color: #fff;
-}
-
-.top-bar {
-    padding: 10px 10px 0px 10px;
-    text-align: center;
-    height: 50px;
-}
-
-#main-container {
-    width: 100%;
-    overflow: scroll; /* Overflow should scroll */
-    left: 0px;
-    -webkit-overflow-scrolling: touch; /* This gives us scrollbars. */
-    position: fixed; /* This means we don't have to worry about overflow issues */
-    -webkit-transition: left 0.2s ease-in;
-    transition: left 0.2s ease-in;
-
-}
-
-#sub-container {
-    position: relative;
-}
-
-#content {
-    /*font-size: 1.5em;*/
-    box-sizing: border-box;
-    text-align: justify;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-}
-
 .menu-icon {
     cursor: pointer;
     display: inline-block;
@@ -43,73 +7,6 @@ body {
 .menu-icon span {
     font-size: x-large;
     margin-top: 5px;
-}
-
-.slide-in {
-    background-color: #2d4b5a;
-    width: 270px;
-    position: absolute;
-    box-shadow: inset -20px 0 30px rgba(0, 0, 0, 0.2);
-    top: 0;
-    left: -270px;
-    -webkit-transition: left 0.2s ease-in;
-    transition: left 0.2s ease-in;
-}
-
-.slide-in ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.slide-in ul li {
-    padding: 10px;
-    font-weight: bold;
-    font-size: 2em;
-    border-bottom: 2px solid #3d6071;
-    color: #c4d6e0;
-}
-
-.slide-in ul li:hover {
-    background-color: #3d6071;
-    color: #fff;
-}
-
-.slide-in.on {
-    left: 0px !important;
-}
-
-#main-container.on {
-    left: 270px !important;
-}
-
-/* IGNORE =========================== */
-
-.demo-bar {
-    position: fixed;
-    bottom: 0;
-    width: 96%;
-    padding: 2%;
-    font-size: 1em;
-    background-color: rgba(220, 220, 214, 0.75);
-    text-align: right;
-}
-
-.demo-bar a {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    text-decoration: none;
-    padding: 5px 10px;
-    margin: 0 10px 0 0;
-    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.3);
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    display: inline-block;
-}
-
-.demo-bar a:hover {
-    background: rgba(0, 0, 0, 0.3);
 }
 
 .back {
@@ -243,6 +140,10 @@ div.checkout_info {
 }
 
 .placeholder {
-    height: 80px;
+    height: 120px;
+}
+
+.js-content {
+    margin-top: 40px;
 }
 
