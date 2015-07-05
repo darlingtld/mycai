@@ -54,7 +54,7 @@
             "特菜": "tecai"
         },
         "禽肉蛋类": {
-            "一级白条": "yijibaitiaon",
+            "一级白条": "yijibaitiao",
             "二级白条": "erjibaitiao",
             "冻猪肉": "dongzhurou",
             "羊肉": "yangrou",

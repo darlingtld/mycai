@@ -136,8 +136,6 @@
 function restoreBuyPage() {
     $('#subCategoryBlock').show();
     $('#mainListBlock').css('width', '75%');
-    //$('a.next').attr('href', '#/checkout');
-    //$('a.next').text('下一步');
     init();
 }
 
@@ -147,6 +145,14 @@ function goToCheckout() {
     $('a.next').attr('href', '#/confirm');
     $('a.next').text('确认订单');
 }
+
+function goToOrderHistory() {
+    $('#subCategoryBlock').hide();
+    $('#mainListBlock').css('width', '100%');
+    $('#ma-menu-bar').hide();
+    $('footer').hide();
+}
+
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
 var user;
 var wechatId;
@@ -341,14 +347,20 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
     }
 );
 
+
 mycaiModule.controller('orderController', function ($http, $scope) {
-    if (wechatId == undefined) {
-        wechatId = getURLParameter('wechatId');
-    }
-    var url = app + '/order/get/' + wechatId;
-    $http.get(url).success(function (data, status, headers, config) {
-        $scope.orders = data;
+    goToOrderHistory();
+    var code = getURLParameter('code');
+    $http.get(app + "/user/code/" + code).success(function (data) {
+        user = data;
+        wechatId = data.openid;
+        $('img.user_icon').attr('src', user.headimgurl);
+        var url = app + '/order/get/' + wechatId;
+        $http.get(url).success(function (data, status, headers, config) {
+            $scope.orders = data;
+        });
     });
+
 
 });
 
