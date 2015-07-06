@@ -147,6 +147,7 @@ function goToCheckout() {
     $('#mainListBlock').css('width', '100%');
     $('a.next').attr('href', '#/confirm');
     $('a.next').text('确认订单');
+    saveToLocalStorage(bill);
 }
 
 function goToOrderHistory() {
@@ -154,6 +155,20 @@ function goToOrderHistory() {
     $('#mainListBlock').css('width', '100%');
     $('#ma-menu-bar').hide();
     $('footer').hide();
+}
+
+function saveToLocalStorage(bill) {
+    setLocalStorage('bill', bill);
+}
+
+function setLocalStorage(key, value) {
+    if (typeof(Storage) != "undefined") {
+        // Store
+        localStorage.setItem(key, value);
+        console.log('[' + key + ']:[' + value + ']');
+    } else {
+        console.log("local storage is not supported!")
+    }
 }
 
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
@@ -166,18 +181,7 @@ var bill = {
     totalPrice: 0
 }
 
-var pageStatus = {
-    first_open: 0,
-    view_product: 1,
-    checkout: 2,
-    confirm: 3,
-    submit: 4
-};
-
-
-var curStatus = pageStatus.first_open;
-
-mycaiModule.config(function(){
+mycaiModule.config(function () {
 // Check browser support
     if (typeof(Storage) != "undefined") {
         // Store
@@ -237,7 +241,6 @@ mycaiModule.controller('checkoutController', function ($scope, $location) {
 mycaiModule.controller('confirmController', function ($scope, $location) {
         if (bill.totalAmount == 0) {
             alert('您还未购买任何物品');
-            curStatus = pageStatus.first_open;
             init();
             $location.path('/');
         } else {
@@ -263,7 +266,6 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
             $('.checkout').html('<div><a class="next">提交</a>');
             $('a.next').css('margin-left', '45%');
 
-            //$('a.next').bind('click', function () {
             $('div.checkout').on('click', 'a.next', function () {
 
                 var order = {
@@ -286,7 +288,6 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                         success: function (data) {
                             alert('提交订单成功！');
                             clearBill();
-                            curStatus = pageStatus.first_open;
                             init();
                             window.location = app + '/index.html?wechatId=' + wechatId + '#/order/history';
                             //$location.path('/order/history');
@@ -353,7 +354,7 @@ mycaiModule.directive('spinnerInstance', function () {
             }
             element.css('width', '20%');
             element.css('text-align', 'center');
-            element.css('color','green');
+            element.css('color', 'green');
             element.css('background-color', 'white');
             element.spinner({
                 value: value,
