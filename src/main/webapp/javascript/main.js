@@ -147,7 +147,6 @@ function goToCheckout() {
     $('#mainListBlock').css('width', '100%');
     $('a.next').attr('href', '#/confirm');
     $('a.next').text('确认订单');
-    saveToLocalStorage(bill);
 }
 
 function goToOrderHistory() {
@@ -163,7 +162,6 @@ function saveToLocalStorage(bill) {
 
 function setLocalStorage(key, value) {
     if (typeof(Storage) != "undefined") {
-        // Store
         localStorage.setItem(key, value);
         console.log('[' + key + ']:[' + value + ']');
     } else {
@@ -171,8 +169,25 @@ function setLocalStorage(key, value) {
     }
 }
 
+function getLocalStorage(key) {
+    if (typeof(Storage) != "undefined") {
+        return localStorage.getItem(key);
+    } else {
+        console.log("local storage is not supported!");
+    }
+}
+
+function clearLocalStorage() {
+    if (typeof(Storage) != "undefined") {
+        localStorage.removeItem('bill');
+    } else {
+        console.log("local storage is not supported!")
+    }
+}
+
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
 var user;
+//'o5Irvt5957jQ4xmdHmDp59epk0UU'
 var wechatId;
 var app = '/mycai';
 var bill = {
@@ -182,11 +197,12 @@ var bill = {
 }
 
 mycaiModule.config(function () {
-// Check browser support
     if (typeof(Storage) != "undefined") {
-        // Store
-        localStorage.setItem("lastname", "Smith");
-        console.log(localStorage.getItem("lastname"));
+        var ls = localStorage.getItem('bill');
+        if (ls != undefined) {
+            bill = JSON.parse(ls);
+            refreshCheckoutUI(bill.totalAmount, bill.totalPrice);
+        }
     } else {
         console.log("local storage is not supported!")
     }
@@ -266,6 +282,11 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
             $('.checkout').html('<div><a class="next">提交</a>');
             $('a.next').css('margin-left', '45%');
 
+
+            $('#shop_info').val(getLocalStorage('shop_info'));
+            $('#consignee').val(getLocalStorage('consignee'));
+            $('#consignee_contact').val(getLocalStorage('consignee_contact'));
+
             $('div.checkout').on('click', 'a.next', function () {
 
                 var order = {
@@ -287,6 +308,10 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                         data: JSON.stringify(order),
                         success: function (data) {
                             alert('提交订单成功！');
+                            clearLocalStorage();
+                            setLocalStorage('shop_info', order.shopInfo);
+                            setLocalStorage('consignee', order.consignee);
+                            setLocalStorage('consignee_contact', order.consigneeContact);
                             clearBill();
                             init();
                             window.location = app + '/index.html?wechatId=' + wechatId + '#/order/history';
@@ -505,6 +530,7 @@ function changeTotalCost(_this) {
     }
     refreshCheckoutUI(bill.totalAmount, bill.totalPrice.toFixed(2));
     refreshCheckoutItemUI(ele, amount, productPrice);
+    saveToLocalStorage(bill);
     //console.log(totalAmount + ":" + totalPrice.toFixed(2));
 }
 

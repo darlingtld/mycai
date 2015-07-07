@@ -33,7 +33,7 @@ public class ProductController {
     public
     @ResponseBody
     List<Product> getList(@PathVariable("category") String category, @PathVariable("wechatid") String wechatid) {
-        return productService.getList(category, wechatid);
+        return productService.getListByFavourites(category, wechatid);
     }
 
     @RequestMapping(value = "/zuixincaipin/{limit}", method = RequestMethod.GET)
