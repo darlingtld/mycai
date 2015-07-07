@@ -158,7 +158,7 @@ function goToOrderHistory() {
 }
 
 function saveToLocalStorage(bill) {
-    setLocalStorage('bill', bill);
+    setLocalStorage('bill', JSON.stringify(bill));
 }
 
 function setLocalStorage(key, value) {
