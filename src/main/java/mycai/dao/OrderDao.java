@@ -43,4 +43,8 @@ public class OrderDao {
             return false;
         }
     }
+
+    public List<Order> getLatestList(String wechatId, int count) {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Order where wechatId = '%s' order by orderTs desc", wechatId)).setMaxResults(count).list();
+    }
 }

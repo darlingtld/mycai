@@ -219,7 +219,7 @@ mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
 });
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
-    var url = app + '/product/category/' + $routeParams.category;
+    var url = app + '/product/category/' + $routeParams.category + '/wechatid/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
         fillSpinner($scope.products);

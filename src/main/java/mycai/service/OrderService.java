@@ -44,4 +44,9 @@ public class OrderService {
         orderInDb.setStatus(order.getStatus());
         return orderDao.update(orderInDb);
     }
+
+    @Transactional
+    public List<Order> getLatestList(String wechatId, int count) {
+        return orderDao.getLatestList(wechatId, count);
+    }
 }

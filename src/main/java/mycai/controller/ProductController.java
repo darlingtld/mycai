@@ -29,11 +29,11 @@ public class ProductController {
 //        return productService.getList(type, category);
 //    }
 
-    @RequestMapping(value = "/category/{category}", method = RequestMethod.GET)
+    @RequestMapping(value = "/category/{category}/wechatid/{wechatid}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Product> getList(@PathVariable("category") String category) {
-        return productService.getList(category);
+    List<Product> getList(@PathVariable("category") String category, @PathVariable("wechatid") String wechatid) {
+        return productService.getList(category, wechatid);
     }
 
     @RequestMapping(value = "/zuixincaipin/{limit}", method = RequestMethod.GET)

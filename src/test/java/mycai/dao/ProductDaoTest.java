@@ -1,9 +1,14 @@
 package mycai.dao;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import mycai.crawler.ImageCrawler;
 import mycai.pojo.Category;
+import mycai.pojo.Order;
 import mycai.pojo.Product;
 import mycai.pojo.Type;
+import mycai.service.OrderService;
 import mycai.service.ProductService;
 import mycai.util.ImageUtil;
 import org.junit.Test;
@@ -16,9 +21,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by darlingtld on 2015/5/16.
@@ -30,6 +34,9 @@ public class ProductDaoTest {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Test
     public void testProductSave() {
@@ -100,6 +107,52 @@ public class ProductDaoTest {
             productService.save(product);
 //            break;
         }
+    }
+
+    @Test
+    public void getProductByFavourites() {
+        String category = "yecailei";
+        String wechatId = "o5Irvt5957jQ4xmdHmDp59epk0UU";
+        List<Product> productList = productService.getList(category);
+        for (Product product : productList) {
+            System.out.println(product);
+        }
+        List<Order> orderList = orderService.getLatestList(wechatId, 5);
+        Map<String, AtomicInteger> boughtItemsMap = new HashMap<>();
+
+        for (Order order : orderList) {
+            System.out.println(order);
+            JSONObject jsonObject = JSON.parseObject(order.getBill());
+            JSONArray jsonArray = jsonObject.getJSONArray("items");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                String productName = jsonArray.getJSONObject(i).getString("productName");
+                if (boughtItemsMap.containsKey(productName)) {
+                    boughtItemsMap.get(productName).incrementAndGet();
+                } else {
+                    boughtItemsMap.put(productName, new AtomicInteger(1));
+                }
+            }
+
+        }
+        List<Map.Entry<String, AtomicInteger>> sortedProductList = new ArrayList<>(boughtItemsMap.entrySet());
+        Collections.sort(sortedProductList, new Comparator<Map.Entry<String, AtomicInteger>>() {
+
+            @Override
+            public int compare(Map.Entry<String, AtomicInteger> o1, Map.Entry<String, AtomicInteger> o2) {
+                return o1.getValue().intValue() - o2.getValue().intValue();
+            }
+        });
+
+        for (Map.Entry<String, AtomicInteger> entry : sortedProductList) {
+            for (Product product : productList) {
+                if (product.getName().equals(entry.getKey())) {
+                    productList.set(0, product);
+                    break;
+                }
+            }
+        }
+        System.out.println(sortedProductList);
+        System.out.println(productList);
     }
 }
 
