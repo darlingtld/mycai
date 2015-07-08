@@ -2,6 +2,8 @@ package mycai.service;
 
 import mycai.dao.OrderDao;
 import mycai.pojo.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,8 @@ import java.util.Random;
  */
 @Service
 public class OrderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
     private OrderDao orderDao;
@@ -70,5 +74,11 @@ public class OrderService {
     @Transactional
     public List<Order> getLatestList(String wechatId, int count) {
         return orderDao.getLatestList(wechatId, count);
+    }
+
+    @Transactional
+    public Order getOrderByConfirmCode(String confirmCode) {
+        logger.info("Get order using confirm code {}", confirmCode);
+        return orderDao.getByConfirmCode(confirmCode);
     }
 }

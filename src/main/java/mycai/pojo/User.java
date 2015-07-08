@@ -1,10 +1,16 @@
 package mycai.pojo;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
  * Created by darlingtld on 2015/6/24 0024.
  */
+@Entity
+@Table(name = "user")
 public class User {
 
     /**
@@ -24,15 +30,55 @@ public class User {
      * }
      */
 
+    @Id
+    private int id;
+    @Column(name = "wechat_id")
     private String openid;
+    @Column(name = "username")
     private String nickname;
+    @Column(name = "role")
+    private String role;
     private String sex;
     private String province;
     private String city;
     private String country;
+    @Column(name = "headimgurl")
     private String headimgurl;
     private List<String> privilege;
     private String unionid;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", openid='" + openid + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", role='" + role + '\'' +
+                ", sex='" + sex + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", headimgurl='" + headimgurl + '\'' +
+                ", privilege=" + privilege +
+                ", unionid='" + unionid + '\'' +
+                '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getOpenid() {
         return openid;
@@ -106,18 +152,4 @@ public class User {
         this.unionid = unionid;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "openid='" + openid + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", sex='" + sex + '\'' +
-                ", province='" + province + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'' +
-                ", headimgurl='" + headimgurl + '\'' +
-                ", privilege=" + privilege +
-                ", unionid='" + unionid + '\'' +
-                '}';
-    }
 }

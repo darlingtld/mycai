@@ -62,4 +62,10 @@ public class Test {
         System.out.println(hashtext);
     }
 
+    @org.junit.Test
+    public void testPattern4Code(){
+        String content = "123123223";
+        System.out.println(Pattern.compile("\\d{9}").matcher(content).find());
+    }
+
 }

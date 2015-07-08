@@ -2,11 +2,14 @@ package mycai.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import mycai.dao.UserDao;
 import mycai.pojo.User;
 import mycai.util.PropertyHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +26,9 @@ import java.util.List;
 public class UserService {
 
     private RestTemplate restTemplate;
+
+    @Autowired
+    private UserDao userDao;
 
     @PostConstruct
     private void init() {
@@ -64,5 +70,10 @@ public class UserService {
         System.out.println(user);
 
         return user;
+    }
+
+    @Transactional
+    public User getUserByWechatId(String fromUserName) {
+        return userDao.getUserByWechatId(fromUserName);
     }
 }

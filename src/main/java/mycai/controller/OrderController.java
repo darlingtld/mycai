@@ -36,6 +36,13 @@ public class OrderController {
         return orderService.getList(wechatid);
     }
 
+    @RequestMapping(value = "/confirm_code/{confirm_code}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Order getOrderByConfirmCode(@PathVariable("confirm_code") String confirmCode) {
+        return orderService.getOrderByConfirmCode(confirmCode);
+    }
+
     @RequestMapping(value = "/detail/{orderid}", method = RequestMethod.GET)
     public
     @ResponseBody

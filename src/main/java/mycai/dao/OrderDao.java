@@ -53,4 +53,8 @@ public class OrderDao {
     public boolean isConfirmCodeExisted(String code) {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Order where confirmCode = '%s'", code)).uniqueResult() == null ? false : true;
     }
+
+    public Order getByConfirmCode(String confirmCode) {
+        return (Order) sessionFactory.getCurrentSession().createQuery(String.format("from Order where confirmCode = '%s'", confirmCode)).uniqueResult();
+    }
 }

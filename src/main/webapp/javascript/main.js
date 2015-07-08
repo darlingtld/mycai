@@ -419,7 +419,7 @@ mycaiModule.directive('confirmCode', function () {
         })
         }
     }
-})
+});
 
 mycaiModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider

@@ -1,5 +1,7 @@
 package mycai.service;
 
+import mycai.pojo.Role;
+import mycai.pojo.User;
 import mycai.pojo.message.req.TextMessage;
 import mycai.pojo.message.resp.Article;
 import mycai.pojo.message.resp.NewsMessage;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created by tangld on 2015/5/19.
@@ -25,6 +28,9 @@ public class MycaiService {
 
     @Autowired
     private TulingApiService tulingApiService;
+
+    @Autowired
+    private UserService userService;
 
     public String processRequest(HttpServletRequest request) {
         String fromUserName;
@@ -76,6 +82,28 @@ public class MycaiService {
                     newsMessage.setArticleCount(articleList.size());
                     newsMessage.setArticles(articleList);
                     return MessageUtil.messageToXml(newsMessage);
+                } else if (Pattern.compile("\\d{9}").matcher(content).find()) {
+                    //check if the request comes from a deliveryman
+                    User user = userService.getUserByWechatId(fromUserName);
+                    if (Role.DELIVERYMAN.toString().equalsIgnoreCase(user.getRole())) {
+                        NewsMessage newsMessage = new NewsMessage();
+                        newsMessage.setToUserName(fromUserName);
+                        newsMessage.setFromUserName(toUserName);
+                        newsMessage.setCreateTime(new Date().getTime());
+                        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+                        newsMessage.setFuncFlag(0);
+                        List<Article> articleList = new ArrayList<Article>();
+                        Article article = new Article();
+                        article.setTitle("订单确认码 ：" + content);
+                        article.setDescription("送达订单确认̨");
+                        article.setPicUrl(PropertyHolder.SERVER + "/images/confirm.jpg");
+                        article.setUrl(PropertyHolder.SERVER + "/confirm_deliv.html?confirm_code=" + content);
+                        articleList.add(article);
+                        newsMessage.setArticleCount(articleList.size());
+                        newsMessage.setArticles(articleList);
+                        return MessageUtil.messageToXml(newsMessage);
+                    }
+
                 }
                 String respContent = tulingApiService.getTulingResult(content);
                 TextMessage textMessage = new TextMessage();
@@ -99,7 +127,7 @@ public class MycaiService {
             article.setTitle("送达");
             article.setDescription("上海三林地区最大的农产品移动电商平台̨");
             article.setPicUrl(PropertyHolder.SERVER + "/images/logo.jpg");
-            article.setUrl(PropertyHolder.SERVER + "/index.html?wechat_id=" + fromUserName);
+            article.setUrl(PropertyHolder.SERVER);
             articleList.add(article);
             newsMessage.setArticleCount(articleList.size());
             newsMessage.setArticles(articleList);
