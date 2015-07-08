@@ -40,7 +40,20 @@ delivModule.controller('mainController', function ($scope, $http) {
 
     $scope.updateTotalPrice = function () {
         this.item.totalPrice = (this.item.actAmount * this.item.productPrice).toFixed(2);
+        modifyBill($scope.order, this.item);
         setTimeout('refreshCheckoutUI()', 200);
+    }
+
+    $scope.confirm = function () {
+        $scope.order.status = '已收货';
+        console.log($scope.order);
+
+        //$http.post(app + "/order/submit", JSON.stringify(order)).
+        //    success(function (data, status, headers, config) {
+        //        alert('确认成功！');
+        //    }).error(function () {
+        //        alert('确认失败!');
+        //    });
     }
 });
 

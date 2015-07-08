@@ -33,14 +33,11 @@ public class Order {
     private String status;
     @Column(name = "confirm_code")
     private String confirmCode;
+    @Column(name = "confirm_bill")
+    private String confirmBill;
+    @Column(name = "confirm_ts")
 
-    public String getConfirmCode() {
-        return confirmCode;
-    }
-
-    public void setConfirmCode(String confirmCode) {
-        this.confirmCode = confirmCode;
-    }
+    private String confirmTs;
 
     @Override
     public String toString() {
@@ -56,7 +53,33 @@ public class Order {
                 ", consigneeContact='" + consigneeContact + '\'' +
                 ", status='" + status + '\'' +
                 ", confirmCode='" + confirmCode + '\'' +
+                ", confirmBill='" + confirmBill + '\'' +
+                ", confirmTs='" + confirmTs + '\'' +
                 '}';
+    }
+
+    public String getConfirmTs() {
+        return confirmTs;
+    }
+
+    public void setConfirmTs(String confirmTs) {
+        this.confirmTs = confirmTs;
+    }
+
+    public String getConfirmBill() {
+        return confirmBill;
+    }
+
+    public void setConfirmBill(String confirmBill) {
+        this.confirmBill = confirmBill;
+    }
+
+    public String getConfirmCode() {
+        return confirmCode;
+    }
+
+    public void setConfirmCode(String confirmCode) {
+        this.confirmCode = confirmCode;
     }
 
     public String getOrderTs() {
