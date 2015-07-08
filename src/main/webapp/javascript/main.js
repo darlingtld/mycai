@@ -149,6 +149,13 @@ function goToCheckout() {
     $('a.next').text('确认订单');
 }
 
+function goToConfirm() {
+    $('#subCategoryBlock').hide();
+    $('#mainListBlock').css('width', '100%');
+    $('.checkout').html('<div><a class="next">提交</a>');
+    $('a.next').css('margin-left', '45%');
+}
+
 function goToOrderHistory() {
     $('#subCategoryBlock').hide();
     $('#mainListBlock').css('width', '100%');
@@ -186,9 +193,14 @@ function clearLocalStorage() {
 }
 
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
+var isTest = true;
 var user;
-//'o5Irvt5957jQ4xmdHmDp59epk0UU'
 var wechatId;
+
+if (isTest) {
+    user = {nickname: 'lingda'};
+    wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
+}
 var app = '/mycai';
 var bill = {
     items: [],
@@ -197,16 +209,28 @@ var bill = {
 }
 
 mycaiModule.config(function () {
-    if (typeof(Storage) != "undefined") {
-        var ls = localStorage.getItem('bill');
-        if (ls != undefined) {
-            bill = JSON.parse(ls);
-            refreshCheckoutUI(bill.totalAmount, bill.totalPrice);
+        if (typeof(Storage) != "undefined") {
+            try {
+                var ls = localStorage.getItem('bill');
+                if (ls != undefined) {
+                    bill = JSON.parse(ls);
+                    refreshCheckoutUI(bill.totalAmount, bill.totalPrice);
+                }
+            }
+            catch (err) {
+                bill = {
+                    items: [],
+                    totalAmount: 0,
+                    totalPrice: 0
+                }
+            }
         }
-    } else {
-        console.log("local storage is not supported!")
+        else {
+            console.log("local storage is not supported!")
+        }
     }
-});
+)
+;
 
 
 mycaiModule.controller('mainController', function () {
@@ -254,12 +278,13 @@ mycaiModule.controller('checkoutController', function ($scope, $location) {
 });
 
 
-mycaiModule.controller('confirmController', function ($scope, $location) {
+mycaiModule.controller('confirmController', function ($scope, $http, $location) {
         if (bill.totalAmount == 0) {
             alert('您还未购买任何物品');
             init();
             $location.path('/');
         } else {
+            goToConfirm();
             $('.datetime').mobiscroll().datetime({
                 theme: 'sense-ui',     // Specify theme like: theme: 'ios' or omit setting to use default
                 mode: 'scroller',       // Specify scroller mode like: mode: 'mixed' or omit setting to use default
@@ -279,10 +304,6 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                 ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
             }
 
-            $('.checkout').html('<div><a class="next">提交</a>');
-            $('a.next').css('margin-left', '45%');
-
-
             $('#shop_info').val(getLocalStorage('shop_info'));
             $('#consignee').val(getLocalStorage('consignee'));
             $('#consignee_contact').val(getLocalStorage('consignee_contact'));
@@ -301,12 +322,8 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                 };
 
                 if (validateOrder(order)) {
-                    $.ajax({
-                        type: "post",
-                        url: app + "/order/submit",
-                        contentType: "application/json",
-                        data: JSON.stringify(order),
-                        success: function (data) {
+                    $http.post(app + "/order/submit", JSON.stringify(order)).
+                        success(function (data, status, headers, config) {
                             alert('提交订单成功！');
                             clearLocalStorage();
                             setLocalStorage('shop_info', order.shopInfo);
@@ -314,13 +331,10 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
                             setLocalStorage('consignee_contact', order.consigneeContact);
                             clearBill();
                             init();
-                            window.location = app + '/index.html?wechatId=' + wechatId + '#/order/history';
-                            //$location.path('/order/history');
-                        },
-                        error: function (data) {
+                            $location.path('/order/history');
+                        }).error(function () {
                             alert(data.status);
-                        }
-                    });
+                        });
                 }
             })
 
@@ -330,16 +344,22 @@ mycaiModule.controller('confirmController', function ($scope, $location) {
 
 
 mycaiModule.controller('orderController', function ($http, $scope) {
+    //goToOrderHistory();
+    //var code = getURLParameter('code');
+    //$http.get(app + "/user/code/" + code).success(function (data) {
+    //    user = data;
+    //    wechatId = data.openid;
+    //    $('img.user_icon').attr('src', user.headimgurl);
+    //    var url = app + '/order/get/' + wechatId;
+    //    $http.get(url).success(function (data, status, headers, config) {
+    //        $scope.orders = data;
+    //    });
+    //});
+
     goToOrderHistory();
-    var code = getURLParameter('code');
-    $http.get(app + "/user/code/" + code).success(function (data) {
-        user = data;
-        wechatId = data.openid;
-        $('img.user_icon').attr('src', user.headimgurl);
-        var url = app + '/order/get/' + wechatId;
-        $http.get(url).success(function (data, status, headers, config) {
-            $scope.orders = data;
-        });
+    var url = app + '/order/get/' + wechatId;
+    $http.get(url).success(function (data, status, headers, config) {
+        $scope.orders = data;
     });
 
 
@@ -384,6 +404,19 @@ mycaiModule.directive('spinnerInstance', function () {
             element.spinner({
                 value: value,
             });
+        }
+    }
+});
+
+mycaiModule.directive('confirmCode', function () {
+    return {
+        restrict: 'AE',
+        scope: {},
+        link: function (scope, element, attr) {
+            var value = attr.confirmCode;
+            element.bind('click', function () {
+                alert("确认码 ：\r\n" + value);
+        })
         }
     }
 })

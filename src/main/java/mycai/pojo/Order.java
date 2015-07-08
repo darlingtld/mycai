@@ -31,6 +31,16 @@ public class Order {
     private String consigneeContact;
     @Column(name = "status")
     private String status;
+    @Column(name = "confirm_code")
+    private String confirmCode;
+
+    public String getConfirmCode() {
+        return confirmCode;
+    }
+
+    public void setConfirmCode(String confirmCode) {
+        this.confirmCode = confirmCode;
+    }
 
     @Override
     public String toString() {
@@ -45,6 +55,7 @@ public class Order {
                 ", consignee='" + consignee + '\'' +
                 ", consigneeContact='" + consigneeContact + '\'' +
                 ", status='" + status + '\'' +
+                ", confirmCode='" + confirmCode + '\'' +
                 '}';
     }
 

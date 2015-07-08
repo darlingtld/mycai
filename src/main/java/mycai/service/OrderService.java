@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by darlingtld on 2015/5/16.
@@ -19,7 +20,28 @@ public class OrderService {
 
     @Transactional
     public int save(Order order) {
+        String code = generateConfirmCode();
+        while (isConfirmCodeExisted(code)) {
+            code = generateConfirmCode();
+        }
+        order.setConfirmCode(code);
         return orderDao.save(order);
+    }
+
+    @Transactional
+    private boolean isConfirmCodeExisted(String code) {
+        return orderDao.isConfirmCodeExisted(code);
+    }
+
+    private String generateConfirmCode() {
+        Random random = new Random();
+        random.setSeed(System.currentTimeMillis());
+        String value = String.valueOf(random.nextInt(1000000000));
+        StringBuffer code = new StringBuffer(value);
+        for (int i = 0; i < 9 - value.length(); i++) {
+            code.insert(0, "0");
+        }
+        return code.toString();
     }
 
     @Transactional
@@ -39,7 +61,7 @@ public class OrderService {
 
     @Transactional
     public boolean update(Order order) {
-        Order orderInDb=getById(order.getId());
+        Order orderInDb = getById(order.getId());
         orderInDb.setDeliveryTs(order.getDeliveryTs());
         orderInDb.setStatus(order.getStatus());
         return orderDao.update(orderInDb);
