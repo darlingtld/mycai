@@ -31,4 +31,11 @@ public class UserController {
     void saveUser(@RequestBody User user) {
         userService.saveOrUpdate(user);
     }
+
+    @RequestMapping(value = "/wechatId/{wechatId}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    User getUser(@PathVariable("wechatId") String wechatId) {
+        return userService.getUserByWechatId(wechatId);
+    }
 }

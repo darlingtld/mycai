@@ -242,21 +242,22 @@ mycaiModule.controller('mainController', function () {
 
 function getUserInfo() {
     var code = getURLParameter('code');
-    //$.ajax({
-    //    type: 'get',
-    //    url: app + "/user/code/" + code,
-    //    success: function (data) {
-    //        user = data;
-    //        wechatId = data.openid;
-    //        $('img.user-icon').attr('src', user.headimgurl);
+    $.ajax({
+        type: 'get',
+        url: app + "/user/code/" + code,
+        success: function (data) {
+            user = data;
+            wechatId = data.openid;
+            $('img.user-icon').attr('src', user.headimgurl);
+            setLocalStorage('wechatId', wechatId);
             $.ajax({
                 type: 'post',
                 url: app + "/user/save_or_update",
                 data: JSON.stringify(user),
                 contentType: 'application/json'
             });
-        //}
-    //});
+        }
+    });
 }
 
 mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
@@ -353,23 +354,34 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
 
 
 mycaiModule.controller('orderController', function ($http, $scope) {
-    //goToOrderHistory();
-    //var code = getURLParameter('code');
-    //$http.get(app + "/user/code/" + code).success(function (data) {
-    //    user = data;
-    //    wechatId = data.openid;
-    //    $('img.user_icon').attr('src', user.headimgurl);
-    //    var url = app + '/order/get/' + wechatId;
-    //    $http.get(url).success(function (data, status, headers, config) {
-    //        $scope.orders = data;
-    //    });
-    //});
-
     goToOrderHistory();
-    var url = app + '/order/get/' + wechatId;
-    $http.get(url).success(function (data, status, headers, config) {
-        $scope.orders = data;
+    var code = getURLParameter('code');
+    if (code == null) {
+        wechatId = getLocalStorage('wechatId');
+        $http.get(app + '/order/get/' + wechatId).success(function (data, status, headers, config) {
+            user = data;
+            $('img.user_icon').attr('src', user.headimgurl);
+        });
+        var url = app + '/order/get/' + wechatId;
+        $http.get(url).success(function (data, status, headers, config) {
+            $scope.orders = data;
+        });
+    }
+    $http.get(app + "/user/code/" + code).success(function (data) {
+        user = data;
+        wechatId = data.openid;
+        $('img.user_icon').attr('src', user.headimgurl);
+        var url = app + '/order/get/' + wechatId;
+        $http.get(url).success(function (data, status, headers, config) {
+            $scope.orders = data;
+        });
     });
+
+    //goToOrderHistory();
+    //var url = app + '/order/get/' + wechatId;
+    //$http.get(url).success(function (data, status, headers, config) {
+    //    $scope.orders = data;
+    //});
 
 
 });
