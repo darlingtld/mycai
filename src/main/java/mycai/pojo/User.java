@@ -1,9 +1,6 @@
 package mycai.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -31,27 +28,31 @@ public class User {
      */
 
     @Id
-    private int id;
     @Column(name = "wechat_id")
     private String openid;
     @Column(name = "username")
     private String nickname;
     @Column(name = "role")
     private String role;
+    @Transient
     private String sex;
+    @Transient
     private String province;
+    @Transient
     private String city;
+    @Transient
     private String country;
     @Column(name = "headimgurl")
     private String headimgurl;
+    @Transient
     private List<String> privilege;
+    @Transient
     private String unionid;
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", openid='" + openid + '\'' +
+                "openid='" + openid + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", role='" + role + '\'' +
                 ", sex='" + sex + '\'' +
@@ -62,14 +63,6 @@ public class User {
                 ", privilege=" + privilege +
                 ", unionid='" + unionid + '\'' +
                 '}';
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getRole() {

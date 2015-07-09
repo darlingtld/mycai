@@ -4,10 +4,7 @@ import mycai.pojo.User;
 import mycai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by darlingtld on 2015/6/24 0024.
@@ -26,5 +23,12 @@ public class UserController {
         User user = userService.getUserInformation(code);
         System.out.println(user);
         return user;
+    }
+
+    @RequestMapping(value = "/save_or_update", method = RequestMethod.POST, headers = "Content-Type=application/json")
+    public
+    @ResponseBody
+    void saveUser(@RequestBody User user) {
+        userService.saveOrUpdate(user);
     }
 }

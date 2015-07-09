@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import mycai.dao.UserDao;
 import mycai.pojo.User;
 import mycai.util.PropertyHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -26,6 +28,8 @@ import java.util.List;
 public class UserService {
 
     private RestTemplate restTemplate;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserDao userDao;
@@ -75,5 +79,18 @@ public class UserService {
     @Transactional
     public User getUserByWechatId(String fromUserName) {
         return userDao.getUserByWechatId(fromUserName);
+    }
+
+    @Transactional
+    public void saveOrUpdate(User user) {
+        logger.info(user.toString());
+        User userInDB = userDao.getUserByWechatId(user.getOpenid());
+        if (userInDB == null) {
+            userDao.save(user);
+        } else {
+            userInDB.setNickname(user.getNickname());
+            userInDB.setHeadimgurl(user.getHeadimgurl());
+            userDao.update(userInDB);
+        }
     }
 }

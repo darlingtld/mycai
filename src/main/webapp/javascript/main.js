@@ -198,7 +198,10 @@ var user;
 var wechatId;
 
 if (isTest) {
-    user = {nickname: 'lingda'};
+    user = {
+        nickname: 'lingda',
+        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU'
+    };
     wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
 }
 var app = '/mycai';
@@ -239,15 +242,21 @@ mycaiModule.controller('mainController', function () {
 
 function getUserInfo() {
     var code = getURLParameter('code');
-    $.ajax({
-        type: 'get',
-        url: app + "/user/code/" + code,
-        success: function (data) {
-            user = data;
-            wechatId = data.openid;
-            $('img.user-icon').attr('src', user.headimgurl);
-        }
-    });
+    //$.ajax({
+    //    type: 'get',
+    //    url: app + "/user/code/" + code,
+    //    success: function (data) {
+    //        user = data;
+    //        wechatId = data.openid;
+    //        $('img.user-icon').attr('src', user.headimgurl);
+            $.ajax({
+                type: 'post',
+                url: app + "/user/save_or_update",
+                data: JSON.stringify(user),
+                contentType: 'application/json'
+            });
+        //}
+    //});
 }
 
 mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
@@ -416,7 +425,7 @@ mycaiModule.directive('confirmCode', function () {
             var value = attr.confirmCode;
             element.bind('click', function () {
                 alert("确认码 ：\r\n" + value);
-        })
+            })
         }
     }
 });

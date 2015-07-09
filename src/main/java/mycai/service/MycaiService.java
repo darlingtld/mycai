@@ -32,6 +32,9 @@ public class MycaiService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private OrderService orderService;
+
     public String processRequest(HttpServletRequest request) {
         String fromUserName;
         String toUserName;
@@ -86,6 +89,15 @@ public class MycaiService {
                     //check if the request comes from a deliveryman
                     User user = userService.getUserByWechatId(fromUserName);
                     if (Role.DELIVERYMAN.toString().equalsIgnoreCase(user.getRole())) {
+                        if (orderService.getOrderByConfirmCode(content).getStatus().equals("已收货")) {
+                            TextMessage textMessage = new TextMessage();
+                            textMessage.setToUserName(fromUserName);
+                            textMessage.setFromUserName(toUserName);
+                            textMessage.setCreateTime(new Date().getTime());
+                            textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+                            textMessage.setContent(String.format("订单%s已确认收货", content));
+                            return MessageUtil.messageToXml(textMessage);
+                        }
                         NewsMessage newsMessage = new NewsMessage();
                         newsMessage.setToUserName(fromUserName);
                         newsMessage.setFromUserName(toUserName);

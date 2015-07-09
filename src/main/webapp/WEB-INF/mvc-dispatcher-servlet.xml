@@ -33,6 +33,7 @@
             <list>
                 <value>mycai.pojo.Product</value>
                 <value>mycai.pojo.Order</value>
+                <value>mycai.pojo.User</value>
             </list>
         </property>
         <property name="hibernateProperties">

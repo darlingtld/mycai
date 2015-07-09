@@ -26,10 +26,6 @@ public class UserDao {
         return sessionFactory.getCurrentSession().createQuery(String.format("from User where role = '%s' order by id asc", role)).list();
     }
 
-    public User getById(int userId) {
-        return (User) sessionFactory.getCurrentSession().get(User.class, userId);
-    }
-
     public List<User> getAll() {
         return sessionFactory.getCurrentSession().createQuery(String.format("from User user")).list();
 
@@ -46,6 +42,7 @@ public class UserDao {
     }
 
     public User getUserByWechatId(String fromUserName) {
-        return (User) sessionFactory.getCurrentSession().createQuery(String.format("from User where openid = '%s", fromUserName)).uniqueResult();
+        return (User) sessionFactory.getCurrentSession().createQuery(String.format("from User where openid = '%s'", fromUserName)).uniqueResult();
     }
+
 }

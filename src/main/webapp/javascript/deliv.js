@@ -28,6 +28,10 @@ delivModule.controller('mainController', function ($scope, $http) {
     var url = app + '/order/confirm_code/' + confirmCode;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.order = data;
+        if($scope.order.status == '已收货'){
+            alert('该订单已确认收货！');
+            $('body').html('订单已确认！');
+        }
         $scope.items = JSON.parse($scope.order.bill).items;
         for (var i = 0; i < $scope.items.length; i++) {
             var amount = $scope.items[i].amount;
@@ -67,6 +71,7 @@ delivModule.controller('mainController', function ($scope, $http) {
         $http.post(app + "/order/update", JSON.stringify($scope.order)).
             success(function (data, status, headers, config) {
                 alert('确认成功！');
+                $('body').html('订单已确认！');
             }).error(function () {
                 alert('确认失败!');
             });
