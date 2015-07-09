@@ -193,15 +193,17 @@ function clearLocalStorage() {
 }
 
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-var isTest = true;
+var isTest = false;
 var user;
 var wechatId;
 
 if (isTest) {
     user = {
         nickname: 'lingda',
-        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU'
-    };
+        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
+        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0'
+    }
+
     wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
 }
 var app = '/mycai';
@@ -247,7 +249,7 @@ function getUserInfo() {
         url: app + "/user/code/" + code,
         success: function (data) {
             user = data;
-            wechatId = data.openid;
+            wechatId = user.openid;
             $('img.user-icon').attr('src', user.headimgurl);
             setLocalStorage('wechatId', wechatId);
             $.ajax({
@@ -366,16 +368,17 @@ mycaiModule.controller('orderController', function ($http, $scope) {
         $http.get(url).success(function (data, status, headers, config) {
             $scope.orders = data;
         });
-    }
-    $http.get(app + "/user/code/" + code).success(function (data) {
-        user = data;
-        wechatId = data.openid;
-        $('img.user_icon').attr('src', user.headimgurl);
-        var url = app + '/order/get/' + wechatId;
-        $http.get(url).success(function (data, status, headers, config) {
-            $scope.orders = data;
+    } else {
+        $http.get(app + "/user/code/" + code).success(function (data) {
+            user = data;
+            wechatId = data.openid;
+            $('img.user_icon').attr('src', user.headimgurl);
+            var url = app + '/order/get/' + wechatId;
+            $http.get(url).success(function (data, status, headers, config) {
+                $scope.orders = data;
+            });
         });
-    });
+    }
 
     //goToOrderHistory();
     //var url = app + '/order/get/' + wechatId;

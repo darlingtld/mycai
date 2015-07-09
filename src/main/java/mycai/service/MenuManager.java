@@ -53,7 +53,8 @@ public class MenuManager {
 
         ViewButton btn21 = new ViewButton();
         btn21.setName(PropertyHolder.MENU_MY_ORDER);
-        btn21.setUrl(oauthUrl.replace("$appid", PropertyHolder.APPID).replace("$redirect_uri", URLEncoder.encode(PropertyHolder.SERVER + "/#/order/history", "UTF-8")));
+//        btn21.setUrl(oauthUrl.replace("$appid", PropertyHolder.APPID).replace("$redirect_uri", URLEncoder.encode(PropertyHolder.SERVER + "/#/order/history", "UTF-8")));
+        btn21.setUrl(PropertyHolder.SERVER + "/#/order/history");
 
         ClickButton btn31 = new ClickButton();
         btn31.setName(PropertyHolder.MENU_ABOUT_US);

@@ -2,13 +2,18 @@
  * Created by darlingtld on 2015/7/4 0004.
  */
 var delivModule = angular.module('DelivModule', []);
-var isTest = true;
+var isTest = false;
 var user;
 var wechatId;
 var confirmCode;
 
 if (isTest) {
-    user = {nickname: 'lingda'};
+    user = {
+        nickname: 'lingda',
+        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
+        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0'
+    }
+
     wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
 }
 var app = '/mycai';

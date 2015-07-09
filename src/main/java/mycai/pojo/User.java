@@ -1,5 +1,7 @@
 package mycai.pojo;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -28,7 +30,8 @@ public class User {
      */
 
     @Id
-    @Column(name = "wechat_id")
+    private int id;
+    @Column(name = "wechat_id", columnDefinition = "varchar(255) default 0")
     private String openid;
     @Column(name = "username")
     private String nickname;
@@ -48,6 +51,14 @@ public class User {
     private List<String> privilege;
     @Transient
     private String unionid;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
