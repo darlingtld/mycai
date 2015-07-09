@@ -65,10 +65,10 @@ public class OrderService {
 
     @Transactional
     public boolean update(Order order) {
-        Order orderInDb = getById(order.getId());
-        orderInDb.setDeliveryTs(order.getDeliveryTs());
-        orderInDb.setStatus(order.getStatus());
-        return orderDao.update(orderInDb);
+//        Order orderInDb = getById(order.getId());
+//        orderInDb.setDeliveryTs(order.getDeliveryTs());
+//        orderInDb.setStatus(order.getStatus());
+        return orderDao.update(order);
     }
 
     @Transactional

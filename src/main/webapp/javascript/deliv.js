@@ -44,16 +44,32 @@ delivModule.controller('mainController', function ($scope, $http) {
         setTimeout('refreshCheckoutUI()', 200);
     }
 
+    function modifyBill(order, item) {
+        var totalPrice = 0;
+        var bill = JSON.parse(order.bill);
+        for (var i = 0; i < bill.items.length; i++) {
+            if (item.id == bill.items[i].id) {
+                bill.items[i].amount = item.actAmount;
+            }
+            totalPrice += item.actAmount * item.productPrice;
+
+        }
+        bill.totalPrice = totalPrice.toFixed(2);
+        order.confirmBill = JSON.stringify(bill);
+        order.totalPrice = totalPrice.toFixed(2);
+        order.confirmTs = new Date().Format("yyyy-MM-dd hh:mm:ss");
+    }
+
     $scope.confirm = function () {
         $scope.order.status = '已收货';
         console.log($scope.order);
 
-        //$http.post(app + "/order/submit", JSON.stringify(order)).
-        //    success(function (data, status, headers, config) {
-        //        alert('确认成功！');
-        //    }).error(function () {
-        //        alert('确认失败!');
-        //    });
+        $http.post(app + "/order/update", JSON.stringify($scope.order)).
+            success(function (data, status, headers, config) {
+                alert('确认成功！');
+            }).error(function () {
+                alert('确认失败!');
+            });
     }
 });
 
@@ -70,12 +86,26 @@ function refreshCheckoutUI() {
     try {
         for (var i = 0; i < priceList.length; i++) {
             totalPrice += parseFloat(priceList[i].innerText);
-            console.log(totalPrice);
         }
     } catch (err) {
         console.log(err);
         return;
     }
-    $('#totalPrice').text(totalPrice);
+    $('#totalPrice').text(totalPrice.toFixed(2));
 }
 
+Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
