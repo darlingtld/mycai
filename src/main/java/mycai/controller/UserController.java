@@ -28,8 +28,8 @@ public class UserController {
     @RequestMapping(value = "/save_or_update", method = RequestMethod.POST, headers = "Content-Type=application/json")
     public
     @ResponseBody
-    void saveUser(@RequestBody User user) {
-        userService.saveOrUpdate(user);
+    User saveUser(@RequestBody User user) {
+        return userService.saveOrUpdate(user);
     }
 
     @RequestMapping(value = "/wechatId/{wechatId}", method = RequestMethod.GET)

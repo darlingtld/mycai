@@ -1,7 +1,9 @@
 package mycai.service;
 
 import mycai.dao.OrderDao;
+import mycai.dao.UserDao;
 import mycai.pojo.Order;
+import mycai.pojo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,16 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private UserDao userDao;
+
     @Transactional
     public int save(Order order) {
+        User user = userDao.getUserByWechatId(order.getWechatId());
+        user.setConsignee(order.getConsignee());
+        user.setConsigneeContact(order.getConsigneeContact());
+        user.setShopInfo(order.getShopInfo());
+        userDao.update(user);
         String code = generateConfirmCode();
         while (isConfirmCodeExisted(code)) {
             code = generateConfirmCode();

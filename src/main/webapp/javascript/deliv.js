@@ -11,7 +11,10 @@ if (isTest) {
     user = {
         nickname: 'lingda',
         openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
-        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0'
+        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0',
+        consignee: '灵达',
+        consignee_contact: '13402188638',
+        shop_info: '新中源大楼'
     }
 
     wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
@@ -33,7 +36,7 @@ delivModule.controller('mainController', function ($scope, $http) {
     var url = app + '/order/confirm_code/' + confirmCode;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.order = data;
-        if($scope.order.status == '已收货'){
+        if ($scope.order.status == '已收货') {
             alert('该订单已确认收货！');
             $('body').html('订单已确认！');
         }

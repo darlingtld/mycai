@@ -3,6 +3,7 @@ package mycai.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import mycai.dao.UserDao;
+import mycai.pojo.Role;
 import mycai.pojo.User;
 import mycai.util.PropertyHolder;
 import org.slf4j.Logger;
@@ -82,15 +83,17 @@ public class UserService {
     }
 
     @Transactional
-    public void saveOrUpdate(User user) {
+    public User saveOrUpdate(User user) {
         logger.info(user.toString());
         User userInDB = userDao.getUserByWechatId(user.getOpenid());
         if (userInDB == null) {
+            user.setRole(Role.USER.toString());
             userDao.save(user);
         } else {
             userInDB.setNickname(user.getNickname());
             userInDB.setHeadimgurl(user.getHeadimgurl());
             userDao.update(userInDB);
         }
+        return userDao.getUserByWechatId(user.getOpenid());
     }
 }

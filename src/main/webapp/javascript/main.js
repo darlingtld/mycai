@@ -196,12 +196,17 @@ var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
 var isTest = false;
 var user;
 var wechatId;
+var code;
+var orders;
 
 if (isTest) {
     user = {
         nickname: 'lingda',
         openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
-        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0'
+        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0',
+        consignee: '灵达',
+        consignee_contact: '13402188638',
+        shop_info: '新中源大楼'
     }
 
     wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
@@ -238,9 +243,21 @@ mycaiModule.config(function () {
 ;
 
 
-mycaiModule.controller('mainController', function () {
+mycaiModule.controller('mainController', function ($location) {
+    code = getURLParameter('code');
+    //if (code != null) {
     getUserInfo();
+    //}
+    var isOrderHistory = getURLParameter('order_history');
+    if (isOrderHistory != null) {
+        goToOrderHistory();
+        sleep(1000);
+        $location.path("/order/history");
+    }
 });
+function sleep(d) {
+    for (var t = Date.now(); Date.now() - t <= d;);
+}
 
 function getUserInfo() {
     var code = getURLParameter('code');
@@ -256,8 +273,18 @@ function getUserInfo() {
                 type: 'post',
                 url: app + "/user/save_or_update",
                 data: JSON.stringify(user),
-                contentType: 'application/json'
+                contentType: 'application/json',
+                success: function (data) {
+                    user = data;
+                }
             });
+            //$.ajax({
+            //    type: 'get',
+            //    url: app + '/order/get/' + user.openid,
+            //    success: function (data) {
+            //        orders = data;
+            //    }
+            //});
         }
     });
 }
@@ -316,9 +343,9 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
                 ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
             }
 
-            $('#shop_info').val(getLocalStorage('shop_info'));
-            $('#consignee').val(getLocalStorage('consignee'));
-            $('#consignee_contact').val(getLocalStorage('consignee_contact'));
+            $('#shop_info').val(user.shopInfo);
+            $('#consignee').val(user.consignee);
+            $('#consignee_contact').val(user.consigneeContact);
 
             $('div.checkout').on('click', 'a.next', function () {
 
@@ -354,31 +381,53 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
     }
 );
 
+//mycaiModule.factory('orderService', ['$http', '$q', function ($http, $q) {
+//    return {
+//        query: function (openid) {
+//            var deferred = $q.defer(); // 声明延后执行，表示要去监控后面的执行
+//            $http({method: 'GET', url: app + '/order/get/' + openid}).
+//                success(function (data, status, headers, config) {
+//                    deferred.resolve(data);  // 声明执行成功，即http请求数据成功，可以返回数据了
+//                }).
+//                error(function (data, status, headers, config) {
+//                    deferred.reject(data);   // 声明执行失败，即服务器返回错误
+//                });
+//            return deferred.promise;   // 返回承诺，这里并不是最终数据，而是访问最终数据的API
+//        } // end query
+//    };
+//}]);
 
+
+//mycaiModule.controller('orderController', ['orderService', '$scope', function (orderService, $scope) { // 注入itemService
+//    goToOrderHistory();
+//    var promise = orderService.query(user.openid); //获得承诺接口
+//    promise.then(function (data) {  // 成功回调
+//        $scope.orders = data;
+//    }, function (data) {  // 错误回调
+//        console.log('请求失败');
+//    });
+//}]);
 mycaiModule.controller('orderController', function ($http, $scope) {
     goToOrderHistory();
-    var code = getURLParameter('code');
-    if (code == null) {
-        wechatId = getLocalStorage('wechatId');
-        $http.get(app + '/order/get/' + wechatId).success(function (data, status, headers, config) {
-            user = data;
-            $('img.user_icon').attr('src', user.headimgurl);
-        });
-        var url = app + '/order/get/' + wechatId;
-        $http.get(url).success(function (data, status, headers, config) {
-            $scope.orders = data;
-        });
-    } else {
-        $http.get(app + "/user/code/" + code).success(function (data) {
-            user = data;
-            wechatId = data.openid;
-            $('img.user_icon').attr('src', user.headimgurl);
-            var url = app + '/order/get/' + wechatId;
-            $http.get(url).success(function (data, status, headers, config) {
-                $scope.orders = data;
-            });
-        });
-    }
+
+    //var code = getURLParameter('code');
+    //if (code == null) {
+    //wechatId = getLocalStorage('wechatId');
+    var url = app + '/order/get/' + user.openid;
+    $http.get(url).success(function (data, status, headers, config) {
+        $scope.orders = data;
+    });
+    //} else {
+    //$http.get(app + "/user/code/" + code).success(function (data) {
+    //    //user = data;
+    //    wechatId = data.openid;
+    //    $('img.user_icon').attr('src', user.headimgurl);
+    //    var url = app + '/order/get/' + wechatId;
+    //    $http.get(url).success(function (data, status, headers, config) {
+    //        $scope.orders = data;
+    //    });
+    //});
+    //}
 
     //goToOrderHistory();
     //var url = app + '/order/get/' + wechatId;

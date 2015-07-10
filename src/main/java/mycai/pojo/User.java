@@ -51,19 +51,18 @@ public class User {
     private List<String> privilege;
     @Transient
     private String unionid;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column(name = "consignee")
+    private String consignee;
+    @Column(name = "consignee_contact")
+    private String consigneeContact;
+    @Column(name = "shop_info")
+    private String shopInfo;
 
     @Override
     public String toString() {
         return "User{" +
-                "openid='" + openid + '\'' +
+                "id=" + id +
+                ", openid='" + openid + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", role='" + role + '\'' +
                 ", sex='" + sex + '\'' +
@@ -73,7 +72,42 @@ public class User {
                 ", headimgurl='" + headimgurl + '\'' +
                 ", privilege=" + privilege +
                 ", unionid='" + unionid + '\'' +
+                ", consignee='" + consignee + '\'' +
+                ", consigneeContact='" + consigneeContact + '\'' +
+                ", shopInfo='" + shopInfo + '\'' +
                 '}';
+    }
+
+    public String getShopInfo() {
+        return shopInfo;
+    }
+
+    public void setShopInfo(String shopInfo) {
+        this.shopInfo = shopInfo;
+    }
+
+    public String getConsigneeContact() {
+        return consigneeContact;
+    }
+
+    public void setConsigneeContact(String consigneeContact) {
+        this.consigneeContact = consigneeContact;
+    }
+
+    public String getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(String consignee) {
+        this.consignee = consignee;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getRole() {
