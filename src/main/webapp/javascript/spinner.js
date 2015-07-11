@@ -35,6 +35,7 @@
             function changeValue(delta) {
                 textField.val(getValue() + delta)
                 textField.parent().parent().find('span.item_bought').text(getValue());
+
                 validateAndTrigger(textField)
             }
 
@@ -43,7 +44,13 @@
                 var value = validate(field)
                 if (!isInvalid(value)) {
                     textField.trigger('update', [field, value])
+                    setTimeout(formatNumber, 10);
                 }
+            }
+
+            function formatNumber() {
+                textField.parent().parent().parent().find('div.price>span').text((parseFloat(textField.parent().parent().parent().find('div.price>span').text()).toFixed(2)));
+                //console.log(textField.parent().parent().parent().find('div.price>span').text());
             }
 
             function validate(field) {

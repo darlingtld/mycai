@@ -170,7 +170,7 @@ function saveToLocalStorage(bill) {
 function setLocalStorage(key, value) {
     if (typeof(Storage) != "undefined") {
         localStorage.setItem(key, value);
-        console.log('[' + key + ']:[' + value + ']');
+        //console.log('[' + key + ']:[' + value + ']');
     } else {
         console.log("local storage is not supported!")
     }
@@ -193,7 +193,7 @@ function clearLocalStorage() {
 }
 
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-var isTest = false;
+var isTest = true;
 var user;
 var wechatId;
 var code;
@@ -219,6 +219,10 @@ var bill = {
 }
 
 mycaiModule.config(function () {
+        var isOrderHistory = getURLParameter('order_history');
+        if (isOrderHistory != null) {
+            goToOrderHistory();
+        }
         if (typeof(Storage) != "undefined") {
             try {
                 var ls = localStorage.getItem('bill');
@@ -244,14 +248,10 @@ mycaiModule.config(function () {
 
 
 mycaiModule.controller('mainController', function ($location) {
-    code = getURLParameter('code');
-    //if (code != null) {
     getUserInfo();
-    //}
     var isOrderHistory = getURLParameter('order_history');
     if (isOrderHistory != null) {
         goToOrderHistory();
-        sleep(1000);
         $location.path("/order/history");
     }
 });
@@ -259,34 +259,48 @@ function sleep(d) {
     for (var t = Date.now(); Date.now() - t <= d;);
 }
 
-function getUserInfo() {
-    var code = getURLParameter('code');
-    $.ajax({
-        type: 'get',
-        url: app + "/user/code/" + code,
-        success: function (data) {
-            user = data;
-            wechatId = user.openid;
-            $('img.user-icon').attr('src', user.headimgurl);
-            setLocalStorage('wechatId', wechatId);
-            $.ajax({
-                type: 'post',
-                url: app + "/user/save_or_update",
-                data: JSON.stringify(user),
-                contentType: 'application/json',
-                success: function (data) {
-                    user = data;
-                }
-            });
-            //$.ajax({
-            //    type: 'get',
-            //    url: app + '/order/get/' + user.openid,
-            //    success: function (data) {
-            //        orders = data;
-            //    }
-            //});
+mycaiModule.factory('orderService', ['$http', '$q', function ($http, $q) {
+    return {
+        query: function (openid) {
+            var deferred = $q.defer();
+            $http({method: 'GET', url: app + '/order/get/' + openid}).
+                success(function (data) {
+                    deferred.resolve(data);
+                }).
+                error(function (data) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
         }
-    });
+    };
+}]);
+
+function getUserInfo() {
+    if (isTest) {
+        $.ajax({
+            type: 'get',
+            url: app + "/user/wechatId/" + user.openid,
+            success: function (data) {
+                user = data;
+                wechatId = user.openid;
+                $('img.user-icon').attr('src', user.headimgurl);
+                setLocalStorage('wechatId', wechatId);
+            }
+        });
+    }
+    var code = getURLParameter('code');
+    if (code != null) {
+        $.ajax({
+            type: 'get',
+            url: app + "/user/code/" + code,
+            success: function (data) {
+                user = data;
+                wechatId = user.openid;
+                $('img.user-icon').attr('src', user.headimgurl);
+                setLocalStorage('wechatId', wechatId);
+            }
+        });
+    }
 }
 
 mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
@@ -314,6 +328,7 @@ mycaiModule.controller('checkoutController', function ($scope, $location) {
         goToCheckout();
         $scope.bill = bill;
     }
+
 });
 
 
@@ -381,62 +396,14 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
     }
 );
 
-//mycaiModule.factory('orderService', ['$http', '$q', function ($http, $q) {
-//    return {
-//        query: function (openid) {
-//            var deferred = $q.defer(); // 声明延后执行，表示要去监控后面的执行
-//            $http({method: 'GET', url: app + '/order/get/' + openid}).
-//                success(function (data, status, headers, config) {
-//                    deferred.resolve(data);  // 声明执行成功，即http请求数据成功，可以返回数据了
-//                }).
-//                error(function (data, status, headers, config) {
-//                    deferred.reject(data);   // 声明执行失败，即服务器返回错误
-//                });
-//            return deferred.promise;   // 返回承诺，这里并不是最终数据，而是访问最终数据的API
-//        } // end query
-//    };
-//}]);
-
-
-//mycaiModule.controller('orderController', ['orderService', '$scope', function (orderService, $scope) { // 注入itemService
-//    goToOrderHistory();
-//    var promise = orderService.query(user.openid); //获得承诺接口
-//    promise.then(function (data) {  // 成功回调
-//        $scope.orders = data;
-//    }, function (data) {  // 错误回调
-//        console.log('请求失败');
-//    });
-//}]);
-mycaiModule.controller('orderController', function ($http, $scope) {
-    goToOrderHistory();
-
-    //var code = getURLParameter('code');
-    //if (code == null) {
-    //wechatId = getLocalStorage('wechatId');
-    var url = app + '/order/get/' + user.openid;
-    $http.get(url).success(function (data, status, headers, config) {
+mycaiModule.controller('orderController', ['orderService', '$scope', function (orderService, $scope) {
+    var promise = orderService.query(user.openid); //获得承诺接口
+    promise.then(function (data) {  // 成功回调
         $scope.orders = data;
+    }, function (data) {  // 错误回调
+        console.log('请求失败');
     });
-    //} else {
-    //$http.get(app + "/user/code/" + code).success(function (data) {
-    //    //user = data;
-    //    wechatId = data.openid;
-    //    $('img.user_icon').attr('src', user.headimgurl);
-    //    var url = app + '/order/get/' + wechatId;
-    //    $http.get(url).success(function (data, status, headers, config) {
-    //        $scope.orders = data;
-    //    });
-    //});
-    //}
-
-    //goToOrderHistory();
-    //var url = app + '/order/get/' + wechatId;
-    //$http.get(url).success(function (data, status, headers, config) {
-    //    $scope.orders = data;
-    //});
-
-
-});
+}]);
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
     var url = app + '/order/detail/' + $routeParams.id;
@@ -605,18 +572,21 @@ function changeTotalCost(_this) {
         bill.totalPrice += parseFloat(productPrice);
         if (isFirstBuy(bill.items, productId)) {
             bill.items.push({
-                productId: productId,
-                productName: productName,
-                description: productDescription,
-                amount: amount,
-                productPrice: productPrice,
-                picurl: picurl,
-                productUnit: productUnit
-            });
+                    productId: productId,
+                    productName: productName,
+                    description: productDescription,
+                    amount: amount,
+                    productPrice: productPrice,
+                    picurl: picurl,
+                    productUnit: productUnit,
+                    //totalPrice: (parseFloat(amount) * parseFloat(productPrice)).toFixed(2)
+                }
+            );
         } else {
             for (var i = 0; i < bill.items.length; i++) {
                 if (productId == bill.items[i].productId) {
                     bill.items[i].amount++;
+                    //bill.items[i].totalPrice -= bill.items[i].productPrice.toFixed(2)
                 }
             }
         }
@@ -634,10 +604,11 @@ function changeTotalCost(_this) {
             }
         }
     }
+    //bill.totalPrice = parseFloat(bill.totalPrice).toFixed(2);
     refreshCheckoutUI(bill.totalAmount, bill.totalPrice.toFixed(2));
     refreshCheckoutItemUI(ele, amount, productPrice);
     saveToLocalStorage(bill);
-    //console.log(totalAmount + ":" + totalPrice.toFixed(2));
+//console.log(totalAmount + ":" + totalPrice.toFixed(2));
 }
 
 Date.prototype.Format = function (fmt) { //author: meizz

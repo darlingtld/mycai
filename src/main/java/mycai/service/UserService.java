@@ -2,9 +2,12 @@ package mycai.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import mycai.dao.OrderDao;
 import mycai.dao.UserDao;
+import mycai.pojo.Order;
 import mycai.pojo.Role;
 import mycai.pojo.User;
+import mycai.util.EmojiFilter;
 import mycai.util.PropertyHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,9 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private OrderDao orderDao;
 
     @PostConstruct
     private void init() {
@@ -73,18 +79,25 @@ public class UserService {
         System.out.println("getUserInfoUrl : " + userData);
         User user = JSONObject.parseObject(userData, User.class);
         System.out.println(user);
-
+//save user information
+        saveOrUpdate(user);
         return user;
     }
 
     @Transactional
     public User getUserByWechatId(String fromUserName) {
-        return userDao.getUserByWechatId(fromUserName);
+        User user = userDao.getUserByWechatId(fromUserName);
+        List<Order> orderList = orderDao.getList(user.getOpenid());
+        user.setOrderList(orderList);
+        return user;
     }
 
     @Transactional
     public User saveOrUpdate(User user) {
         logger.info(user.toString());
+        // filter emoji
+        user.setNickname(EmojiFilter.filterEmoji(user.getNickname()));
+
         User userInDB = userDao.getUserByWechatId(user.getOpenid());
         if (userInDB == null) {
             user.setRole(Role.USER.toString());

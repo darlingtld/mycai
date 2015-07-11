@@ -57,6 +57,16 @@ public class User {
     private String consigneeContact;
     @Column(name = "shop_info")
     private String shopInfo;
+    @Transient
+    private List<Order> orderList;
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
 
     @Override
     public String toString() {
@@ -75,6 +85,7 @@ public class User {
                 ", consignee='" + consignee + '\'' +
                 ", consigneeContact='" + consigneeContact + '\'' +
                 ", shopInfo='" + shopInfo + '\'' +
+                ", orderList=" + orderList +
                 '}';
     }
 

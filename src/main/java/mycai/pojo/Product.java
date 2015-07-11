@@ -132,4 +132,8 @@ public class Product {
         return "pic" + name.hashCode() + +description.toString().hashCode() + type.toString().hashCode();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj.toString().equals(this.toString());
+    }
 }

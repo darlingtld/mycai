@@ -68,8 +68,8 @@ public class ProductService {
             }
 
         }
-        List<Map.Entry<String, AtomicInteger>> sortedProductList = new ArrayList<>(boughtItemsMap.entrySet());
-        Collections.sort(sortedProductList, new Comparator<Map.Entry<String, AtomicInteger>>() {
+        List<Map.Entry<String, AtomicInteger>> sortedFavProductList = new ArrayList<>(boughtItemsMap.entrySet());
+        Collections.sort(sortedFavProductList, new Comparator<Map.Entry<String, AtomicInteger>>() {
 
             @Override
             public int compare(Map.Entry<String, AtomicInteger> o1, Map.Entry<String, AtomicInteger> o2) {
@@ -77,15 +77,18 @@ public class ProductService {
             }
         });
 
-        for (Map.Entry<String, AtomicInteger> entry : sortedProductList) {
-            for (Product product : productList) {
+        LinkedList<Product> retProductList = new LinkedList<>();
+        for (Product product : productList) {
+            for (Map.Entry<String, AtomicInteger> entry : sortedFavProductList) {
+                if (retProductList.contains(product)) continue;
                 if (product.getName().equals(entry.getKey())) {
-                    productList.set(0, product);
-                    break;
+                    retProductList.addFirst(product);
+                } else {
+                    retProductList.addLast(product);
                 }
             }
         }
-        return productList;
+        return retProductList;
     }
 
     @Transactional
