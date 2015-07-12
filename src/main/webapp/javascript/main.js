@@ -1,6 +1,90 @@
 /**
  * Created by darlingtld on 2015/7/4 0004.
  */
+
+
+function restoreBuyPage() {
+    $('#subCategoryBlock').show();
+    $('#mainListBlock').css('width', '75%');
+    init();
+}
+
+function goToCheckout() {
+    $('#subCategoryBlock').hide();
+    $('#mainListBlock').css('width', '100%');
+    $('a.next').attr('href', '#/confirm');
+    $('a.next').text('确认订单');
+}
+
+function goToConfirm() {
+    $('#subCategoryBlock').hide();
+    $('#mainListBlock').css('width', '100%');
+    $('.checkout').html('<div><a class="next">提交</a>');
+    $('a.next').css('margin-left', '45%');
+}
+
+function goToOrderHistory() {
+    $('#subCategoryBlock').hide();
+    $('#mainListBlock').css('width', '100%');
+    $('#ma-menu-bar').hide();
+    $('footer').hide();
+}
+
+function saveToLocalStorage(bill) {
+    setLocalStorage('bill', JSON.stringify(bill));
+}
+
+function setLocalStorage(key, value) {
+    if (typeof(Storage) != "undefined") {
+        localStorage.setItem(key, value);
+        //console.log('[' + key + ']:[' + value + ']');
+    } else {
+        console.log("local storage is not supported!")
+    }
+}
+
+function getLocalStorage(key) {
+    if (typeof(Storage) != "undefined") {
+        return localStorage.getItem(key);
+    } else {
+        console.log("local storage is not supported!");
+    }
+}
+
+function clearLocalStorage() {
+    if (typeof(Storage) != "undefined") {
+        localStorage.removeItem('bill');
+    } else {
+        console.log("local storage is not supported!")
+    }
+}
+
+var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
+var isTest = false;
+var user;
+var wechatId;
+var code;
+var orders;
+
+if (isTest) {
+    user = {
+        nickname: 'lingda',
+        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
+        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0',
+        consignee: '灵达',
+        consignee_contact: '13402188638',
+        shop_info: '新中源大楼'
+    }
+
+    wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
+}
+var app = '/mycai';
+var bill = {
+    items: [],
+    totalAmount: 0,
+    totalPrice: 0
+}
+
 (function () {
     $('.menu-mask').on('touchstart click', function () {
         $(this).hide();
@@ -50,6 +134,11 @@
     }
 
     window.data = {
+        //"常用菜": {
+        //    "一个月": "yigeyue",
+        //    "三个月": "sangeyue",
+        //    "六个月": "liugeyue"
+        //},
         "蔬菜水果": {
             "叶菜类": "yecailei",
             "根茎类": "genjinglei",
@@ -136,93 +225,16 @@
     })
 }());
 
-function restoreBuyPage() {
-    $('#subCategoryBlock').show();
-    $('#mainListBlock').css('width', '75%');
-    init();
-}
-
-function goToCheckout() {
-    $('#subCategoryBlock').hide();
-    $('#mainListBlock').css('width', '100%');
-    $('a.next').attr('href', '#/confirm');
-    $('a.next').text('确认订单');
-}
-
-function goToConfirm() {
-    $('#subCategoryBlock').hide();
-    $('#mainListBlock').css('width', '100%');
-    $('.checkout').html('<div><a class="next">提交</a>');
-    $('a.next').css('margin-left', '45%');
-}
-
-function goToOrderHistory() {
-    $('#subCategoryBlock').hide();
-    $('#mainListBlock').css('width', '100%');
-    $('#ma-menu-bar').hide();
-    $('footer').hide();
-}
-
-function saveToLocalStorage(bill) {
-    setLocalStorage('bill', JSON.stringify(bill));
-}
-
-function setLocalStorage(key, value) {
-    if (typeof(Storage) != "undefined") {
-        localStorage.setItem(key, value);
-        //console.log('[' + key + ']:[' + value + ']');
-    } else {
-        console.log("local storage is not supported!")
-    }
-}
-
-function getLocalStorage(key) {
-    if (typeof(Storage) != "undefined") {
-        return localStorage.getItem(key);
-    } else {
-        console.log("local storage is not supported!");
-    }
-}
-
-function clearLocalStorage() {
-    if (typeof(Storage) != "undefined") {
-        localStorage.removeItem('bill');
-    } else {
-        console.log("local storage is not supported!")
-    }
-}
-
-var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-var isTest = true;
-var user;
-var wechatId;
-var code;
-var orders;
-
-if (isTest) {
-    user = {
-        nickname: 'lingda',
-        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
-        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0',
-        consignee: '灵达',
-        consignee_contact: '13402188638',
-        shop_info: '新中源大楼'
-    }
-
-    wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
-}
-var app = '/mycai';
-var bill = {
-    items: [],
-    totalAmount: 0,
-    totalPrice: 0
-}
+//mycaiModule.run(function () {
+//    getUserInfo();
+//});
 
 mycaiModule.config(function () {
         var isOrderHistory = getURLParameter('order_history');
         if (isOrderHistory != null) {
             goToOrderHistory();
         }
+
         if (typeof(Storage) != "undefined") {
             try {
                 var ls = localStorage.getItem('bill');
@@ -242,16 +254,19 @@ mycaiModule.config(function () {
         else {
             console.log("local storage is not supported!")
         }
+
     }
 )
 ;
 
 
 mycaiModule.controller('mainController', function ($location) {
+    //alert('mainController' + new Date().Format("yyyy-MM-dd hh:mm:ss"))
     getUserInfo();
     var isOrderHistory = getURLParameter('order_history');
     if (isOrderHistory != null) {
         goToOrderHistory();
+        sleep(1000);
         $location.path("/order/history");
     }
 });
@@ -259,47 +274,67 @@ function sleep(d) {
     for (var t = Date.now(); Date.now() - t <= d;);
 }
 
-mycaiModule.factory('orderService', ['$http', '$q', function ($http, $q) {
-    return {
-        query: function (openid) {
-            var deferred = $q.defer();
-            $http({method: 'GET', url: app + '/order/get/' + openid}).
-                success(function (data) {
-                    deferred.resolve(data);
-                }).
-                error(function (data) {
-                    deferred.reject(data);
-                });
-            return deferred.promise;
-        }
-    };
-}]);
-
 function getUserInfo() {
+    //alert(new Date().Format("yyyy-MM-dd hh:mm:ss"))
     if (isTest) {
         $.ajax({
             type: 'get',
             url: app + "/user/wechatId/" + user.openid,
             success: function (data) {
+
                 user = data;
                 wechatId = user.openid;
                 $('img.user-icon').attr('src', user.headimgurl);
                 setLocalStorage('wechatId', wechatId);
+                $.ajax({
+                    type: 'post',
+                    url: app + "/user/save_or_update",
+                    data: JSON.stringify(user),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        user = data;
+                    }
+                });
             }
         });
     }
+    if (user != undefined) {
+        return;
+    }
     var code = getURLParameter('code');
     if (code != null) {
-        $.ajax({
-            type: 'get',
-            url: app + "/user/code/" + code,
-            success: function (data) {
-                user = data;
-                wechatId = user.openid;
-                $('img.user-icon').attr('src', user.headimgurl);
-                setLocalStorage('wechatId', wechatId);
-            }
-        });
+        if (getLocalStorage('wechatId') != null) {
+            $.ajax({
+                type: 'get',
+                url: app + "/user/wechatId/" + getLocalStorage('wechatId'),
+                success: function (data) {
+                    user = data;
+                    wechatId = user.openid;
+                    $('img.user-icon').attr('src', user.headimgurl);
+                    setLocalStorage('wechatId', wechatId);
+                }
+            });
+        } else {
+            $.ajax({
+                type: 'get',
+                url: app + "/user/code/" + code,
+                success: function (data) {
+                    user = data;
+                    wechatId = user.openid;
+                    $('img.user-icon').attr('src', user.headimgurl);
+                    setLocalStorage('wechatId', wechatId);
+                    $.ajax({
+                        type: 'post',
+                        url: app + "/user/save_or_update",
+                        data: JSON.stringify(user),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            user = data;
+                        }
+                    });
+                }
+            });
+        }
     }
 }
 
@@ -396,14 +431,39 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
     }
 );
 
-mycaiModule.controller('orderController', ['orderService', '$scope', function (orderService, $scope) {
-    var promise = orderService.query(user.openid); //获得承诺接口
-    promise.then(function (data) {  // 成功回调
-        $scope.orders = data;
-    }, function (data) {  // 错误回调
-        console.log('请求失败');
-    });
-}]);
+mycaiModule.controller('orderController', function ($http, $scope) {
+    goToOrderHistory();
+    //var code = getURLParameter('code');
+    //if (code == null) {
+    //    wechatId = getLocalStorage('wechatId');
+    //    $http.get(app + '/order/get/' + wechatId).success(function (data, status, headers, config) {
+    //        user = data;
+    //        $('img.user_icon').attr('src', user.headimgurl);
+    //    });
+    //    var url = app + '/order/get/' + wechatId;
+    //    $http.get(url).success(function (data, status, headers, config) {
+    //        $scope.orders = data;
+    //    });
+    //} else {
+    //    $http.get(app + "/user/code/" + code).success(function (data) {
+    //        user = data;
+    //        wechatId = data.openid;
+    //        $('img.user_icon').attr('src', user.headimgurl);
+    //        var url = app + '/order/get/' + wechatId;
+    //        $http.get(url).success(function (data, status, headers, config) {
+    $scope.orders = user.orderList;
+    //});
+    //});
+    //}
+
+    //goToOrderHistory();
+    //var url = app + '/order/get/' + wechatId;
+    //$http.get(url).success(function (data, status, headers, config) {
+    //    $scope.orders = data;
+    //});
+
+
+});
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
     var url = app + '/order/detail/' + $routeParams.id;

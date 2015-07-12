@@ -4,6 +4,8 @@ import mycai.pojo.Order;
 import mycai.pojo.User;
 import mycai.service.OrderService;
 import mycai.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
@@ -29,10 +33,17 @@ public class UserController {
     public
     @ResponseBody
     User getUserInformation(@PathVariable("code") String code, HttpServletResponse response) {
+        logger.info("Get user information with code {}", code);
         User user = userService.getUserInformation(code);
+//        User user = userService.getUserByWechatId("o5Irvt5957jQ4xmdHmDp59epk0UU");
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         List<Order> orderList = orderService.getList(user.getOpenid());
         user.setOrderList(orderList);
-        System.out.println(user);
+        logger.info(user.toString());
         return user;
     }
 
@@ -40,6 +51,7 @@ public class UserController {
     public
     @ResponseBody
     User saveUser(@RequestBody User user) {
+        logger.info("Save user information {}", user.toString());
         return userService.saveOrUpdate(user);
     }
 
@@ -47,6 +59,7 @@ public class UserController {
     public
     @ResponseBody
     User getUser(@PathVariable("wechatId") String wechatId) {
+        logger.info("Get user information with wechatId {}", wechatId);
         return userService.getUserByWechatId(wechatId);
     }
 }

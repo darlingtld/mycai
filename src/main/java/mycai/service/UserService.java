@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by darlingtld on 2015/6/24 0024.
@@ -34,6 +35,7 @@ public class UserService {
     private RestTemplate restTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private ConcurrentHashMap<String, User> codeUserMap = new ConcurrentHashMap<>();
 
     @Autowired
     private UserDao userDao;
@@ -45,6 +47,20 @@ public class UserService {
     private void init() {
         restTemplate = new RestTemplate();
         restTemplate.setMessageConverters(getMessageConverters());
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(60 * 60 * 1000);
+                        codeUserMap.clear();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        continue;
+                    }
+                }
+            }
+        }.start();
     }
 
     private List<HttpMessageConverter<?>> getMessageConverters() {
@@ -54,11 +70,15 @@ public class UserService {
     }
 
     public User getUserInformation(String code) {
+        if (codeUserMap.containsKey(code)) {
+            logger.info("Get user from codeUserMap by key {}", code);
+            return codeUserMap.get(code);
+        }
 
         String getAccessTokenUrl = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", PropertyHolder.APPID, PropertyHolder.APPSECRET, code);
-        System.out.println(getAccessTokenUrl);
+        logger.info("@@@@@" + getAccessTokenUrl);
         String retData = restTemplate.getForObject(getAccessTokenUrl, String.class, new HashMap<String, Object>());
-        System.out.println("getAccessTokenUrl : " + retData);
+        logger.info("@@@@@" + "getAccessTokenUrl : " + retData);
 
         /** jsonObject should be something like below
          * {
@@ -76,11 +96,16 @@ public class UserService {
 //        https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
         String getUserInfoUrl = String.format("https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN", accessToken, openid, code);
         String userData = restTemplate.getForObject(getUserInfoUrl, String.class, new HashMap<String, Object>());
-        System.out.println("getUserInfoUrl : " + userData);
+        if (userData.contains("errcode")) {
+            logger.info("UserData contains errcode");
+            return null;
+        }
+        logger.info("@@@@@" + "getUserInfoUrl : " + userData);
         User user = JSONObject.parseObject(userData, User.class);
-        System.out.println(user);
+        logger.info("@@@@@" + user);
 //save user information
         saveOrUpdate(user);
+        codeUserMap.put(code, user);
         return user;
     }
 

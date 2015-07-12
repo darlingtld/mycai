@@ -8,6 +8,8 @@ import mycai.pojo.Category;
 import mycai.pojo.Order;
 import mycai.pojo.Product;
 import mycai.pojo.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Service
 public class ProductService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     @Autowired
     private ProductDao productDao;
@@ -50,6 +54,7 @@ public class ProductService {
 
     @Transactional
     public List<Product> getListByFavourites(String category, String wechatId) {
+        logger.info("User {} get {}", wechatId, category);
         List<Product> productList = getList(category);
 
         List<Order> orderList = orderService.getLatestList(wechatId, 5);
@@ -83,10 +88,10 @@ public class ProductService {
                 if (retProductList.contains(product)) continue;
                 if (product.getName().equals(entry.getKey())) {
                     retProductList.addFirst(product);
-                } else {
-                    retProductList.addLast(product);
                 }
             }
+            if (!retProductList.contains(product))
+                retProductList.addLast(product);
         }
         return retProductList;
     }
