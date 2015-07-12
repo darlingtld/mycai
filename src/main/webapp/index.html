@@ -116,7 +116,11 @@
         function geneLevel2DOM(data, ccat1) {
             var level2HTML = "";
             _.each(_.pairs(data[ccat1]), function (item) {
-                level2HTML += "<li class='cp'><a href='#/product/category/" + item[1] + "'>" + item[0] + "</a></li>";
+                if (ccat1 == '常用菜') {
+                    level2HTML += "<li class='cp'><a href='#/product/" + item[1] + "'>" + item[0] + "</a></li>";
+                } else {
+                    level2HTML += "<li class='cp'><a href='#/product/" + item[1] + "'>" + item[0] + "</a></li>";
+                }
             });
             $category.html("").append($(level2HTML));
 
@@ -144,61 +148,61 @@
         }
 
         window.data = {
-            //"常用菜": {
-            //    "一个月": "yigeyue",
-            //    "三个月": "sangeyue",
-            //    "六个月": "liugeyue"
-            //},
+            "常用菜": {
+                "一个月": "most_bought/1",
+                "三个月": "most_bought/3",
+                "六个月": "most_bought/6"
+            },
             "蔬菜水果": {
-                "叶菜类": "yecailei",
-                "根茎类": "genjinglei",
-                "茄果类": "qieguolei",
-                "豆类": "doulei",
-                "葱姜蒜": "congjiangsuan",
-                "菌类": "junlei",
-                "特菜": "tecai"
+                "叶菜类": "category/yecailei",
+                "根茎类": "category/genjinglei",
+                "茄果类": "category/qieguolei",
+                "豆类": "category/doulei",
+                "葱姜蒜": "category/congjiangsuan",
+                "菌类": "category/junlei",
+                "特菜": "category/tecai"
             },
             "禽肉蛋类": {
-                "一级白条": "yijibaitiao",
-                "二级白条": "erjibaitiao",
-                "冻猪肉": "dongzhurou",
-                "羊肉": "yangrou",
-                "牛肉": "niurou",
-                "鲜鸡肉": "xianjirou",
-                "冻鸡肉": "dongjirou",
-                "鸭肉": "yarou",
-                "禽类": "qinlei",
-                "禽蛋类": "qindanlei",
-                "熟食加工": "shushijiagong"
+                "一级白条": "category/yijibaitiao",
+                "二级白条": "category/erjibaitiao",
+                "冻猪肉": "category/dongzhurou",
+                "羊肉": "category/yangrou",
+                "牛肉": "category/niurou",
+                "鲜鸡肉": "category/xianjirou",
+                "冻鸡肉": "category/dongjirou",
+                "鸭肉": "category/yarou",
+                "禽类": "category/qinlei",
+                "禽蛋类": "category/qindanlei",
+                "熟食加工": "category/shushijiagong"
             },
             "水产冻货": {
-                "海鲜水产": "haixianshuichan",
-                "鱼丸火锅": "yuwanhuoguo",
+                "海鲜水产": "category/haixianshuichan",
+                "鱼丸火锅": "category/yuwanhuoguo",
             },
             "米面粮油": {
-                "大米": "dami",
-                "面粉面条": "mianfenmiantiao",
-                "食用油": "shiyongyou",
-                "杂粮": "zaliang",
-                "面点": "miandian",
-                "烘焙佐料": "hongbeizuoliao",
+                "大米": "category/dami",
+                "面粉面条": "category/mianfenmiantiao",
+                "食用油": "category/shiyongyou",
+                "杂粮": "category/zaliang",
+                "面点": "category/miandian",
+                "烘焙佐料": "category/hongbeizuoliao",
             },
             "调料其他": {
-                "调味品": "tiaoweipin",
-                "粉丝粉条": "fensifentiao",
-                "豆制品": "douzhipin",
-                "干货": "ganhuo",
-                "调味品": "tiaoweipin",
-                "酱油醋": "jiangyoucu",
-                "腌菜罐头": "yancaiguantou"
+                "调味品": "category/tiaoweipin",
+                "粉丝粉条": "category/fensifentiao",
+                "豆制品": "category/douzhipin",
+                "干货": "category/ganhuo",
+                "调味品": "category/tiaoweipin",
+                "酱油醋": "category/jiangyoucu",
+                "腌菜罐头": "category/yancaiguantou"
             },
             "餐厨用品": {
-                "纸品湿巾": "zhipinshijin",
-                "餐饮用具": "canyinyongju",
+                "纸品湿巾": "category/zhipinshijin",
+                "餐饮用具": "category/canyinyongju",
             },
             "酒水饮料": {
-                "饮料": "yinliao",
-                "饮用水": "yinyongshui",
+                "饮料": "category/yinliao",
+                "饮用水": "category/yinyongshui",
             }
         };
         var navHtml = '';
@@ -222,7 +226,7 @@
             });
         });
 
-        var $level1 = $($navga.find("li")[0]);
+        var $level1 = $($navga.find("li")[1]);
         if ($level1) {
             $curCat1 = $level1;
             $level1.click();

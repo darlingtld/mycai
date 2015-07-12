@@ -73,10 +73,17 @@ mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
 });
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
-    $('#ma-menu-bar').show();
-    $('#subCategoryBlock').show();
-    $('#mainListBlock').css('width', '75%');
+    goToProduct();
     var url = app + '/product/category/' + $routeParams.category + '/wechatid/' + wechatId;
+    $http.get(url).success(function (data, status, headers, config) {
+        $scope.products = data;
+        fillSpinner($scope.products);
+    });
+});
+
+mycaiModule.controller('mostBuyController', function ($scope, $http, $routeParams) {
+    goToProduct();
+    var url = app + '/product/most_bought/' + $routeParams.frequent + '/wechatid/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
         fillSpinner($scope.products);
@@ -197,7 +204,7 @@ mycaiModule.controller('orderController', function ($http, $scope) {
 });
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
-    goToConfirm();
+    goToOrderHistory();
     var url = app + '/order/detail/' + $routeParams.id;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.orderDetail = data;
@@ -262,6 +269,10 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/product/category/:category', {
             controller: 'productController',
+            templateUrl: 'product.html'
+        })
+        .when('/product/most_bought/:frequent', {
+            controller: 'mostBuyController',
             templateUrl: 'product.html'
         })
         .when('/checkout', {
@@ -519,6 +530,12 @@ function goToOrderHistory() {
     $('#mainListBlock').css('width', '100%');
     $('#ma-menu-bar').hide();
     $('footer').hide();
+}
+
+function goToProduct(){
+    $('#ma-menu-bar').show();
+    $('#subCategoryBlock').show();
+    $('#mainListBlock').css('width', '75%');
 }
 
 function saveToLocalStorage(bill) {

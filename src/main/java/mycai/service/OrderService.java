@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import mycai.dao.OrderDao;
+import mycai.dao.ProductDao;
 import mycai.dao.UserDao;
 import mycai.pojo.Order;
 import mycai.pojo.Product;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -33,6 +31,9 @@ public class OrderService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private ProductDao productDao;
 
     @Transactional
     public int save(Order order) {
@@ -104,16 +105,22 @@ public class OrderService {
         logger.info("Get order of {} from {} to {}", wechatid, then.getTime().toString(), now.getTime().toString());
         List<Order> orderList = orderDao.getListByTimeFrame(wechatid, then, now);
         List<Product> productList = new ArrayList<>();
+        List<Product> allProductList = productDao.getAll();
+        HashMap<Integer, Product> allProductMap = new HashMap<>();
+        for (Product product : allProductList) {
+            allProductMap.put(product.getId(), product);
+        }
         for (Order order : orderList) {
             JSONObject jsonObject = JSON.parseObject(order.getBill());
             JSONArray jsonArray = jsonObject.getJSONArray("items");
             for (int i = 0; i < jsonArray.size(); i++) {
-                Product product = JSON.parseObject(jsonArray.getString(i), Product.class);
+                Integer productId = jsonArray.getJSONObject(i).getInteger("productId");
+                Product product = allProductMap.get(productId);
                 if (!productList.contains(product)) {
-                    productList.add(product);
+                    if (product != null)
+                        productList.add(product);
                 }
             }
-
         }
         return productList;
     }
