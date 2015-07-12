@@ -1,8 +1,12 @@
 package mycai.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import mycai.dao.OrderDao;
 import mycai.dao.UserDao;
 import mycai.pojo.Order;
+import mycai.pojo.Product;
 import mycai.pojo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by darlingtld on 2015/5/16.
@@ -90,5 +97,24 @@ public class OrderService {
     public Order getOrderByConfirmCode(String confirmCode) {
         logger.info("Get order using confirm code {}", confirmCode);
         return orderDao.getByConfirmCode(confirmCode);
+    }
+
+    @Transactional
+    public List<Product> getListByTimeFrame(String wechatid, Calendar then, Calendar now) {
+        logger.info("Get order of {} from {} to {}", wechatid, then.getTime().toString(), now.getTime().toString());
+        List<Order> orderList = orderDao.getListByTimeFrame(wechatid, then, now);
+        List<Product> productList = new ArrayList<>();
+        for (Order order : orderList) {
+            JSONObject jsonObject = JSON.parseObject(order.getBill());
+            JSONArray jsonArray = jsonObject.getJSONArray("items");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                Product product = JSON.parseObject(jsonArray.getString(i), Product.class);
+                if (!productList.contains(product)) {
+                    productList.add(product);
+                }
+            }
+
+        }
+        return productList;
     }
 }

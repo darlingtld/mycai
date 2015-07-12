@@ -1,10 +1,13 @@
 package mycai.dao;
 
 import mycai.pojo.Order;
+import mycai.pojo.Product;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -15,6 +18,8 @@ public class OrderDao {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public int save(Order order) {
 
@@ -56,5 +61,9 @@ public class OrderDao {
 
     public Order getByConfirmCode(String confirmCode) {
         return (Order) sessionFactory.getCurrentSession().createQuery(String.format("from Order where confirmCode = '%s'", confirmCode)).uniqueResult();
+    }
+
+    public List<Order> getListByTimeFrame(String wechatid, Calendar then, Calendar now) {
+        return (List<Order>) sessionFactory.getCurrentSession().createQuery(String.format("from Order where wechatId = '%s' and orderTs >= '%s' and orderTs <= '%s'", wechatid, formatter.format(then.getTime()), formatter.format(now.getTime()))).list();
     }
 }

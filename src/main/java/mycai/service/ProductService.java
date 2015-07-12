@@ -187,4 +187,12 @@ public class ProductService {
         typeListMap.put(Type.JIUSHUIYINLIAO, jiushuiyinliaoList);
         return typeListMap;
     }
+
+    @Transactional
+    public List<Product> getMostBought(String wechatid, int frequency) {
+        Calendar now = Calendar.getInstance();
+        Calendar then = Calendar.getInstance();
+        then.add(Calendar.MONTH, -frequency);
+        return orderService.getListByTimeFrame(wechatid, then, now);
+    }
 }

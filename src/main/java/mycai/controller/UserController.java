@@ -41,6 +41,10 @@ public class UserController {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+        if (user == null) {
+            response.setStatus(HttpStatus.EXPECTATION_FAILED.value());
+            return null;
+        }
         List<Order> orderList = orderService.getList(user.getOpenid());
         user.setOrderList(orderList);
         logger.info(user.toString());

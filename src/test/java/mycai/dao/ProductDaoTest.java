@@ -154,5 +154,19 @@ public class ProductDaoTest {
         System.out.println(sortedProductList);
         System.out.println(productList);
     }
+
+    @Test
+    public void getProductByTimeFrame() {
+        int frequency = 6;
+        String wechatid = "o5Irvt5957jQ4xmdHmDp59epk0UU";
+        Calendar now = Calendar.getInstance();
+        Calendar then = Calendar.getInstance();
+        then.add(Calendar.MONTH, -frequency);
+        List<Product> productList = orderService.getListByTimeFrame(wechatid, then, now);
+        System.out.println(productList.size());
+        for (Product product : productList) {
+            System.out.println(product);
+        }
+    }
 }
 

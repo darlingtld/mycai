@@ -35,7 +35,7 @@ public class UserService {
     private RestTemplate restTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    private ConcurrentHashMap<String, User> codeUserMap = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, User> codeUserMap = new ConcurrentHashMap<>();
 
     @Autowired
     private UserDao userDao;
@@ -74,11 +74,12 @@ public class UserService {
             logger.info("Get user from codeUserMap by key {}", code);
             return codeUserMap.get(code);
         }
+        logger.info("Code {} is not found in the codeUserMap");
 
         String getAccessTokenUrl = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", PropertyHolder.APPID, PropertyHolder.APPSECRET, code);
-        logger.info("@@@@@" + getAccessTokenUrl);
+        logger.info("[Access Token URL] {}", getAccessTokenUrl);
         String retData = restTemplate.getForObject(getAccessTokenUrl, String.class, new HashMap<String, Object>());
-        logger.info("@@@@@" + "getAccessTokenUrl : " + retData);
+        logger.info("[Acess Token returned data] {}", retData);
 
         /** jsonObject should be something like below
          * {
@@ -100,12 +101,13 @@ public class UserService {
             logger.info("UserData contains errcode");
             return null;
         }
-        logger.info("@@@@@" + "getUserInfoUrl : " + userData);
+        logger.info("[User info returned data] {}", userData);
         User user = JSONObject.parseObject(userData, User.class);
-        logger.info("@@@@@" + user);
+        logger.info("[Parsed User info] {}", user);
+        codeUserMap.put(code, user);
+        logger.info("[CodeUserMap]{}", codeUserMap);
 //save user information
         saveOrUpdate(user);
-        codeUserMap.put(code, user);
         return user;
     }
 
