@@ -59,7 +59,7 @@ mycaiModule.controller('mainController', function ($location) {
     var isOrderHistory = getURLParameter('order_history');
     if (isOrderHistory != null) {
         goToOrderHistory();
-        sleep(1000);
+        sleep(2000);
         $location.path("/order/history");
     }
 });
@@ -192,11 +192,17 @@ mycaiModule.controller('orderController', function ($http, $scope) {
 });
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
+    goToConfirm();
     var url = app + '/order/detail/' + $routeParams.id;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.orderDetail = data;
         $scope.items = JSON.parse($scope.orderDetail.bill).items;
         $scope.total = JSON.parse($scope.orderDetail.bill);
+        if (JSON.parse($scope.orderDetail.confirmBill) != null) {
+            $scope.items = JSON.parse($scope.orderDetail.confirmBill).items;
+            $scope.total = JSON.parse($scope.orderDetail.bill);
+            $scope.actTotal = JSON.parse($scope.orderDetail.confirmBill)
+        }
     });
 
 });
@@ -576,25 +582,25 @@ function getUserInfo() {
     //            }
     //        });
     //    } else {
+    $.ajax({
+        type: 'get',
+        url: app + "/user/code/" + code,
+        success: function (data) {
+            user = data;
+            wechatId = user.openid;
+            $('img.user-icon').attr('src', user.headimgurl);
+            setLocalStorage('wechatId', wechatId);
             $.ajax({
-                type: 'get',
-                url: app + "/user/code/" + code,
+                type: 'post',
+                url: app + "/user/save_or_update",
+                data: JSON.stringify(user),
+                contentType: 'application/json',
                 success: function (data) {
                     user = data;
-                    wechatId = user.openid;
-                    $('img.user-icon').attr('src', user.headimgurl);
-                    setLocalStorage('wechatId', wechatId);
-                    $.ajax({
-                        type: 'post',
-                        url: app + "/user/save_or_update",
-                        data: JSON.stringify(user),
-                        contentType: 'application/json',
-                        success: function (data) {
-                            user = data;
-                        }
-                    });
                 }
             });
-        //}
+        }
+    });
+    //}
     //}
 }
