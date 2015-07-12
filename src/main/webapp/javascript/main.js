@@ -2,7 +2,7 @@
  * Created by darlingtld on 2015/7/4 0004.
  */
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-var isTest = false;
+var isTest = true;
 var app = '/mycai';
 var bill = {
     items: [],
@@ -73,6 +73,9 @@ mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
 });
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
+    $('#ma-menu-bar').show();
+    $('#subCategoryBlock').show();
+    $('#mainListBlock').css('width', '75%');
     var url = app + '/product/category/' + $routeParams.category + '/wechatid/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
@@ -137,6 +140,8 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
                 };
 
                 if (validateOrder(order)) {
+                    goToOrderHistory();
+                    $('#content').html('<h2 class="text-center">订单提交中！</h2>');
                     $http.post(app + "/order/submit", JSON.stringify(order)).
                         success(function (data, status, headers, config) {
                             alert('提交订单成功！');
@@ -311,6 +316,9 @@ function init() {
 
 
 function refreshCheckoutUI(totalAmount, totalPrice) {
+    if (totalPrice < 0.01) {
+        totalPrice = 0;
+    }
     $('#totalAmount').text(totalAmount);
     $('#totalPrice').text(totalPrice);
 }
@@ -483,12 +491,15 @@ function DateAdd(interval, number, date) {
 }
 
 function restoreBuyPage() {
+    $('#ma-menu-bar').show();
     $('#subCategoryBlock').show();
     $('#mainListBlock').css('width', '75%');
     init();
 }
 
 function goToCheckout() {
+    init();
+    $('#ma-menu-bar').show();
     $('#subCategoryBlock').hide();
     $('#mainListBlock').css('width', '100%');
     $('a.next').attr('href', '#/confirm');
@@ -496,6 +507,7 @@ function goToCheckout() {
 }
 
 function goToConfirm() {
+    init();
     $('#subCategoryBlock').hide();
     $('#mainListBlock').css('width', '100%');
     $('.checkout').html('<div><a class="next">提交</a>');
