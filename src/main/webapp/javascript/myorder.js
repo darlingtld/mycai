@@ -2,7 +2,7 @@
  * Created by darlingtld on 2015/7/4 0004.
  */
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-var isTest = true;
+var isTest = false;
 var app = '/mycai';
 var user;
 var wechatId;
@@ -19,9 +19,11 @@ if (isTest) {
     wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
 }
 
-mycaiModule.config(function(){
+mycaiModule.config(function () {
     getUserInfo();
-    sleep(2000);
+    while (user == undefined) {
+        sleep(1000);
+    }
 });
 
 mycaiModule.controller('orderController', function ($http, $scope) {

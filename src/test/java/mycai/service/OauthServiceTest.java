@@ -36,5 +36,15 @@ public class OauthServiceTest {
         System.out.println(new String(data.getBytes(), "utf-8"));
     }
 
+    @Test
+    public void getUserInformation() {
+        RestTemplate restTemplate = new RestTemplate();
+        String code = "o5Irvt3tty06NYT8W-nJa0gPERvM";
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN", PropertyHolder.TOKEN, code);
+        System.out.println(url);
+        String jsonObject = restTemplate.getForObject(url, String.class, new HashMap<String, Object>());
+        System.out.println(jsonObject);
+    }
+
 
 }

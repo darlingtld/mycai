@@ -35,18 +35,13 @@ public class UserController {
     User getUserInformation(@PathVariable("code") String code, HttpServletResponse response) {
         logger.info("Get user information with code {}", code);
         User user = userService.getUserInformation(code);
-//        User user = userService.getUserByWechatId("o5Irvt5957jQ4xmdHmDp59epk0UU");
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+//
         if (user == null) {
             response.setStatus(HttpStatus.EXPECTATION_FAILED.value());
             return null;
         }
-        List<Order> orderList = orderService.getList(user.getOpenid());
-        user.setOrderList(orderList);
+//        List<Order> orderList = orderService.getList(user.getOpenid());
+//        user.setOrderList(orderList);
         logger.info(user.toString());
         return user;
     }

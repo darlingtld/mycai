@@ -2,7 +2,7 @@
  * Created by darlingtld on 2015/7/4 0004.
  */
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-var isTest = true;
+var isTest = false;
 var app = '/mycai';
 var bill = {
     items: [],
