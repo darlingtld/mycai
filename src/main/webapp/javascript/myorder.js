@@ -20,18 +20,16 @@ if (isTest) {
 }
 
 mycaiModule.config(function () {
-    getUserInfo();
-    while (user == undefined) {
-        sleep(1000);
-    }
+
 });
 
 mycaiModule.controller('orderController', function ($http, $scope) {
-    var url = app + '/order/get/' + wechatId;
-    $http.get(url).success(function (data, status, headers, config) {
-        $scope.orders = data;
-    });
-
+    getUserInfo(function () {
+        var url = app + '/order/get/' + wechatId;
+        $http.get(url).success(function (data, status, headers, config) {
+            $scope.orders = data;
+        });
+    })
 });
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
@@ -113,7 +111,7 @@ function sleep(d) {
     for (var t = Date.now(); Date.now() - t <= d;);
 }
 
-function getUserInfo() {
+function getUserInfo(callback) {
     var code = getURLParameter('code');
     $.ajax({
         type: 'get',
@@ -123,6 +121,9 @@ function getUserInfo() {
             wechatId = user.openid;
             $('img.user-icon').attr('src', user.headimgurl);
             setLocalStorage('wechatId', wechatId);
+            if (callback && typeof(callback) === "function") {
+                callback();
+            }
             $.ajax({
                 type: 'post',
                 url: app + "/user/save_or_update",
