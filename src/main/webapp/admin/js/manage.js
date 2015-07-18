@@ -4,7 +4,6 @@
 var adminModule = angular.module('AdminModule', ['ngRoute']);
 var app = '/mycai';
 
-
 adminModule.controller('productController', function ($scope, $http) {
     $('li[role]').removeClass('active');
     $('li[role="manage_product"]').addClass('active');
@@ -73,9 +72,64 @@ adminModule.controller('productController', function ($scope, $http) {
     }
 });
 
-adminModule.controller('orderController', function ($http) {
+adminModule.controller('orderController', function ($scope, $http) {
     $('li[role]').removeClass('active');
     $('li[role="manage_order"]').addClass('active');
+    $http.get(app + '/order/getall').success(function (data) {
+        $scope.orders = data;
+    });
+
+    $scope.modify = function (id) {
+        $('#dialog').modal('show');
+        $('#dialog').attr('method', 'update');
+        for (var i = 0; i < $scope.orders.length; i++) {
+            var order;
+            if (id == $scope.orders[i].id) {
+                order = $scope.orders[i];
+                break;
+            }
+        }
+        $('#oid').val(order.id);
+        $('#userId').val(order.userId);
+        $('#orderTs').val(order.orderTs);
+        $('#deliveryTs').val(order.deliveryTs);
+        $('#shopInfo').val(order.shopInfo);
+        $('#consignee').val(order.consignee);
+        $('#consigneeContact').val(order.consigneeContact);
+
+    };
+
+    $scope.save = function () {
+        var oid = $('#oid').val();
+        var order;
+        for (var i = 0; i < $scope.orders.length; i++) {
+            if (oid == $scope.orders[i].id) {
+                order = $scope.orders[i];
+                break;
+            }
+        }
+        order.deliveryTs = $('#deliveryTs').val();
+        order.shopInfo = $('#shopInfo').val();
+        order.consignee = $('#consignee').val();
+        order.consigneeContact = $('#consigneeContact').val();
+        order.status = $('#orderStatus').val();
+
+        //console.log(order);
+        $.ajax({
+            type: "post",
+            url: app + "/order/update",
+            contentType: "application/json",
+            data: JSON.stringify(order),
+            success: function (data) {
+                alert('保存成功！');
+                location.reload();
+            },
+            error: function (data) {
+                alert('保存失败');
+                location.reload();
+            }
+        });
+    }
 });
 
 adminModule.config(['$routeProvider', function ($routeProvider) {

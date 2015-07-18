@@ -6,9 +6,9 @@ var _order;
 var _dadaId=0;
 var app='/mycai';
 
-$(function () {
-    _initialPage();
-});
+//$(function () {
+//    _initialPage();
+//});
 
 
 function saveId(id){

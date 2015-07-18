@@ -1,32 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Service Management For Renovator">
-    <meta name="author" content="Sara Zhu">
-    <title>管理订单信息</title>
-    <!-- Bootstrap core CSS -->
-    <!--<link href="../css/bootstrap.min.css" rel="stylesheet">-->
-    <!--<link href="../css/pagination.css" rel="stylesheet">-->
-    <!--<link rel="stylesheet" href="../js/mobiscroll/css/mobiscroll.frame.sense-ui.css" type="text/css"/>-->
-    <!--<link rel="stylesheet" href="../js/mobiscroll/css/mobiscroll.mobiscroll-dark.css" type="text/css"/>-->
-    <!--<link rel="stylesheet" href="../js/mobiscroll/css/mobiscroll.animation.css" type="text/css"/>-->
-    <!--<link rel="stylesheet" href="../js/mobiscroll/css/mobiscroll.icons.css" type="text/css"/>-->
-    <!--<link rel="stylesheet" href="../js/mobiscroll/css/mobiscroll.frame.css" type="text/css"/>-->
-    <!--<link rel="stylesheet" href="../js/mobiscroll/css/mobiscroll.scroller.css" type="text/css"/>-->
-    <!--<link rel="stylesheet" href="../js/mobiscroll/css/mobiscroll.scroller.sense-ui.css" type="text/css"/>-->
-</head>
-
-<body>
-
 <div class="container">
     <!--pagination-->
     <div id="pagination" style="float: right;" class="pagination"></div>
-    <span class="pagination" style="float: right;">
-        每页显示：<input type="text" style="width: 40%" id="numPerPage" onkeydown="paginationEnter(event, $(this).val());" value="10"> 个
-    </span>
+    <!--<span class="pagination" style="float: right;">-->
+        <!--每页显示：<input type="text" style="width: 40%" id="numPerPage" onkeydown="paginationEnter(event, $(this).val());"-->
+                    <!--value="10"> 个-->
+    <!--</span>-->
+    ;
 
     <!--Service Table-->
     <table class="table table-bordered table-hover">
@@ -43,81 +22,109 @@
         </tr>
         </thead>
         <tbody id="orderList">
-        <script id="orderTemplate" type="text/x-jquery-tmpl">
-          <tr>
-            <input type="hidden" value="${id}">
-            <td>${userId}</td>
-            <td>${orderTs}</td>
-            <td>${deliveryTs}</td>
-			<td>${shopInfo}</td>
-            <td>${consignee}</td>
-            <td>${consigneeContact}</td>
-            <td>${status}</td>
+        <tr ng-repeat="order in orders">
+            <input type="hidden" value="order.id">
+            <td>{{order.userId}}</td>
+            <td>{{order.orderTs}}</td>
+            <td>{{order.deliveryTs}}</td>
+            <td>{{order.shopInfo}}</td>
+            <td>{{order.consignee}}</td>
+            <td>{{order.consigneeContact}}</td>
+            <td>{{order.status}}</td>
             <td>
-                <button onclick="saveId(${id})" class="update-order btn btn-warning btn-md-width" data-toggle="modal" data-target="#updateModal" data-id=${id}>修改</button>
-                <a href="orderDetails.html?id=${id}" class="btn btn-danger btn-md-width">查看详单</a>
+                <button ng-click="modify(order.id)" class="update-order btn btn-warning btn-md-width">修改</button>
+                <a href="orderDetails.html?id={{order.id}}" class="btn btn-danger btn-md-width">查看详单</a>
             </td>
-          </tr>
-        </script>
+        </tr>
         </tbody>
     </table>
 
 
 </div>
 
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">更新订单信息</h4>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped">
-                    <tr>
-                        <td>配送时间：</td>
-                        <td><input id="deliveryTs" class="form-control"></td>
-                    </tr>
-                    <tr>
-                        <td>订单状态</td>
-                        <td>
-                            <select id="orderStatus"  class="form-control">
-                                <option value="未配送">未配送</option>
-                                <option value="配送中">配送中</option>
-                                <option value="已配送（未付款）">已配送（未付款）</option>
-                                <option value="已配送（已付款）">已配送（已付款）</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="_updateOrder()">提交更改</button>
-            </div>
+<div id="dialog" class="modal hide fade in" style="display: none; " method="update">
+
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+
+        <h3>修改订单</h3>
+    </div>
+    <div class="modal-body">
+        <input type="hidden" id="oid">
+
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">用户名</span>
+            <input type="text" class="form-control" id="userId">
         </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">订单时间:</span>
+            <input type="text" class="form-control" id="orderTs">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">配送时间:</span>
+            <input type="text" class="form-control" id="deliveryTs">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">门店信息:</span>
+            <input type="text" class="form-control" id="shopInfo">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">收货人:</span>
+            <input type="text" class="form-control" id="consignee">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">联系方式:</span>
+            <input type="text" class="form-control" id="consigneeContact">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">状态:</span>
+            <select id="orderStatus" class="form-control" style="width:100%;">
+                <option value="未配送">未配送</option>
+                <option value="配送中">配送中</option>
+                <option value="已配送（未付款）">已配送（未付款）</option>
+                <option value="已配送（已付款）">已配送（已付款）</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-success" ng-click="save()">保存</a>
+        <a href="#" class="btn" data-dismiss="modal">关闭</a>
     </div>
 </div>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<!--<script src="../js/jquery.min.js"></script>-->
-<!--<script src="../js/pagination.js"></script>-->
-<!--<script src="../js/bootstrap.min.js"></script>-->
-<!--<script src="../js/jquery.tmpl.min.js"></script>-->
-<!--<script src="js/service.js"></script>-->
 
-<!--&lt;!&ndash;mobiscroll&ndash;&gt;-->
-<!--<script type="text/javascript" src="../js/mobiscroll/js/mobiscroll.core.js"></script>-->
-<!--<script type="text/javascript" src="../js/mobiscroll/js/mobiscroll.frame.js"></script>-->
-<!--<script type="text/javascript" src="../js/mobiscroll/js/mobiscroll.scroller.js"></script>-->
-<!--<script type="text/javascript" src="../js/mobiscroll/js/mobiscroll.util.datetime.js"></script>-->
-<!--<script type="text/javascript" src="../js/mobiscroll/js/mobiscroll.datetimebase.js"></script>-->
-<!--<script type="text/javascript" src="../js/mobiscroll/js/mobiscroll.datetime.js"></script>-->
-<!--<script type="text/javascript" src="../js/mobiscroll/js/mobiscroll.select.js"></script>-->
-<!--<script type="text/javascript" src="../js/mobiscroll/js/i18n/mobiscroll.i18n.zh.js"></script>-->
+<!--<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+<!--<div class="modal-dialog">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span-->
+<!--class="sr-only">Close</span></button>-->
+<!--<h4 class="modal-title" id="myModalLabel">更新订单信息</h4>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<table class="table table-striped">-->
+<!--<tr>-->
+<!--<td>配送时间：</td>-->
+<!--<td><input id="deliveryTs" class="form-control"></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>订单状态</td>-->
+<!--<td>-->
+<!--<select id="orderStatus" class="form-control">-->
+<!--<option value="未配送">未配送</option>-->
+<!--<option value="配送中">配送中</option>-->
+<!--<option value="已配送（未付款）">已配送（未付款）</option>-->
+<!--<option value="已配送（已付款）">已配送（已付款）</option>-->
+<!--</select>-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+<!--<button type="button" class="btn btn-primary" onclick="_updateOrder()">提交更改</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
-</body>
-</html>
