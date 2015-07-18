@@ -61,9 +61,9 @@ public class EmojiFilter {
                 if (buf == null) {
                     buf = new StringBuilder(source.length());
                 }
-                buf.append(codePoint);
+                buf.append("*");
             } else {
-//                buf.append(codePoint);
+                buf.append(codePoint);
             }
         }
 
