@@ -532,7 +532,7 @@ function goToOrderHistory() {
     $('footer').hide();
 }
 
-function goToProduct(){
+function goToProduct() {
     $('#ma-menu-bar').show();
     $('#subCategoryBlock').show();
     $('#mainListBlock').css('width', '75%');
@@ -545,7 +545,7 @@ function saveToLocalStorage(bill) {
 function setLocalStorage(key, value) {
     if (typeof(Storage) != "undefined") {
         localStorage.setItem(key, value);
-        //console.log('[' + key + ']:[' + value + ']');
+        console.log('[' + key + ']:[' + value + ']');
     } else {
         console.log("local storage is not supported!")
     }
@@ -572,64 +572,30 @@ function sleep(d) {
 }
 
 function getUserInfo() {
-    //if (isTest) {
-    //    $.ajax({
-    //        type: 'get',
-    //        url: app + "/user/wechatId/" + user.openid,
-    //        success: function (data) {
-    //
-    //            user = data;
-    //            wechatId = user.openid;
-    //            $('img.user-icon').attr('src', user.headimgurl);
-    //            setLocalStorage('wechatId', wechatId);
-    //            $.ajax({
-    //                type: 'post',
-    //                url: app + "/user/save_or_update",
-    //                data: JSON.stringify(user),
-    //                contentType: 'application/json',
-    //                success: function (data) {
-    //                    user = data;
-    //                }
-    //            });
-    //        }
-    //    });
-    //}
-    //if (user != undefined) {
-    //    return;
-    //}
-    var code = getURLParameter('code');
-    //if (code != null) {
-    //    if (getLocalStorage('wechatId') != null) {
-    //        $.ajax({
-    //            type: 'get',
-    //            url: app + "/user/wechatId/" + getLocalStorage('wechatId'),
-    //            success: function (data) {
-    //                user = data;
-    //                wechatId = user.openid;
-    //                $('img.user-icon').attr('src', user.headimgurl);
-    //                setLocalStorage('wechatId', wechatId);
-    //            }
-    //        });
-    //    } else {
-    $.ajax({
-        type: 'get',
-        url: app + "/user/code/" + code,
-        success: function (data) {
-            user = data;
-            wechatId = user.openid;
-            $('img.user-icon').attr('src', user.headimgurl);
-            //setLocalStorage('wechatId', wechatId);
-            $.ajax({
-                type: 'post',
-                url: app + "/user/save_or_update",
-                data: JSON.stringify(user),
-                contentType: 'application/json',
-                success: function (data) {
-                    user = data;
-                }
-            });
-        }
-    });
-    //}
-    //}
+    if (user != undefined) {
+        wechatId = user.openid;
+        $('img.user-icon').attr('src', user.headimgurl);
+        return;
+    } else {
+        var code = getURLParameter('code');
+        $.ajax({
+            type: 'get',
+            url: app + "/user/code/" + code,
+            success: function (data) {
+                user = data;
+                wechatId = user.openid;
+                $('img.user-icon').attr('src', user.headimgurl);
+                //setLocalStorage('wechatId', wechatId);
+                $.ajax({
+                    type: 'post',
+                    url: app + "/user/save_or_update",
+                    data: JSON.stringify(user),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        user = data;
+                    }
+                });
+            }
+        });
+    }
 }
