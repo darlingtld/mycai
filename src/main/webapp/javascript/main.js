@@ -618,7 +618,7 @@ function getUserInfo() {
             user = data;
             wechatId = user.openid;
             $('img.user-icon').attr('src', user.headimgurl);
-            setLocalStorage('wechatId', wechatId);
+            //setLocalStorage('wechatId', wechatId);
             $.ajax({
                 type: 'post',
                 url: app + "/user/save_or_update",

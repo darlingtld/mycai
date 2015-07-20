@@ -18,8 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -166,6 +165,69 @@ public class ProductDaoTest {
         System.out.println(productList.size());
         for (Product product : productList) {
             System.out.println(product);
+        }
+    }
+
+    @Test
+    public void updateProductPrice() throws IOException {
+        File file = new File("D:\\MyProjects\\productprice.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] strings = line.split("\\s+");
+            Double price;
+            if (strings.length < 2) {
+                continue;
+            } else if (strings.length == 3) {
+                price = 0.01;
+            } else {
+                price = Double.parseDouble(strings[2]);
+            }
+            String name = strings[0];
+
+            System.out.println(name + " >> " + price);
+
+            List<Product> productList = productService.getAll();
+            boolean hasFound = false;
+            for (Product product : productList) {
+                if (product.getName().equals(name)) {
+                    product.setPrice(price);
+                    productService.update(product);
+                    hasFound = true;
+                    break;
+                }
+            }
+            if (!hasFound) {
+                Product product = new Product();
+                product.setName(name);
+                product.setDescription("精选" + name);
+                product.setPrice(price);
+                product.setUnit("斤");
+                product.setType(Type.SHUCAISHUIGUO);
+                product.setCategory(Category.YECAILEI);
+                productService.save(product);
+            }
+        }
+    }
+
+    @Test
+    public void importImages2() {
+        String imgSrcDir = "C:\\Users\\darlingtld\\IdeaProjects\\mycai_main\\src\\main\\webapp\\product_images";
+        File file = new File(imgSrcDir);
+        File[] imgFiles = file.listFiles();
+        List<Product> productList = productService.getAll();
+
+        for (File imgFile : imgFiles) {
+            for (Product product : productList) {
+//                System.out.println(product.getName() + "==" + imgFile.getName().substring(0, imgFile.getName().indexOf(".")));
+                if (product.generatePicurlHash().equals(imgFile.getName().substring(0, imgFile.getName().indexOf(".")))) {
+                    product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
+                    productService.update(product);
+                    imgFile.renameTo(new File(imgSrcDir + "\\" + product.generatePicurlHash() + ".jpg"));
+                    break;
+                }
+            }
+
         }
     }
 }

@@ -74,7 +74,7 @@ public class UserService {
             logger.info("Get user from codeUserMap by key {}", code);
             return codeUserMap.get(code);
         }
-        logger.info("Code {} is not found in the codeUserMap");
+        logger.info("Code {} is not found in the codeUserMap", code);
 
         String getAccessTokenUrl = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", PropertyHolder.APPID, PropertyHolder.APPSECRET, code);
         logger.info("[Access Token URL] {}", getAccessTokenUrl);

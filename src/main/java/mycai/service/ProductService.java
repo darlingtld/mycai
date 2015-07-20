@@ -128,6 +128,7 @@ public class ProductService {
             productInDB.setPrice(product.getPrice());
             productInDB.setUnit(product.getUnit());
             productInDB.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
+//            productInDB.setPicurl(product.getPicurl());
         }
         productDao.update(productInDB);
     }
