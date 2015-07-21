@@ -114,8 +114,7 @@ public class UserService {
     @Transactional
     public User getUserByWechatId(String fromUserName) {
         User user = userDao.getUserByWechatId(fromUserName);
-        List<Order> orderList = orderDao.getList(user.getOpenid());
-        user.setOrderList(orderList);
+
         return user;
     }
 
@@ -131,7 +130,14 @@ public class UserService {
             userDao.save(user);
         } else {
             userInDB.setNickname(user.getNickname());
+            userInDB.setUsername(user.getUsername());
             userInDB.setHeadimgurl(user.getHeadimgurl());
+            userInDB.setMobile(user.getMobile());
+            userInDB.setEmail(user.getEmail());
+            userInDB.setHeadimgurl(user.getHeadimgurl());
+            userInDB.setShopInfo(user.getShopInfo());
+            userInDB.setConsignee(user.getConsignee());
+            userInDB.setConsigneeContact(user.getConsigneeContact());
             userDao.update(userInDB);
         }
         return userDao.getUserByWechatId(user.getOpenid());

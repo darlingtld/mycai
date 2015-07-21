@@ -149,3 +149,15 @@ div.checkout_info {
     margin-top: 40px;
 }
 
+table.register input {
+    width: 100%;
+}
+
+table.register td {
+    vertical-align: middle;
+}
+
+table.register span {
+    display: inline-block;
+}
+

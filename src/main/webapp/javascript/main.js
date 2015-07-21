@@ -11,6 +11,7 @@ var bill = {
 }
 var user;
 var wechatId;
+var username;
 
 if (isTest) {
     user = {
@@ -23,6 +24,31 @@ if (isTest) {
     }
     wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
 }
+
+mycaiModule.service('authService', function ($http) {
+    this.getUserInfo = function (callback) {
+        if (user != undefined) {
+            wechatId = user.openid;
+            $('img.user-icon').attr('src', user.headimgurl);
+            if (callback && typeof(callback) === "function") {
+                callback();
+            }
+        } else {
+            var code = getURLParameter('code');
+            $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+                user = data;
+                wechatId = user.openid;
+                $('img.user-icon').attr('src', user.headimgurl);
+                $http.post(app + "/user/save_or_update", JSON.stringify(user)).success(function (data, status, headers, config) {
+                    user = data;
+                    if (callback && typeof(callback) === "function") {
+                        callback();
+                    }
+                });
+            });
+        }
+    };
+});
 
 mycaiModule.config(function () {
         var isOrderHistory = getURLParameter('order_history');
@@ -54,8 +80,8 @@ mycaiModule.config(function () {
 )
 
 
-mycaiModule.controller('mainController', function ($location) {
-    getUserInfo();
+mycaiModule.controller('mainController', function ($location, authService) {
+    authService.getUserInfo();
     var isOrderHistory = getURLParameter('order_history');
     if (isOrderHistory != null) {
         goToOrderHistory();
@@ -109,6 +135,10 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
             init();
             $location.path('/');
         } else {
+            if (user == undefined || user.username == undefined) {
+                alert('您尚未注册，请先注册~')
+                $location.path('/register');
+            }
             goToConfirm();
             $('.datetime').mobiscroll().datetime({
                 theme: 'sense-ui',     // Specify theme like: theme: 'ios' or omit setting to use default
@@ -116,7 +146,7 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
                 lang: 'zh',       // Specify language like: lang: 'pl' or omit setting to use default
                 minDate: new Date(),  // More info about minDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-minDate
                 maxDate: new Date(2020, 1, 1, 1, 1),   // More info about maxDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-maxDate
-                stepMinute: 10  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
+                //stepMinute: 10  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
             });
 
             $scope.bill = bill;
@@ -129,14 +159,17 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
                 ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
             }
 
-            $('#shop_info').val(user.shopInfo);
-            $('#consignee').val(user.consignee);
-            $('#consignee_contact').val(user.consigneeContact);
+
+            if (user != undefined) {
+                $('#shop_info').val(user.shopInfo);
+                $('#consignee').val(user.consignee);
+                $('#consignee_contact').val(user.consigneeContact);
+            }
 
             $('div.checkout').on('click', 'a.next', function () {
 
                 var order = {
-                    userId: user.nickname,
+                    userId: user.username,
                     wechatId: wechatId,
                     bill: JSON.stringify(bill),
                     orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
@@ -171,36 +204,10 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
 
 mycaiModule.controller('orderController', function ($http, $scope) {
     goToOrderHistory();
-    //var code = getURLParameter('code');
-    //if (code == null) {
-    //    wechatId = getLocalStorage('wechatId');
-    //    $http.get(app + '/order/get/' + wechatId).success(function (data, status, headers, config) {
-    //        user = data;
-    //        $('img.user_icon').attr('src', user.headimgurl);
-    //    });
     var url = app + '/order/get/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.orders = data;
     });
-    //} else {
-    //    $http.get(app + "/user/code/" + code).success(function (data) {
-    //        user = data;
-    //        wechatId = data.openid;
-    //        $('img.user_icon').attr('src', user.headimgurl);
-    //        var url = app + '/order/get/' + wechatId;
-    //        $http.get(url).success(function (data, status, headers, config) {
-    //$scope.orders = user.orderList;
-    //});
-    //});
-    //}
-
-    //goToOrderHistory();
-    //var url = app + '/order/get/' + wechatId;
-    //$http.get(url).success(function (data, status, headers, config) {
-    //    $scope.orders = data;
-    //});
-
-
 });
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
@@ -216,6 +223,46 @@ mycaiModule.controller('orderDetailController', function ($http, $scope, $routeP
             $scope.actTotal = JSON.parse($scope.orderDetail.confirmBill)
         }
     });
+
+});
+mycaiModule.controller('routerController', function ($http, $scope, $location) {
+    if (user == undefined || user.username == undefined) {
+        alert('您尚未注册，请先注册~')
+        $location.path('/register');
+    } else {
+        $location.path('/confirm')
+    }
+});
+mycaiModule.controller('registerController', function ($http, $scope, $location) {
+    goToRegister();
+    $scope.register = function () {
+        if (user == undefined) {
+            user = {
+                username: $scope.username,
+                email: $scope.email,
+                mobile: $scope.mobile
+            }
+        } else {
+            user.username = $scope.username;
+            user.email = $scope.email;
+            user.mobile = $scope.mobile;
+        }
+        if (user.username == undefined || user.username.trim() == '') {
+            alert('请输入用户名');
+            return;
+        } else if (user.mobile == undefined || user.mobile.trim() == '') {
+            alert('请输入手机号');
+            return;
+        } else if (user.email == undefined || user.email.trim() == '') {
+            alert('请输入邮箱');
+            return;
+        }
+        //console.log(user);
+        $http.post(app + "/user/save_or_update", JSON.stringify(user)).success(function (data, status, headers, configs) {
+            alert('注册成功');
+            $location.path('/confirm');
+        });
+    }
 
 });
 
@@ -298,6 +345,14 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
         .when('/order/details/:id', {
             controller: 'orderDetailController',
             templateUrl: 'orderDetails.html'
+        })
+        .when('/register', {
+            controller: 'registerController',
+            templateUrl: 'register.html'
+        })
+        .when('/router', {
+            controller: 'routerController',
+            template: ''
         })
         .otherwise({
             redirectTo: '/product/category/yecailei'
@@ -513,12 +568,13 @@ function goToCheckout() {
     $('#ma-menu-bar').show();
     $('#subCategoryBlock').hide();
     $('#mainListBlock').css('width', '100%');
-    $('a.next').attr('href', '#/confirm');
+    $('a.next').attr('href', '#/router');
     $('a.next').text('确认订单');
 }
 
 function goToConfirm() {
     init();
+    $('#ma-menu-bar').show();
     $('#subCategoryBlock').hide();
     $('#mainListBlock').css('width', '100%');
     $('.checkout').html('<div><a class="next">提交</a>');
@@ -526,6 +582,13 @@ function goToConfirm() {
 }
 
 function goToOrderHistory() {
+    $('#subCategoryBlock').hide();
+    $('#mainListBlock').css('width', '100%');
+    $('#ma-menu-bar').hide();
+    $('footer').hide();
+}
+
+function goToRegister() {
     $('#subCategoryBlock').hide();
     $('#mainListBlock').css('width', '100%');
     $('#ma-menu-bar').hide();
@@ -569,33 +632,4 @@ function clearLocalStorage() {
 
 function sleep(d) {
     for (var t = Date.now(); Date.now() - t <= d;);
-}
-
-function getUserInfo() {
-    if (user != undefined) {
-        wechatId = user.openid;
-        $('img.user-icon').attr('src', user.headimgurl);
-        return;
-    } else {
-        var code = getURLParameter('code');
-        $.ajax({
-            type: 'get',
-            url: app + "/user/code/" + code,
-            success: function (data) {
-                user = data;
-                wechatId = user.openid;
-                $('img.user-icon').attr('src', user.headimgurl);
-                //setLocalStorage('wechatId', wechatId);
-                $.ajax({
-                    type: 'post',
-                    url: app + "/user/save_or_update",
-                    data: JSON.stringify(user),
-                    contentType: 'application/json',
-                    success: function (data) {
-                        user = data;
-                    }
-                });
-            }
-        });
-    }
 }

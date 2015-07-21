@@ -34,6 +34,13 @@ public class UserController {
     @ResponseBody
     User getUserInformation(@PathVariable("code") String code, HttpServletResponse response) {
         logger.info("Get user information with code {}", code);
+
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        return  userService.getUserByWechatId("o5Irvt5957jQ4xmdHmDp59epk0UU");
         User user = userService.getUserInformation(code);
 //
         if (user == null) {

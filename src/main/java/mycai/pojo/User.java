@@ -33,8 +33,10 @@ public class User {
     private int id;
     @Column(name = "wechat_id", columnDefinition = "varchar(255) default 0")
     private String openid;
-    @Column(name = "username")
+    @Column(name = "nickname")
     private String nickname;
+    @Column(name = "username")
+    private String username;
     @Column(name = "role")
     private String role;
     @Transient
@@ -57,16 +59,10 @@ public class User {
     private String consigneeContact;
     @Column(name = "shop_info")
     private String shopInfo;
-    @Transient
-    private List<Order> orderList;
-
-    public List<Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
-    }
+    @Column(name = "email")
+    private String email;
+    @Column(name = "mobile")
+    private String mobile;
 
     @Override
     public String toString() {
@@ -74,6 +70,7 @@ public class User {
                 "id=" + id +
                 ", openid='" + openid + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 ", sex='" + sex + '\'' +
                 ", province='" + province + '\'' +
@@ -85,8 +82,33 @@ public class User {
                 ", consignee='" + consignee + '\'' +
                 ", consigneeContact='" + consigneeContact + '\'' +
                 ", shopInfo='" + shopInfo + '\'' +
-                ", orderList=" + orderList +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
                 '}';
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getShopInfo() {
