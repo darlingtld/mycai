@@ -54,14 +54,36 @@
         <div>
             总价：<span id="totalPrice" ng-bind="totalPrice">0</span>元
         </div>
-        <div><a class="btn btn-info" ng-click="confirm()">确认</a>
+        <div><a class="btn btn-info" data-toggle="modal" data-target="#myModal">确认</a>
         </div>
     </div>
 </footer>
 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">订单状态</h4>
+            </div>
+            <div class="modal-body">
+                <p id="order-status"></p>
+
+            </div>
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            <!--</div>-->
+        </div>
+
+    </div>
+</div>
+
 <!--js load -->
 <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="javascript/deliv.js"></script>
 <!--mobiscroll-->
 </body>

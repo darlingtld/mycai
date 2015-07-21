@@ -6,6 +6,12 @@ var isTest = false;
 var user;
 var wechatId;
 var confirmCode;
+var orderStatus = {
+    NOT_DELIVERED: "未配送",
+    IN_DELIVERY: "配送中",
+    DELIVERED_NOT_PAID: "已配送（未付款）",
+    DELIVERED_PAID: "已配送（已付款）"
+}
 
 if (isTest) {
     user = {
@@ -28,6 +34,12 @@ var bill = {
 
 delivModule.config(function () {
         confirmCode = getURLParameter('confirm_code');
+        var html = '';
+        html += '<button class="btn btn-info btn-block" ng-click="confirm($event)">' + orderStatus.NOT_DELIVERED + '</button><br>'
+        html += '<button class="btn btn-success btn-block" ng-click="confirm($event)">' + orderStatus.IN_DELIVERY + '</button><br>'
+        html += '<button class="btn btn-danger btn-block" ng-click="confirm($event)">' + orderStatus.DELIVERED_NOT_PAID + '</button><br>'
+        html += '<button class="btn btn-primary btn-block" ng-click="confirm($event)">' + orderStatus.DELIVERED_PAID + '</button><br>'
+        $('#order-status').html(html);
     }
 );
 
@@ -36,8 +48,8 @@ delivModule.controller('mainController', function ($scope, $http) {
     var url = app + '/order/confirm_code/' + confirmCode;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.order = data;
-        if ($scope.order.status == '已收货') {
-            alert('该订单已确认收货！');
+        if ($scope.order.status == orderStatus.DELIVERED_PAID) {
+            alert('该订单已配送（已付款）！');
             $('body').html('订单已确认！');
         }
         $scope.items = JSON.parse($scope.order.bill).items;
@@ -72,8 +84,8 @@ delivModule.controller('mainController', function ($scope, $http) {
         order.confirmTs = new Date().Format("yyyy-MM-dd hh:mm:ss");
     }
 
-    $scope.confirm = function () {
-        $scope.order.status = '已收货';
+    $scope.confirm = function (target) {
+        $scope.order.status = target.target.innerText;
         console.log($scope.order);
 
         $http.post(app + "/order/update", JSON.stringify($scope.order)).

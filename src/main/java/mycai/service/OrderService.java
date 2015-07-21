@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import mycai.dao.OrderDao;
 import mycai.dao.ProductDao;
 import mycai.dao.UserDao;
+import mycai.pojo.Dispatch;
 import mycai.pojo.Order;
 import mycai.pojo.Product;
 import mycai.pojo.User;
@@ -123,5 +124,11 @@ public class OrderService {
             }
         }
         return productList;
+    }
+
+    @Transactional
+    public List<Dispatch> getDispatchList() {
+
+        return null;
     }
 }

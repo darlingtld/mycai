@@ -132,6 +132,15 @@ adminModule.controller('orderController', function ($scope, $http) {
     }
 });
 
+adminModule.controller('dispatchController', function ($scope, $http) {
+    $('li[role]').removeClass('active');
+    $('li[role="manage_dispatch"]').addClass('active');
+    $http.get(app + '/order/dispatch/list').success(function (data) {
+        $scope.dispatchList = data;
+    });
+
+});
+
 adminModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/order', {
@@ -141,6 +150,10 @@ adminModule.config(['$routeProvider', function ($routeProvider) {
         .when('/product', {
             controller: 'productController',
             templateUrl: 'product.html'
+        })
+        .when('/dispatch', {
+            controller: 'dispatchController',
+            templateUrl: 'dispatch.html'
         })
         .otherwise({
             redirectTo: '/product'

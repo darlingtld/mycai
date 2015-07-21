@@ -1,5 +1,6 @@
 package mycai.controller;
 
+import mycai.pojo.Dispatch;
 import mycai.pojo.Order;
 import mycai.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,12 @@ public class OrderController {
     @ResponseBody
     boolean updateOrder(@RequestBody Order order) {
         return orderService.update(order);
+    }
+
+    @RequestMapping(value = "/dispatch/list", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Dispatch> getDispatchList() {
+        return orderService.getDispatchList();
     }
 }

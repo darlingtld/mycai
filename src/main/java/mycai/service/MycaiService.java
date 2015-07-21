@@ -1,5 +1,6 @@
 package mycai.service;
 
+import mycai.pojo.OrderStatus;
 import mycai.pojo.Role;
 import mycai.pojo.User;
 import mycai.pojo.message.req.TextMessage;
@@ -89,31 +90,40 @@ public class MycaiService {
                     //check if the request comes from a deliveryman
                     User user = userService.getUserByWechatId(fromUserName);
                     if (Role.DELIVERYMAN.toString().equalsIgnoreCase(user.getRole())) {
-                        if (orderService.getOrderByConfirmCode(content).getStatus().equals("已收货")) {
+                        if (orderService.getOrderByConfirmCode(content) == null) {
                             TextMessage textMessage = new TextMessage();
                             textMessage.setToUserName(fromUserName);
                             textMessage.setFromUserName(toUserName);
                             textMessage.setCreateTime(new Date().getTime());
                             textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-                            textMessage.setContent(String.format("订单%s已确认收货", content));
+                            textMessage.setContent(String.format("该订单不存在"));
                             return MessageUtil.messageToXml(textMessage);
+                        } else if (orderService.getOrderByConfirmCode(content).getStatus().equals(OrderStatus.DELIVERED_PAID)) {
+                            TextMessage textMessage = new TextMessage();
+                            textMessage.setToUserName(fromUserName);
+                            textMessage.setFromUserName(toUserName);
+                            textMessage.setCreateTime(new Date().getTime());
+                            textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+                            textMessage.setContent(String.format("订单%s已配送(已付款)", content));
+                            return MessageUtil.messageToXml(textMessage);
+                        } else {
+                            NewsMessage newsMessage = new NewsMessage();
+                            newsMessage.setToUserName(fromUserName);
+                            newsMessage.setFromUserName(toUserName);
+                            newsMessage.setCreateTime(new Date().getTime());
+                            newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+                            newsMessage.setFuncFlag(0);
+                            List<Article> articleList = new ArrayList<Article>();
+                            Article article = new Article();
+                            article.setTitle("订单确认码 ：" + content);
+                            article.setDescription("送达订单确认̨");
+                            article.setPicUrl(PropertyHolder.SERVER + "/images/confirm.jpg");
+                            article.setUrl(PropertyHolder.SERVER + "/confirm_deliv.html?confirm_code=" + content);
+                            articleList.add(article);
+                            newsMessage.setArticleCount(articleList.size());
+                            newsMessage.setArticles(articleList);
+                            return MessageUtil.messageToXml(newsMessage);
                         }
-                        NewsMessage newsMessage = new NewsMessage();
-                        newsMessage.setToUserName(fromUserName);
-                        newsMessage.setFromUserName(toUserName);
-                        newsMessage.setCreateTime(new Date().getTime());
-                        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-                        newsMessage.setFuncFlag(0);
-                        List<Article> articleList = new ArrayList<Article>();
-                        Article article = new Article();
-                        article.setTitle("订单确认码 ：" + content);
-                        article.setDescription("送达订单确认̨");
-                        article.setPicUrl(PropertyHolder.SERVER + "/images/confirm.jpg");
-                        article.setUrl(PropertyHolder.SERVER + "/confirm_deliv.html?confirm_code=" + content);
-                        articleList.add(article);
-                        newsMessage.setArticleCount(articleList.size());
-                        newsMessage.setArticles(articleList);
-                        return MessageUtil.messageToXml(newsMessage);
                     }
 
                 }
