@@ -66,4 +66,8 @@ public class OrderDao {
     public List<Order> getListByTimeFrame(String wechatid, Calendar then, Calendar now) {
         return (List<Order>) sessionFactory.getCurrentSession().createQuery(String.format("from Order where wechatId = '%s' and orderTs >= '%s' and orderTs <= '%s'", wechatid, formatter.format(then.getTime()), formatter.format(now.getTime()))).list();
     }
+
+    public List<Order> getOrderListByStatus(String notDelivered) {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Order where status='%s'", notDelivered)).list();
+    }
 }

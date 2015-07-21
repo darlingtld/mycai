@@ -6,10 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import mycai.dao.OrderDao;
 import mycai.dao.ProductDao;
 import mycai.dao.UserDao;
-import mycai.pojo.Dispatch;
-import mycai.pojo.Order;
-import mycai.pojo.Product;
-import mycai.pojo.User;
+import mycai.pojo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,6 +125,7 @@ public class OrderService {
 
     @Transactional
     public List<Dispatch> getDispatchList() {
+        List<Order> orderList = orderDao.getOrderListByStatus(OrderStatus.NOT_DELIVERED);
 
         return null;
     }
