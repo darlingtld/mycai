@@ -1,3 +1,13 @@
 th:hover {
     cursor: pointer;
 }
+
+select.product-picker {
+    display: block;
+    margin: 20px 0px 10px 0px;
+
+}
+
+#add_product {
+    margin-top: 20px;
+}

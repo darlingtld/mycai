@@ -3,22 +3,95 @@
  */
 var adminModule = angular.module('AdminModule', ['ngRoute']);
 var app = '/mycai';
+var cdata = {
+    "蔬菜水果": {
+        "叶菜类": "category/yecailei",
+        "根茎类": "category/genjinglei",
+        "茄果类": "category/qieguolei",
+        "豆类": "category/doulei",
+        "葱姜蒜": "category/congjiangsuan",
+        "菌类": "category/junlei",
+        "特菜": "category/tecai"
+    },
+    "禽肉蛋类": {
+        "一级白条": "category/yijibaitiao",
+        "二级白条": "category/erjibaitiao",
+        "冻猪肉": "category/dongzhurou",
+        "羊肉": "category/yangrou",
+        "牛肉": "category/niurou",
+        "鲜鸡肉": "category/xianjirou",
+        "冻鸡肉": "category/dongjirou",
+        "鸭肉": "category/yarou",
+        "禽类": "category/qinlei",
+        "禽蛋类": "category/qindanlei",
+        "熟食加工": "category/shushijiagong"
+    },
+    "水产冻货": {
+        "海鲜水产": "category/haixianshuichan",
+        "鱼丸火锅": "category/yuwanhuoguo",
+    },
+    "米面粮油": {
+        "大米": "category/dami",
+        "面粉面条": "category/mianfenmiantiao",
+        "食用油": "category/shiyongyou",
+        "杂粮": "category/zaliang",
+        "面点": "category/miandian",
+        "烘焙佐料": "category/hongbeizuoliao",
+    },
+    "调料其他": {
+        "调味品": "category/tiaoweipin",
+        "粉丝粉条": "category/fensifentiao",
+        "豆制品": "category/douzhipin",
+        "干货": "category/ganhuo",
+        "调味品": "category/tiaoweipin",
+        "酱油醋": "category/jiangyoucu",
+        "腌菜罐头": "category/yancaiguantou"
+    },
+    "餐厨用品": {
+        "纸品湿巾": "category/zhipinshijin",
+        "餐饮用具": "category/canyinyongju",
+    },
+    "酒水饮料": {
+        "饮料": "category/yinliao",
+        "饮用水": "category/yinyongshui",
+    }
+}
 
-adminModule.controller('productController', function ($scope, $http) {
+adminModule.controller('productController', function ($scope, $http, $routeParams, $location) {
     $('li[role]').removeClass('active');
     $('li[role="manage_product"]').addClass('active');
+
+    $scope.changedValue = function (item) {
+        var productUrl = app + '/product/' + item + '/wechatid/0';
+        $http.get(productUrl).success(function (data, status, headers, config) {
+            $scope.products = data;
+        });
+    }
+
+    objS = $('select.product-picker');
+    var selectHtml = '';
+    $.each(cdata, function (name, value) {
+        selectHtml += '<optgroup label="' + name + '">'
+        $.each(value, function (name, value) {
+            selectHtml += '<option value="' + value + '">' + name + '</option>';
+        });
+        selectHtml += '</optgroup>';
+    });
+    objS.html(selectHtml);
+
+    //var selected = $routeParams.category;
+    //objS.val('category/' + selected);
 
     var typeUrl = app + '/product/type_map';
     $http.get(typeUrl).success(function (data, status, headers, config) {
         $scope.typeMap = data;
     });
 
-    var productUrl = app + '/product/all';
+    var productUrl = app + '/product/category/' + $routeParams.category + '/wechatid/0';
     $http.get(productUrl).success(function (data, status, headers, config) {
         $scope.products = data;
     });
     $scope.modify = function (id) {
-        $('#dialog').modal('show');
         $('#dialog').attr('method', 'update');
         for (var i = 0; i < $scope.products.length; i++) {
             var product;
@@ -30,16 +103,14 @@ adminModule.controller('productController', function ($scope, $http) {
         $('#pid').val(product.id);
         $('#name').val(product.name);
         $('#description').val(product.description);
-        //$("#type").find("option[value='" + product.type + "']").attr("selected", true);
         //$('#type').val(product.type);
-        //$('#category').find("option[value='" + product.category + "']").attr("selected", true);
+        //$('#category').val(product.category);
         $('#price').val(product.price);
         $('#unit').val(product.unit);
 
     };
 
     $scope.create = function () {
-        $('#dialog').modal('show');
         $('#dialog').attr('method', 'create');
     };
     $scope.save = function () {
@@ -80,8 +151,7 @@ adminModule.controller('orderController', function ($scope, $http) {
     });
 
     $scope.modify = function (id) {
-        $('#dialog').modal('show');
-        $('#dialog').attr('method', 'update');
+        $('#myDialog').attr('method', 'update');
         for (var i = 0; i < $scope.orders.length; i++) {
             var order;
             if (id == $scope.orders[i].id) {
@@ -147,7 +217,7 @@ adminModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'orderController',
             templateUrl: 'orders.html'
         })
-        .when('/product', {
+        .when('/product/category/:category', {
             controller: 'productController',
             templateUrl: 'product.html'
         })
@@ -156,6 +226,6 @@ adminModule.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'dispatch.html'
         })
         .otherwise({
-            redirectTo: '/product'
+            redirectTo: '/product/category/yecailei'
         });
 }]);
