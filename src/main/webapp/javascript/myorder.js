@@ -23,13 +23,56 @@ mycaiModule.config(function () {
 
 });
 
-mycaiModule.controller('orderController', function ($http, $scope) {
-    getUserInfo(function () {
-        var url = app + '/order/get/' + wechatId;
-        $http.get(url).success(function (data, status, headers, config) {
-            $scope.orders = data;
+
+mycaiModule.controller('routerController', function ($http, $scope, $location) {
+    getUserInfo();
+    if (user == undefined || user == null) {
+        var code = getURLParameter('code');
+        $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+            user = data;
+            wechatId = user.openid;
+            $('img.user-icon').attr('src', user.headimgurl);
+            setLocalStorage('wechatId', wechatId);
         });
-    })
+    }
+    sleep(2000)
+    $location.path('/order/history');
+
+});
+
+mycaiModule.controller('orderController', function ($http, $scope) {
+    //getUserInfo(function () {
+    if (user == undefined || user == null) {
+        var code = getURLParameter('code');
+        $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+            user = data;
+            wechatId = user.openid;
+            $('img.user-icon').attr('src', user.headimgurl);
+            setLocalStorage('wechatId', wechatId);
+        });
+    }
+    if (wechatId == undefined) {
+        wechatId = getLocalStorage('wechatId');
+    }
+    var url = app + '/order/get/' + wechatId;
+    $http.get(url).success(function (data, status, headers, config) {
+        $scope.orders = data;
+    });
+    //})
+
+    //sleep(2000)
+    //if (user == undefined || user == null) {
+    //    var code = getURLParameter('code');
+    //    $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+    //        user = data;
+    //        wechatId = user.openid;
+    //        $('img.user-icon').attr('src', user.headimgurl);
+    //        var url = app + '/order/get/' + wechatId;
+    //        $http.get(url).success(function (data, status, headers, config) {
+    //            $scope.orders = data;
+    //        });
+    //    });
+    //}
 });
 
 mycaiModule.controller('orderDetailController', function ($http, $scope, $routeParams) {
@@ -70,8 +113,12 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'orderDetailController',
             templateUrl: 'orderDetails.html'
         })
+        .when('/router', {
+            controller: 'routerController',
+            template: ''
+        })
         .otherwise({
-            redirectTo: '/order/history'
+            redirectTo: '/router'
         });
 }]);
 
@@ -124,15 +171,6 @@ function getUserInfo(callback) {
             if (callback && typeof(callback) === "function") {
                 callback();
             }
-            $.ajax({
-                type: 'post',
-                url: app + "/user/save_or_update",
-                data: JSON.stringify(user),
-                contentType: 'application/json',
-                success: function (data) {
-                    user = data;
-                }
-            });
         }
     });
 }

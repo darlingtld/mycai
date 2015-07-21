@@ -34,12 +34,12 @@ var bill = {
 
 delivModule.config(function () {
         confirmCode = getURLParameter('confirm_code');
-        var html = '';
-        html += '<button class="btn btn-info btn-block" ng-click="confirm($event)">' + orderStatus.NOT_DELIVERED + '</button><br>'
-        html += '<button class="btn btn-success btn-block" ng-click="confirm($event)">' + orderStatus.IN_DELIVERY + '</button><br>'
-        html += '<button class="btn btn-danger btn-block" ng-click="confirm($event)">' + orderStatus.DELIVERED_NOT_PAID + '</button><br>'
-        html += '<button class="btn btn-primary btn-block" ng-click="confirm($event)">' + orderStatus.DELIVERED_PAID + '</button><br>'
-        $('#order-status').html(html);
+        //var html = '';
+        //html += '<button class="btn btn-info btn-block" ng-click="confirm($event)">' + orderStatus.NOT_DELIVERED + '</button><br>'
+        //html += '<button class="btn btn-success btn-block" ng-click="confirm($event)">' + orderStatus.IN_DELIVERY + '</button><br>'
+        //html += '<button class="btn btn-danger btn-block" ng-click="confirm($event)">' + orderStatus.DELIVERED_NOT_PAID + '</button><br>'
+        //html += '<button class="btn btn-primary btn-block" ng-click="confirm($event)">' + orderStatus.DELIVERED_PAID + '</button><br>'
+        //$('#order-status').html(html);
     }
 );
 

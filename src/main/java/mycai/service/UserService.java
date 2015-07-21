@@ -130,10 +130,10 @@ public class UserService {
             userDao.save(user);
         } else {
             userInDB.setNickname(user.getNickname());
-            userInDB.setUsername(user.getUsername());
+//            userInDB.setUsername(user.getUsername());
             userInDB.setHeadimgurl(user.getHeadimgurl());
-            userInDB.setMobile(user.getMobile());
-            userInDB.setEmail(user.getEmail());
+//            userInDB.setMobile(user.getMobile());
+//            userInDB.setEmail(user.getEmail());
             userInDB.setHeadimgurl(user.getHeadimgurl());
             userInDB.setShopInfo(user.getShopInfo());
             userInDB.setConsignee(user.getConsignee());

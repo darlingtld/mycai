@@ -36,10 +36,12 @@ public class OrderService {
     @Transactional
     public int save(Order order) {
         User user = userDao.getUserByWechatId(order.getWechatId());
-        user.setConsignee(order.getConsignee());
-        user.setConsigneeContact(order.getConsigneeContact());
-        user.setShopInfo(order.getShopInfo());
-        userDao.update(user);
+        if (user != null) {
+            user.setConsignee(order.getConsignee());
+            user.setConsigneeContact(order.getConsigneeContact());
+            user.setShopInfo(order.getShopInfo());
+            userDao.update(user);
+        }
         String code = generateConfirmCode();
         while (isConfirmCodeExisted(code)) {
             code = generateConfirmCode();

@@ -27,7 +27,7 @@ if (isTest) {
 
 mycaiModule.service('authService', function ($http) {
     this.getUserInfo = function (callback) {
-        if (user != undefined) {
+        if (user != undefined && user != null) {
             wechatId = user.openid;
             $('img.user-icon').attr('src', user.headimgurl);
             if (callback && typeof(callback) === "function") {
@@ -100,6 +100,15 @@ mycaiModule.controller('navController', function ($scope, $http, $routeParams) {
 
 mycaiModule.controller('productController', function ($scope, $http, $routeParams) {
     goToProduct();
+    if (user == undefined || user == null) {
+        var code = getURLParameter('code');
+        $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+            user = data;
+            wechatId = user.openid;
+            $('img.user-icon').attr('src', user.headimgurl);
+
+        });
+    }
     var url = app + '/product/category/' + $routeParams.category + '/wechatid/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
@@ -109,6 +118,14 @@ mycaiModule.controller('productController', function ($scope, $http, $routeParam
 
 mycaiModule.controller('mostBuyController', function ($scope, $http, $routeParams) {
     goToProduct();
+    if (user == undefined || user == null) {
+        var code = getURLParameter('code');
+        $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+            user = data;
+            wechatId = user.openid;
+            $('img.user-icon').attr('src', user.headimgurl);
+        });
+    }
     var url = app + '/product/most_bought/' + $routeParams.frequent + '/wechatid/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
@@ -123,6 +140,17 @@ mycaiModule.controller('checkoutController', function ($scope, $location) {
         $location.path('/');
     } else {
         goToCheckout();
+        if (user == undefined || user == null) {
+            var code = getURLParameter('code');
+            $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+                user = data;
+                wechatId = user.openid;
+                $('img.user-icon').attr('src', user.headimgurl);
+                $http.post(app + "/user/save_or_update", JSON.stringify(user)).success(function (data, status, headers, config) {
+                    user = data;
+                });
+            });
+        }
         $scope.bill = bill;
     }
 
@@ -135,11 +163,22 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
             init();
             $location.path('/');
         } else {
-            if (user == undefined || user.username == undefined) {
-                alert('您尚未注册，请先注册~')
-                $location.path('/register');
-            }
+            //if (user == undefined || user.username == undefined) {
+            //    alert('您尚未注册，请先注册~')
+            //    $location.path('/register');
+            //}
             goToConfirm();
+            if (user == undefined || user == null) {
+                var code = getURLParameter('code');
+                $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+                    user = data;
+                    wechatId = user.openid;
+                    $('img.user-icon').attr('src', user.headimgurl);
+                    $http.post(app + "/user/save_or_update", JSON.stringify(user)).success(function (data, status, headers, config) {
+                        user = data;
+                    });
+                });
+            }
             $('.datetime').mobiscroll().datetime({
                 theme: 'sense-ui',     // Specify theme like: theme: 'ios' or omit setting to use default
                 mode: 'scroller',       // Specify scroller mode like: mode: 'mixed' or omit setting to use default
@@ -167,10 +206,15 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
             }
 
             $('div.checkout').on('click', 'a.next', function () {
-
+                if (user == undefined) {
+                    user = {
+                        nickname: 'songda',
+                        openid: 'songda'
+                    }
+                }
                 var order = {
-                    userId: user.username,
-                    wechatId: wechatId,
+                    userId: user.nickname,
+                    wechatId: user.openid,
                     bill: JSON.stringify(bill),
                     orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                     deliveryTs: $('#delivery_ts').val(),
@@ -568,7 +612,7 @@ function goToCheckout() {
     $('#ma-menu-bar').show();
     $('#subCategoryBlock').hide();
     $('#mainListBlock').css('width', '100%');
-    $('a.next').attr('href', '#/router');
+    $('a.next').attr('href', '#/confirm');
     $('a.next').text('确认订单');
 }
 
