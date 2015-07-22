@@ -1,27 +1,27 @@
 <div class="container">
 
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover table-responsive">
         <thead>
         <tr>
-            <th ng-click="f='name'; rev=!rev">名字  <i class="icon-resize-vertical"></i></th>
-            <th ng-click="f='description'; rev=!rev">描述  <i class="icon-resize-vertical"></i></th>
-            <th ng-click="f='type'; rev=!rev">大类  <i class="icon-resize-vertical"></i></th>
-            <th ng-click="f='category'; rev=!rev">小类  <i class="icon-resize-vertical"></i></th>
-            <th ng-click="f='price'; rev=!rev">价格（元）  <i class="icon-resize-vertical"></i></th>
-            <th ng-click="f='unit'; rev=!rev">单位  <i class="icon-resize-vertical"></i></th>
-            <th>操作</th>
+            <th ng-click="f='name'; rev=!rev">名字 <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
+            <th ng-click="f='quantity'; rev=!rev">总量 <span class="glyphicon glyphicon-sort" aria-hidden="true"></span>
+            </th>
+            <th>单位</th>
+            <th ng-click="f='type'; rev=!rev">详细 <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="product in products | orderBy: f : rev">
-            <td ng-bind="product.name"></td>
-            <td ng-bind="product.description"></td>
-            <td ng-bind="product.type"></td>
-            <td ng-bind="product.category"></td>
-            <td ng-bind="product.price"></td>
-            <td ng-bind="product.unit"></td>
-            <td>
-                <button ng-click="modify(product.id)" class="btn btn-primary btn-sm">修改</button>
+        <tr ng-repeat="dispatch in dispatchList | orderBy: f : rev">
+            <td ng-bind="dispatch.product.name"></td>
+            <td ng-bind="dispatch.quantity"></td>
+            <td ng-bind="dispatch.unit"></td>
+            <td><select multiple class="form-control" id="sel2">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
             </td>
         </tr>
         </tbody>

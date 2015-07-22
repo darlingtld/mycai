@@ -128,7 +128,40 @@ public class OrderService {
     @Transactional
     public List<Dispatch> getDispatchList() {
         List<Order> orderList = orderDao.getOrderListByStatus(OrderStatus.NOT_DELIVERED);
+        List<Product> allProductList = productDao.getAll();
+        HashMap<Integer, Product> allProductMap = new HashMap<>();
+        for (Product product : allProductList) {
+            allProductMap.put(product.getId(), product);
+        }
+        Map<Integer, Dispatch> dispatchMap = new HashMap<>();
+        for (Order order : orderList) {
+            JSONObject jsonObject = JSON.parseObject(order.getBill());
+            JSONArray jsonArray = jsonObject.getJSONArray("items");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                Integer productId = jsonArray.getJSONObject(i).getInteger("productId");
+                Integer amount = jsonArray.getJSONObject(i).getInteger("amount");
+                String unit = jsonArray.getJSONObject(i).getString("productUnit");
+                Product product = allProductMap.get(productId);
+                if (product == null) {
+                    continue;
+                }
+                if (dispatchMap.containsKey(productId)) {
+                    dispatchMap.get(productId).setQuantity(dispatchMap.get(productId).getQuantity() + amount);
+                    dispatchMap.get(productId).getOrderList().add(order);
+                } else {
+                    Dispatch dispatch = new Dispatch();
+                    dispatch.setProduct(product);
+                    dispatch.setQuantity(amount);
+                    List<Order> orders = new ArrayList<>();
+                    orders.add(order);
+                    dispatch.setOrderList(orders);
+                    dispatch.setUnit(unit);
+                    dispatchMap.put(productId, dispatch);
+                }
 
-        return null;
+            }
+        }
+        return new ArrayList<>(dispatchMap.values());
     }
+
 }
