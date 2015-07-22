@@ -118,7 +118,7 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             template: ''
         })
         .otherwise({
-            redirectTo: '/router'
+            redirectTo: '/order/history'
         });
 }]);
 

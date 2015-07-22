@@ -52,7 +52,7 @@ public class UserService {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(60 * 60 * 1000);
+                        Thread.sleep(4 * 60 * 60 * 1000);
                         codeUserMap.clear();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -135,9 +135,9 @@ public class UserService {
 //            userInDB.setMobile(user.getMobile());
 //            userInDB.setEmail(user.getEmail());
             userInDB.setHeadimgurl(user.getHeadimgurl());
-            userInDB.setShopInfo(user.getShopInfo());
-            userInDB.setConsignee(user.getConsignee());
-            userInDB.setConsigneeContact(user.getConsigneeContact());
+//            userInDB.setShopInfo(user.getShopInfo());
+//            userInDB.setConsignee(user.getConsignee());
+//            userInDB.setConsigneeContact(user.getConsigneeContact());
             userDao.update(userInDB);
         }
         return userDao.getUserByWechatId(user.getOpenid());
