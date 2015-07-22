@@ -147,13 +147,13 @@ public class OrderService {
                 }
                 if (dispatchMap.containsKey(productId)) {
                     dispatchMap.get(productId).setQuantity(dispatchMap.get(productId).getQuantity() + amount);
-                    dispatchMap.get(productId).getOrderList().add(order);
+                    dispatchMap.get(productId).getOrderList().add(getKeyInfo(order, amount, unit));
                 } else {
                     Dispatch dispatch = new Dispatch();
                     dispatch.setProduct(product);
                     dispatch.setQuantity(amount);
-                    List<Order> orders = new ArrayList<>();
-                    orders.add(order);
+                    List<String> orders = new ArrayList<>();
+                    orders.add(getKeyInfo(order, amount, unit));
                     dispatch.setOrderList(orders);
                     dispatch.setUnit(unit);
                     dispatchMap.put(productId, dispatch);
@@ -162,6 +162,10 @@ public class OrderService {
             }
         }
         return new ArrayList<>(dispatchMap.values());
+    }
+
+    private String getKeyInfo(Order order, Integer amount, String unit) {
+        return String.format("[数量]%s%s [送货时间]%s [收件人]%s %s [电话]%s", amount);
     }
 
 }

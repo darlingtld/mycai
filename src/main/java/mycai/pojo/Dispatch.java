@@ -9,7 +9,7 @@ public class Dispatch {
     private Product product;
     private double quantity;
     private String unit;
-    private List<Order> orderList;
+    private List<String> orderList;
 
     @Override
     public String toString() {
@@ -45,11 +45,11 @@ public class Dispatch {
         this.quantity = quantity;
     }
 
-    public List<Order> getOrderList() {
+    public List<String> getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(List<Order> orderList) {
+    public void setOrderList(List<String> orderList) {
         this.orderList = orderList;
     }
 }

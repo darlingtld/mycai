@@ -15,13 +15,15 @@
             <td ng-bind="dispatch.product.name"></td>
             <td ng-bind="dispatch.quantity"></td>
             <td ng-bind="dispatch.unit"></td>
-            <td><select multiple class="form-control" id="sel2">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
+            <td>
+                <!--<select multiple class="form-control" id="sel2">-->
+                <!--<option>1</option>-->
+                <!--<option>2</option>-->
+                <!--<option>3</option>-->
+                <!--<option>4</option>-->
+                <!--<option>5</option>-->
+            <!--</select>-->
+                <select ng-options="color.name for color in colors"></select>
             </td>
         </tr>
         </tbody>
