@@ -40,6 +40,8 @@ public class OrderService {
             user.setConsigneeContact(order.getConsigneeContact());
             user.setShopInfo(order.getShopInfo());
             userDao.update(user);
+        } else {
+            order.setUserId("songda user");
         }
         String code = generateConfirmCode();
         while (isConfirmCodeExisted(code)) {
