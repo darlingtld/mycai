@@ -167,11 +167,6 @@ public class OrderService {
         return String.format("[数量]%s%s [送货时间]%s [收件人]%s %s [电话]%s [下单时间]%s", amount, unit, order.getDeliveryTs(), order.getConsignee(), order.getShopInfo(), order.getConsigneeContact(), order.getOrderTs());
     }
 
-    @Transactional
-    public void exportDispatchList() {
-
-    }
-
     public List<String> getStatusList() {
         return Arrays.asList(OrderStatus.NOT_DELIVERED, OrderStatus.IN_DELIVERY, OrderStatus.DELIVERED_NOT_PAID, OrderStatus.DELIVERED_PAID);
     }

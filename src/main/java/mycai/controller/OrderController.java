@@ -82,13 +82,6 @@ public class OrderController {
         return orderService.getDispatchList();
     }
 
-    @RequestMapping(value = "/dispatch/export", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    void exportDispatchList() {
-        orderService.exportDispatchList();
-    }
-
     @RequestMapping("/export")
     public ResponseEntity<byte[]> download() throws IOException {
         String fileName = String.format("订单列表%s.xlsx", new SimpleDateFormat("yyyyMMdd").format(new Date()));
