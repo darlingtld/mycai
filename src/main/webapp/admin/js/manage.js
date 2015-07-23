@@ -113,6 +113,11 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     $scope.create = function () {
         $('#dialog').attr('method', 'create');
     };
+
+    $scope.export = function () {
+        window.location.href = app + '/product/export/';
+    };
+
     $scope.save = function () {
         var method = $('#dialog').attr('method');
         var product = {
@@ -200,6 +205,10 @@ adminModule.controller('orderController', function ($scope, $http) {
             }
         });
     }
+
+    $scope.export = function () {
+        window.location.href = app + '/order/export/';
+    };
 });
 
 adminModule.controller('dispatchController', function ($scope, $http) {
@@ -208,6 +217,10 @@ adminModule.controller('dispatchController', function ($scope, $http) {
     $http.get(app + '/order/dispatch/list').success(function (data) {
         $scope.dispatchList = data;
     });
+
+    $scope.export = function () {
+        window.location.href = app + '/order/dispatch/export/';
+    };
 
 });
 

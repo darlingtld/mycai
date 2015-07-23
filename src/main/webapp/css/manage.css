@@ -8,6 +8,10 @@ select.product-picker {
 
 }
 
-#add_product {
+#add_product, #export_product, #export_order, #export_dispatch {
     margin-top: 20px;
+}
+
+#export_product, #export_order, #export_dispatch {
+    float: right;
 }

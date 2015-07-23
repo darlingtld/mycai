@@ -2,18 +2,26 @@ package mycai.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import mycai.excel.ExcelFactory;
 import mycai.pojo.Category;
 import mycai.pojo.Product;
 import mycai.pojo.Type;
 import mycai.service.ProductService;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -97,5 +105,17 @@ public class ProductController {
             jsonArray.add(jsonObject);
         }
         return jsonArray;
+    }
+
+    @RequestMapping("/export")
+    public ResponseEntity<byte[]> download() throws IOException {
+        String fileName = String.format("菜品列表%s.xlsx", new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        ExcelFactory.exportProducts(fileName, productService.getAll(), productService.getTypeMap());
+        File file = new File(fileName);
+        HttpHeaders headers = new HttpHeaders();
+        String cnfileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+        headers.setContentDispositionFormData("attachment", cnfileName);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
     }
 }
