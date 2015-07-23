@@ -3,7 +3,9 @@ package mycai.controller;
 import mycai.excel.ExcelFactory;
 import mycai.pojo.Dispatch;
 import mycai.pojo.Order;
+import mycai.pojo.OrderStatus;
 import mycai.service.OrderService;
+import mycai.util.EmojiFilter;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,14 +32,14 @@ public class OrderController {
     @RequestMapping(value = "/submit", method = RequestMethod.POST, headers = "Content-Type=application/json")
     public
     @ResponseBody
-    int submitOrder(@RequestBody Order order) {
-        order.setStatus("未配送");
+    void submitOrder(@RequestBody Order order) {
+        order.setStatus(OrderStatus.NOT_DELIVERED);
         try {
-            order.setUserId(new String(order.getUserId().getBytes(), "utf-8"));
+            order.setUserId(new String(order.getUserId().getBytes("utf-8"), "utf-8"));
         } catch (UnsupportedEncodingException e) {
             order.setUserId("unknown");
         }
-        return orderService.save(order);
+        orderService.save(order);
     }
 
     @RequestMapping(value = "/get/{wechatid}", method = RequestMethod.GET)

@@ -203,6 +203,10 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
                 $('#shop_info').val(user.shopInfo);
                 $('#consignee').val(user.consignee);
                 $('#consignee_contact').val(user.consigneeContact);
+            } else if (getLocalStorage('shop_info') != undefined && getLocalStorage('shop_info') != null) {
+                $('#shop_info').val(getLocalStorage('shop_info'));
+                $('#consignee').val(getLocalStorage('consignee'));
+                $('#consignee_contact').val(getLocalStorage('consignee_contact'));
             }
 
             $('div.checkout').on('click', 'a.next', function () {

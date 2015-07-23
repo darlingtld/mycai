@@ -41,7 +41,6 @@ mycaiModule.controller('routerController', function ($http, $scope, $location) {
 });
 
 mycaiModule.controller('orderController', function ($http, $scope) {
-    //getUserInfo(function () {
     if (user == undefined || user == null) {
         var code = getURLParameter('code');
         $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
@@ -49,15 +48,20 @@ mycaiModule.controller('orderController', function ($http, $scope) {
             wechatId = user.openid;
             $('img.user-icon').attr('src', user.headimgurl);
             setLocalStorage('wechatId', wechatId);
+            $http.get(url).success(function (data, status, headers, config) {
+                $scope.orders = data;
+            });
         });
     }
     if (wechatId == undefined) {
         wechatId = getLocalStorage('wechatId');
     }
-    var url = app + '/order/get/' + wechatId;
-    $http.get(url).success(function (data, status, headers, config) {
-        $scope.orders = data;
-    });
+    if ($scope.orders == undefined) {
+        var url = app + '/order/get/' + wechatId;
+        $http.get(url).success(function (data, status, headers, config) {
+            $scope.orders = data;
+        });
+    }
     //})
 
     //sleep(2000)

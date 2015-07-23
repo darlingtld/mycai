@@ -33,7 +33,7 @@ public class OrderService {
     private ProductDao productDao;
 
     @Transactional
-    public int save(Order order) {
+    public void save(Order order) {
         User user = userDao.getUserByWechatId(order.getWechatId());
         if (user != null) {
             user.setConsignee(order.getConsignee());
@@ -46,7 +46,7 @@ public class OrderService {
             code = generateConfirmCode();
         }
         order.setConfirmCode(code);
-        return orderDao.save(order);
+        orderDao.save(order);
     }
 
     @Transactional

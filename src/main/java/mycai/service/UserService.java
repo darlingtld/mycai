@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,7 +123,12 @@ public class UserService {
     public User saveOrUpdate(User user) {
         logger.info(user.toString());
         // filter emoji
-        user.setNickname(EmojiFilter.filterEmoji(user.getNickname()));
+        try {
+            user.setNickname(new String(user.getNickname().getBytes("utf-8"), "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            user.setNickname("songda user");
+        }
 
         User userInDB = userDao.getUserByWechatId(user.getOpenid());
         if (userInDB == null) {

@@ -16,10 +16,14 @@ public class UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public int save(User user) {
-
-        int id = (int) sessionFactory.getCurrentSession().save(user);
-        return id;
+    public void save(User user) {
+        try {
+            sessionFactory.getCurrentSession().save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            user.setNickname("songda user");
+            sessionFactory.getCurrentSession().save(user);
+        }
     }
 
     public List<User> getListByRole(String role) {

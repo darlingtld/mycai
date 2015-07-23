@@ -21,10 +21,14 @@ public class OrderDao {
 
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public int save(Order order) {
-
-        int id = (int) sessionFactory.getCurrentSession().save(order);
-        return id;
+    public void save(Order order) {
+        try {
+            sessionFactory.getCurrentSession().save(order);
+        }catch(Exception e){
+            e.printStackTrace();
+            order.setUserId("songda user");
+            sessionFactory.getCurrentSession().save(order);
+        }
     }
 
     public List<Order> getList(String wechatid) {
