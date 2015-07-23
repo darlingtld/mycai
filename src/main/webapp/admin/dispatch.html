@@ -16,14 +16,9 @@
             <td ng-bind="dispatch.quantity"></td>
             <td ng-bind="dispatch.unit"></td>
             <td>
-                <!--<select multiple class="form-control" id="sel2">-->
-                <!--<option>1</option>-->
-                <!--<option>2</option>-->
-                <!--<option>3</option>-->
-                <!--<option>4</option>-->
-                <!--<option>5</option>-->
-            <!--</select>-->
-                <select ng-options="color.name for color in colors"></select>
+                <select class="form-control" multiple>
+                    <option ng-repeat="orderInfo in dispatch.orderInfoList" value="{{orderInfo}}">{{orderInfo}}</option>
+                </select>
             </td>
         </tr>
         </tbody>

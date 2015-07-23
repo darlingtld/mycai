@@ -26,7 +26,7 @@
             <th>操作</th>
         </tr>
         </thead>
-        <tbody id="orderList">
+        <tbody id="orderInfoList">
         <tr ng-repeat="order in orders | orderBy: f : rev">
             <input type="hidden" value="order.id">
             <td>{{order.userId}}</td>

@@ -48,7 +48,7 @@ public class UserController {
             return null;
         }
 //        List<Order> orderList = orderService.getList(user.getOpenid());
-//        user.setOrderList(orderList);
+//        user.setOrderInfoList(orderList);
         logger.info(user.toString());
         return user;
     }
