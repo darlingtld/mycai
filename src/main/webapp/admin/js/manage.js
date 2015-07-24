@@ -75,6 +75,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         var productUrl = app + '/product/' + item + '/wechatid/0';
         $http.get(productUrl).success(function (data, status, headers, config) {
             $scope.products = data;
+            procfilter();
         });
     }
 
@@ -110,6 +111,11 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
 
     $http.get(productUrl).success(function (data, status, headers, config) {
         $scope.products = data;
+        procfilter();
+
+    });
+
+    function procfilter() {
         var procurementUrl = app + '/product/procurement/all';
         $http.get(procurementUrl).success(function (data, status, headers, config) {
                 $scope.procurement = data;
@@ -117,14 +123,17 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
                     var procurement = getProcurement4Product($scope.procurement, $scope.products[i].id);
                     if (procurement == null) {
                         $scope.products[i].procindex = 1.0;
+                        $scope.products[i].procprice = $scope.products[i].price;
                     } else {
                         $scope.products[i].procindex = procurement.procindex;
+                        $scope.products[i].procprice = procurement.procprice;
                     }
-                    $scope.products[i].procprice = $scope.products[i].procindex * $scope.products[i].price;
+                    $scope.products[i].price = ($scope.products[i].procindex * $scope.products[i].procprice).toFixed(2);
                 }
             }
         );
-    });
+    }
+
 
     $scope.updateProduct = function () {
         this.product.price = (this.product.procindex * this.product.procprice).toFixed(2);
