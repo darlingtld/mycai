@@ -109,7 +109,7 @@ public class ExcelFactory {
         }
         contents.add(content);
         try {
-            generator.generate(sheetNames, headerList, contents);
+            generator.generate4Dispatches(sheetNames, headerList, contents);
         } catch (IOException e) {
             e.printStackTrace();
             return;
