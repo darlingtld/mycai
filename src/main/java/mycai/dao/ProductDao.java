@@ -2,6 +2,7 @@ package mycai.dao;
 
 import mycai.pojo.Procurement;
 import mycai.pojo.Product;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -70,5 +71,19 @@ public class ProductDao {
 
     public List<Procurement> getProcurement() {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Procurement")).list();
+    }
+
+    public void saveOrUpdateProcurement(Procurement procurement) {
+        synchronized (ProductDao.class) {
+            Session session = sessionFactory.getCurrentSession();
+            if (session.createQuery(String.format("from Procurement where productId = %s", procurement.getProductId())).uniqueResult() == null) {
+                session.save(procurement);
+            } else {
+                int id = Integer.parseInt(session.createQuery(String.format("select id from Procurement where productId = %s", procurement.getProductId())).uniqueResult().toString());
+                procurement.setId(id);
+                procurement = (Procurement) session.merge(procurement);
+                session.update(procurement);
+            }
+        }
     }
 }

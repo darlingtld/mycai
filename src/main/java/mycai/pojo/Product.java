@@ -31,6 +31,26 @@ public class Product {
     private int onsale;
     @Column(name = "data_change_last_time")
     private Timestamp dataChangeLastTime;
+    @Transient
+    private double procprice;
+    @Transient
+    private double procindex;
+
+    public double getProcprice() {
+        return procprice;
+    }
+
+    public void setProcprice(double procprice) {
+        this.procprice = procprice;
+    }
+
+    public double getProcindex() {
+        return procindex;
+    }
+
+    public void setProcindex(double procindex) {
+        this.procindex = procindex;
+    }
 
     @Override
     public String toString() {

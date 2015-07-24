@@ -128,6 +128,10 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
 
     $scope.updateProduct = function () {
         this.product.price = (this.product.procindex * this.product.procprice).toFixed(2);
+        $http.post(app + '/product/update', JSON.stringify(this.product)).success(function () {
+
+        })
+        console.log(this.product)
     }
 
     //var procurementUrl = app + '/product/procurement/all';

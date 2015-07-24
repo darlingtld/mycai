@@ -128,6 +128,12 @@ public class ProductService {
 //            productInDB.setPicurl(product.getPicurl());
         }
         productDao.update(productInDB);
+        Procurement procurement = new Procurement();
+        procurement.setProductId(product.getId());
+        procurement.setProcprice(product.getProcprice());
+        procurement.setProcindex(product.getProcindex());
+        procurement.setDate(new Timestamp(System.currentTimeMillis()));
+        productDao.saveOrUpdateProcurement(procurement);
     }
 
     public Map<Type, List<Category>> getTypeMap() {
@@ -198,4 +204,5 @@ public class ProductService {
     public List<Procurement> getProcurement() {
         return productDao.getProcurement();
     }
+
 }
