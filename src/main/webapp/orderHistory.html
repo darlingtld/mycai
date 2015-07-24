@@ -12,8 +12,9 @@
             <th class="text-center"><span class="text-info">操作</span></th>
         </tr>
         <tr ng-repeat="order in orders">
-            <td><span ng-bind="order.orderTs"></span></td>
-            <td><span ng-bind="order.status"></span></td>
+            <td><span ng-bind="(order.orderTs | part : 0)"></span>
+                <br><span ng-bind="(order.orderTs | part : 1)"></span></td>
+            <td class="text-center"><span ng-bind="order.status"></span></td>
             <td>
                 <a href="#/order/details/{{order.id}}" role="button" class="btn btn-xs btn-success">查看</a>
                 <a confirm_code="{{order.confirmCode}}" role="button" class="btn btn-xs btn-danger">确认码</a>

@@ -2,7 +2,7 @@
  * Created by darlingtld on 2015/7/4 0004.
  */
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-var isTest = false;
+var isTest = true;
 var app = '/mycai';
 var user;
 var wechatId;
@@ -126,6 +126,15 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 
+mycaiModule.filter('part', function () {
+    return function (input, which) {
+        if (!angular.isString(input)) {
+            return input;
+        }
+        return input.split(' ')[which];
+    };
+});
+
 Date.prototype.Format = function (fmt) { //author: meizz
     var o = {
         "M+": this.getMonth() + 1, //月份
@@ -155,6 +164,14 @@ function setLocalStorage(key, value) {
         //console.log('[' + key + ']:[' + value + ']');
     } else {
         console.log("local storage is not supported!")
+    }
+}
+
+function getLocalStorage(key) {
+    if (typeof(Storage) != "undefined") {
+        return localStorage.getItem(key);
+    } else {
+        console.log("local storage is not supported!");
     }
 }
 

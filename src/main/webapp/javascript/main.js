@@ -407,6 +407,14 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 
+mycaiModule.filter('part', function () {
+    return function (input, which) {
+        if (!angular.isString(input)) {
+            return input;
+        }
+        return input.split(' ')[which];
+    };
+});
 
 function fillSpinner(products) {
     for (var i = 0; i < bill.items.length; i++) {
