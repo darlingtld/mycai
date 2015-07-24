@@ -1,5 +1,6 @@
 package mycai.dao;
 
+import mycai.pojo.Procurement;
 import mycai.pojo.Product;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,9 @@ public class ProductDao {
 
     public List<Product> getList(String category) {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Product where category='%s'", category.toUpperCase())).list();
+    }
+
+    public List<Procurement> getProcurement() {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Procurement")).list();
     }
 }

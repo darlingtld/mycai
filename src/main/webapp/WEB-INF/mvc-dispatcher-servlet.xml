@@ -34,6 +34,7 @@
                 <value>mycai.pojo.Product</value>
                 <value>mycai.pojo.Order</value>
                 <value>mycai.pojo.User</value>
+                <value>mycai.pojo.Procurement</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -50,8 +51,8 @@
     </bean>
 
     <!--<task:scheduled-tasks scheduler="myScheduler">-->
-        <!--<task:scheduled ref="productCrawler" method="crawl" cron="0 0 1 * * ?"/>-->
-        <!--<task:scheduled ref="imageCrawler" method="fullfillImages" cron="0 0 */1 * * ?"/>-->
+    <!--<task:scheduled ref="productCrawler" method="crawl" cron="0 0 1 * * ?"/>-->
+    <!--<task:scheduled ref="imageCrawler" method="fullfillImages" cron="0 0 */1 * * ?"/>-->
     <!--</task:scheduled-tasks>-->
     <!--<task:scheduler id="myScheduler" pool-size="4"/>-->
 

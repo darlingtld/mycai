@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import mycai.excel.ExcelFactory;
 import mycai.pojo.Category;
+import mycai.pojo.Procurement;
 import mycai.pojo.Product;
 import mycai.pojo.Type;
 import mycai.service.ProductService;
@@ -67,6 +68,13 @@ public class ProductController {
     @ResponseBody
     List<Product> getAll() {
         return productService.getAll();
+    }
+
+    @RequestMapping(value = "/procurement/all", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Procurement> getProcurement() {
+        return productService.getProcurement();
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Content-Type=application/json")

@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import mycai.dao.ProductDao;
-import mycai.pojo.Category;
-import mycai.pojo.Order;
-import mycai.pojo.Product;
-import mycai.pojo.Type;
+import mycai.pojo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,5 +192,10 @@ public class ProductService {
         Calendar then = Calendar.getInstance();
         then.add(Calendar.MONTH, -frequency);
         return orderService.getListByTimeFrame(wechatid, then, now);
+    }
+
+    @Transactional
+    public List<Procurement> getProcurement() {
+        return productDao.getProcurement();
     }
 }

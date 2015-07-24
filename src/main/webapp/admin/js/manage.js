@@ -57,6 +57,16 @@ var cdata = {
     }
 }
 
+var tdata = {
+    "蔬菜水果": "shucaishuiguo",
+    "禽肉蛋类": "qinroudanlei",
+    "水产冻货": "shuichandonghuo",
+    "米面粮油": "mimianliangyou",
+    "调料其他": "tiaoliaoqita",
+    "餐厨用品": "canchuyongpin",
+    "酒水饮料": "jiushuiyinliao"
+}
+
 adminModule.controller('productController', function ($scope, $http, $routeParams, $location) {
     $('li[role]').removeClass('active');
     $('li[role="manage_product"]').addClass('active');
@@ -88,9 +98,42 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     });
 
     var productUrl = app + '/product/category/' + $routeParams.category + '/wechatid/0';
+
+    function getProcurement4Product(procurement, id) {
+        for (var i = 0; i < procurement.length; i++) {
+            if (procurement[i].productId == id) {
+                return procurement[i];
+            }
+        }
+        return null;
+    }
+
     $http.get(productUrl).success(function (data, status, headers, config) {
         $scope.products = data;
+        var procurementUrl = app + '/product/procurement/all';
+        $http.get(procurementUrl).success(function (data, status, headers, config) {
+                $scope.procurement = data;
+                for (var i = 0; i < $scope.products.length; i++) {
+                    var procurement = getProcurement4Product($scope.procurement, $scope.products[i].id);
+                    if (procurement == null) {
+                        $scope.products[i].procindex = 1.0;
+                    } else {
+                        $scope.products[i].procindex = procurement.procindex;
+                    }
+                    $scope.products[i].procprice = $scope.products[i].procindex * $scope.products[i].price;
+                }
+            }
+        );
     });
+
+    $scope.updateProduct = function () {
+        this.product.price = (this.product.procindex * this.product.procprice).toFixed(2);
+    }
+
+    //var procurementUrl = app + '/product/procurement/all';
+    //$http.get(procurementUrl).success(function (data, status, headers, config) {
+    //    $scope.procurement = data;
+    //});
     $scope.modify = function (id) {
         $('#dialog').attr('method', 'update');
         for (var i = 0; i < $scope.products.length; i++) {
@@ -222,6 +265,35 @@ adminModule.controller('dispatchController', function ($scope, $http) {
         window.location.href = app + '/order/dispatch/export/';
     };
 
+});
+
+adminModule.filter('translate', function () {
+    return function (text, type) {
+        if (!angular.isString(text)) {
+            return text;
+        }
+        var translatedText;
+
+        if (type == 't') {
+            for (var key in tdata) {
+                if (tdata[key].toUpperCase().indexOf(text) != -1) {
+                    //console.log(key + " " + vkey);
+                    translatedText = key;
+                    return translatedText;
+                }
+            }
+        } else {
+            for (var key in cdata) {
+                for (var vkey in cdata[key]) {
+                    if (cdata[key][vkey].toUpperCase().indexOf(text) != -1) {
+                        //console.log(key + " " + vkey);
+                        translatedText = vkey;
+                        return translatedText;
+                    }
+                }
+            }
+        }
+    };
 });
 
 adminModule.config(['$routeProvider', function ($routeProvider) {
