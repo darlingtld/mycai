@@ -24,7 +24,7 @@ public class ExportTest {
 
     @Test
     public void exportProduct() {
-        ExcelFactory.exportProducts("菜品列表.xlsx", productService.getAll(), productService.getTypeMap());
+        ExcelFactory.exportProducts("菜品列表.xlsx", productService.getAll(), productService.getTypeMap(), productService.getProcurement());
     }
 
     @Test

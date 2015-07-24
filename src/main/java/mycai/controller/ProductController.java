@@ -118,7 +118,7 @@ public class ProductController {
     @RequestMapping("/export")
     public ResponseEntity<byte[]> download() throws IOException {
         String fileName = String.format("菜品列表%s.xlsx", new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        ExcelFactory.exportProducts(fileName, productService.getAll(), productService.getTypeMap());
+        ExcelFactory.exportProducts(fileName, productService.getAll(), productService.getTypeMap(), productService.getProcurement());
         File file = new File(fileName);
         HttpHeaders headers = new HttpHeaders();
         String cnfileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");

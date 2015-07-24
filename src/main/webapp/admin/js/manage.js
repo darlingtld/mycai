@@ -67,6 +67,8 @@ var tdata = {
     "酒水饮料": "jiushuiyinliao"
 }
 
+var isFirst = true;
+
 adminModule.controller('productController', function ($scope, $http, $routeParams, $location) {
     $('li[role]').removeClass('active');
     $('li[role="manage_product"]').addClass('active');
@@ -89,9 +91,10 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         selectHtml += '</optgroup>';
     });
     objS.html(selectHtml);
-
-    //var selected = $routeParams.category;
-    //objS.val('category/' + selected);
+    if (isFirst) {
+        setInterval("objS.val('category/yecailei')", 1000);
+        isFirst = false;
+    }
 
     var typeUrl = app + '/product/type_map';
     $http.get(typeUrl).success(function (data, status, headers, config) {
