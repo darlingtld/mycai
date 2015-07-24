@@ -442,7 +442,7 @@ function refreshCheckoutUI(totalAmount, totalPrice) {
         totalPrice = 0;
     }
     $('#totalAmount').text(totalAmount);
-    $('#totalPrice').text(totalPrice);
+    $('#totalPrice').text(parseFloat(totalPrice).toFixed(2));
 }
 
 function isFirstBuy(items, productId) {
@@ -664,7 +664,7 @@ function saveToLocalStorage(bill) {
 function setLocalStorage(key, value) {
     if (typeof(Storage) != "undefined") {
         localStorage.setItem(key, value);
-        console.log('[' + key + ']:[' + value + ']');
+        //console.log('[' + key + ']:[' + value + ']');
     } else {
         console.log("local storage is not supported!")
     }
