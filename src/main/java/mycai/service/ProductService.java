@@ -130,12 +130,16 @@ public class ProductService {
 //            productInDB.setPicurl(product.getPicurl());
         }
         productDao.update(productInDB);
-        Procurement procurement = new Procurement();
-        procurement.setProductId(product.getId());
-        procurement.setProcprice(product.getProcprice());
-        procurement.setProcindex(product.getProcindex());
-        procurement.setDate(new Timestamp(System.currentTimeMillis()));
-        productDao.saveOrUpdateProcurement(procurement);
+        if (product.getProcindex() < 0.01 && product.getProcprice() < 0.01) {
+            return;
+        } else {
+            Procurement procurement = new Procurement();
+            procurement.setProductId(product.getId());
+            procurement.setProcprice(product.getProcprice());
+            procurement.setProcindex(product.getProcindex());
+            procurement.setDate(new Timestamp(System.currentTimeMillis()));
+            productDao.saveOrUpdateProcurement(procurement);
+        }
     }
 
     public Map<Type, List<Category>> getTypeMap() {
@@ -150,13 +154,10 @@ public class ProductService {
         shucaishuiguoList.add(Category.TECAI);
         typeListMap.put(Type.SHUCAISHUIGUO, shucaishuiguoList);
         List<Category> qinroudanleiList = new ArrayList<>();
-        qinroudanleiList.add(Category.YIJIBAITIAO);
-        qinroudanleiList.add(Category.ERJIBAITIAO);
-        qinroudanleiList.add(Category.DONGZHUROU);
+        qinroudanleiList.add(Category.ZHUROU);
         qinroudanleiList.add(Category.YANGROU);
         qinroudanleiList.add(Category.NIUROU);
-        qinroudanleiList.add(Category.XIANJIROU);
-        qinroudanleiList.add(Category.DONGJIROU);
+        qinroudanleiList.add(Category.JIROU);
         qinroudanleiList.add(Category.YAROU);
         qinroudanleiList.add(Category.QINLEI);
         qinroudanleiList.add(Category.QINDANLEI);

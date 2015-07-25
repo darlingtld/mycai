@@ -40,17 +40,17 @@
             <td><span ng-bind="orderDetail.status"></span></td>
         </tr>
         <!--<tr>-->
-            <!--<td><span class="text-info">物件总数</span></td>-->
-            <!--<td><span ng-bind="total.totalAmount"></span></td>-->
+        <!--<td><span class="text-info">物件总数</span></td>-->
+        <!--<td><span ng-bind="total.totalAmount"></span></td>-->
         <!--</tr>-->
         <tr>
             <td><span class="text-info">物件总价</span></td>
-            <td><span ng-bind="total.totalPrice"></span></td>
+            <td><span ng-bind="(total.totalPrice | number : 2)"></span></td>
         </tr>
 
         <tr>
             <td><span class="text-info">物件总价(实际）</span></td>
-            <td><span ng-bind="actTotal.totalPrice"></span></td>
+            <td><span ng-bind="(actTotal.totalPrice | number : 2)"></span></td>
         </tr>
     </table>
 </div>

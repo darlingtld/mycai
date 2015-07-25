@@ -85,6 +85,7 @@ mycaiModule.controller('orderDetailController', function ($http, $scope, $routeP
         $scope.orderDetail = data;
         $scope.items = JSON.parse($scope.orderDetail.bill).items;
         $scope.total = JSON.parse($scope.orderDetail.bill);
+        $scope.total.price = parseFloat($scope.total.price).toFixed(2);
         if (JSON.parse($scope.orderDetail.confirmBill) != null) {
             $scope.items = JSON.parse($scope.orderDetail.confirmBill).items;
             $scope.total = JSON.parse($scope.orderDetail.bill);

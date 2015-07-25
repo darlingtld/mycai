@@ -14,13 +14,10 @@ var cdata = {
         "特菜": "category/tecai"
     },
     "禽肉蛋类": {
-        "一级白条": "category/yijibaitiao",
-        "二级白条": "category/erjibaitiao",
-        "冻猪肉": "category/dongzhurou",
+        "猪肉": "category/zhurou",
         "羊肉": "category/yangrou",
         "牛肉": "category/niurou",
-        "鲜鸡肉": "category/xianjirou",
-        "冻鸡肉": "category/dongjirou",
+        "鸡肉": "category/jirou",
         "鸭肉": "category/yarou",
         "禽类": "category/qinlei",
         "禽蛋类": "category/qindanlei",
