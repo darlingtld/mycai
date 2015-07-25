@@ -4,13 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import mycai.crawler.ImageCrawler;
-import mycai.pojo.Category;
-import mycai.pojo.Order;
-import mycai.pojo.Product;
-import mycai.pojo.Type;
+import mycai.pojo.*;
 import mycai.service.OrderService;
 import mycai.service.ProductService;
 import mycai.util.ImageUtil;
+import mycai.util.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -229,6 +227,24 @@ public class ProductDaoTest {
             }
 
         }
+    }
+
+    @Test
+    public void updateAllProcurement() {
+        List<Product> productList = productService.getAll();
+        for (Product product : productList) {
+            product.setProcprice(product.getPrice());
+            product.setProcindex(1.15);
+            product.setPrice(product.getPrice() * 1.15);
+            productService.update(product);
+        }
+    }
+
+    @Test
+    public void testOverflow() {
+        System.out.println(1.15 * 2.3);
+        System.out.println(Utils.formatDouble(1.15 * 2.3));
+
     }
 }
 

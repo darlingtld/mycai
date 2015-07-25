@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import mycai.dao.ProductDao;
 import mycai.pojo.*;
+import mycai.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class ProductService {
 
     @Transactional
     public int save(Product product) {
+        product.setPrice(Utils.formatDouble(product.getPrice()));
         return productDao.save(product);
     }
 
@@ -122,7 +124,7 @@ public class ProductService {
             productInDB.setDescription(product.getDescription());
             productInDB.setType(product.getType());
             productInDB.setCategory(product.getCategory());
-            productInDB.setPrice(product.getPrice());
+            productInDB.setPrice(Utils.formatDouble(product.getPrice()));
             productInDB.setUnit(product.getUnit());
             productInDB.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
 //            productInDB.setPicurl(product.getPicurl());

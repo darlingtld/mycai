@@ -151,7 +151,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     //    $scope.procurement = data;
     //});
     $scope.modify = function (id) {
-        $('#dialog').attr('method', 'update');
+        $('#myDialog').attr('method', 'update');
         for (var i = 0; i < $scope.products.length; i++) {
             var product;
             if (id == $scope.products[i].id) {
@@ -170,7 +170,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     };
 
     $scope.create = function () {
-        $('#dialog').attr('method', 'create');
+        $('#myDialog').attr('method', 'create');
     };
 
     $scope.export = function () {
@@ -178,7 +178,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     };
 
     $scope.save = function () {
-        var method = $('#dialog').attr('method');
+        var method = $('#myDialog').attr('method');
         var product = {
             name: $('#name').val(),
             description: $('#description').val(),
