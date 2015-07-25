@@ -79,6 +79,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
             $scope.products = data;
             procfilter();
         });
+
     }
 
     objS = $('select.product-picker');
@@ -91,10 +92,13 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         selectHtml += '</optgroup>';
     });
     objS.html(selectHtml);
-    if (isFirst) {
-        setInterval("objS.val('category/yecailei')", 1000);
-        isFirst = false;
-    }
+
+    //console.log(isFirst)
+    //if (isFirst == true) {
+    //    setInterval("objS.val('category/yecailei')", 1000);
+    //    isFirst = false;
+    //    console.log("set is first to false");
+    //}
 
     var typeUrl = app + '/product/type_map';
     $http.get(typeUrl).success(function (data, status, headers, config) {
