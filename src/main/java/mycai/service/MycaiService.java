@@ -66,6 +66,8 @@ public class MycaiService {
                         return eventService.doAboutUs(fromUserName, toUserName);
                     } else if (PropertyHolder.MENU_NEW_PRODUCT.equals(eventKey)) {
                         return eventService.doProductInquiry(fromUserName, toUserName);
+                    } else if (PropertyHolder.MENU_POST_SALE_SERVICE.equals(eventKey)) {
+                        return eventService.doPostSaleService(fromUserName, toUserName);
                     }
                 }
             } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {

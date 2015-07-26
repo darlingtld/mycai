@@ -17,6 +17,7 @@ public class PropertyHolder {
             e.printStackTrace();
         }
     }
+
     public static final String HEADER_MSG = "message";
 
     public static final String TOKEN = prop.getProperty("wechat.token");
@@ -28,5 +29,6 @@ public class PropertyHolder {
     public static final String MENU_MY_ORDER = "我的订单";
     public static final String MENU_NEW_PRODUCT = "新鲜资讯";
     public static final String MENU_ABOUT_US = "关于我们";
+    public static final String MENU_POST_SALE_SERVICE = "售后服务";
 
 }

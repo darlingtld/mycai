@@ -1,6 +1,7 @@
 package mycai.service;
 
 
+import mycai.pojo.message.req.TextMessage;
 import mycai.pojo.message.resp.Article;
 import mycai.pojo.message.resp.NewsMessage;
 import mycai.util.MessageUtil;
@@ -55,4 +56,19 @@ public class EventService {
         return MessageUtil.messageToXml(newsMessage);
     }
 
+    public String doPostSaleService(String fromUserName, String toUserName) {
+        TextMessage textMessage = new TextMessage();
+        textMessage.setToUserName(fromUserName);
+        textMessage.setFromUserName(toUserName);
+        textMessage.setCreateTime(new Date().getTime());
+        textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+        StringBuffer sb = new StringBuffer();
+        sb.append("提供各类蔬菜/水果/酒水等食材的送达服务").append("\n");
+        sb.append("如果您有任何问题，请拨打售后服务热线").append("\n");
+        sb.append("18616021572").append("\n");
+        sb.append("15801911483").append("\n");
+        sb.append("13402188638").append("\n");
+        textMessage.setContent(sb.toString());
+        return MessageUtil.messageToXml(textMessage);
+    }
 }

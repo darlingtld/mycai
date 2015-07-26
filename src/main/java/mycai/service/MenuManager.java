@@ -57,12 +57,12 @@ public class MenuManager {
 //        btn21.setUrl(PropertyHolder.SERVER + "?order_history=true");
 
         ClickButton btn31 = new ClickButton();
-        btn31.setName(PropertyHolder.MENU_ABOUT_US);
-        btn31.setKey(PropertyHolder.MENU_ABOUT_US);
+        btn31.setName(PropertyHolder.MENU_POST_SALE_SERVICE);
+        btn31.setKey(PropertyHolder.MENU_POST_SALE_SERVICE);
 
-        ClickButton btn32 = new ClickButton();
-        btn32.setName(PropertyHolder.MENU_NEW_PRODUCT);
-        btn32.setKey(PropertyHolder.MENU_NEW_PRODUCT);
+//        ClickButton btn32 = new ClickButton();
+//        btn32.setName(PropertyHolder.MENU_NEW_PRODUCT);
+//        btn32.setKey(PropertyHolder.MENU_NEW_PRODUCT);
 
         ComplexButton mainBtn1 = new ComplexButton();
         mainBtn1.setName(PropertyHolder.MENU_GO_ORDER);
@@ -73,8 +73,8 @@ public class MenuManager {
         mainBtn2.setSub_button(new ViewButton[]{btn21});
 
         ComplexButton mainBtn3 = new ComplexButton();
-        mainBtn3.setName(PropertyHolder.MENU_ABOUT_US);
-        mainBtn3.setSub_button(new ClickButton[]{btn31, btn32});
+        mainBtn3.setName(PropertyHolder.MENU_POST_SALE_SERVICE);
+        mainBtn3.setSub_button(new ClickButton[]{btn31});
 
         JSONArray jsonArray = new JSONArray();
         jsonArray.add(btn11);
