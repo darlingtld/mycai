@@ -91,11 +91,10 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     objS.html(selectHtml);
 
     //console.log(isFirst)
-    //if (isFirst == true) {
-    //    setInterval("objS.val('category/yecailei')", 1000);
-    //    isFirst = false;
-    //    console.log("set is first to false");
-    //}
+    if (isFirst == true) {
+        setTimeout("objS.val('category/yecailei')", 1000);
+        isFirst = false;
+    }
 
     var typeUrl = app + '/product/type_map';
     $http.get(typeUrl).success(function (data, status, headers, config) {
@@ -153,6 +152,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     //});
     $scope.modify = function (id) {
         $('#myDialog').attr('method', 'update');
+        $('#myDialog .title').text('修改菜品');
         for (var i = 0; i < $scope.products.length; i++) {
             var product;
             if (id == $scope.products[i].id) {
@@ -163,8 +163,8 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         $('#pid').val(product.id);
         $('#name').val(product.name);
         $('#description').val(product.description);
-        //$('#type').val(product.type);
-        //$('#category').val(product.category);
+        $('#type').attr('value', '');
+        $('#category').attr('value', '');
         $('#price').val(product.price);
         $('#unit').val(product.unit);
 
@@ -172,6 +172,14 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
 
     $scope.create = function () {
         $('#myDialog').attr('method', 'create');
+        $('#myDialog .title').text('新增菜品');
+        $('#pid').val('');
+        $('#name').val('');
+        $('#description').val('');
+        $('#type').val('');
+        $('#category').val('');
+        $('#price').val('');
+        $('#unit').val('');
     };
 
     $scope.export = function () {

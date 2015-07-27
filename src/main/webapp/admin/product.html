@@ -58,13 +58,13 @@
             <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
 
-                <h3>修改菜品</h3>
+                <h3 class="title">修改菜品</h3>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="pid">
 
                 <div class="input-group input-group">
-                    <span class="input-group-addon">名字</span>
+                    <span class="input-group-addon">名字:</span>
                     <input type="text" class="form-control" id="name">
                 </div>
                 <div class="input-group input-group">
@@ -73,16 +73,15 @@
                 </div>
                 <div class="input-group input-group">
                     <span class="input-group-addon">大类:</span>
-                    <!--<input type="text" class="form-control" id="type">-->
-                    <select id="type" ng-model="select3" ng-options="t.name for t in typeMap track by t.value"
+                    <select id="type" ng-model="selectedType" ng-options="t.name for t in typeMap track by t.value"
                             class="form-control">
                         <option value="">--- 请选择 ---</option>
                     </select>
                 </div>
                 <div class="input-group input-group">
                     <span class="input-group-addon">小类:</span>
-                    <!--<input type="text" class="form-control" id="category">-->
-                    <select id="category" ng-model="select4" ng-options="c.key for c in select3.list track by c.value"
+                    <select id="category" ng-model="selectedCategory"
+                            ng-options="c.key for c in selectedType.list track by c.value"
                             class="form-control">
                         <option value="">--- 请选择 ---</option>
                     </select>
