@@ -133,7 +133,7 @@ mycaiModule.controller('mostBuyController', function ($scope, $http, $routeParam
     });
 });
 
-mycaiModule.controller('checkoutController', function ($scope, $location) {
+mycaiModule.controller('checkoutController', function ($scope, $location, $http) {
     if (bill.totalAmount == 0) {
         alert('您还未购买任何物品');
         init();
@@ -194,9 +194,9 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
             sendTs.setHours(7);
             sendTs.setMinutes(0);
             sendTs.setSeconds(0);
-            $scope.send = {
-                ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
-            }
+            //$scope.send = {
+            //    ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
+            //}
 
 
             if (user != undefined) {
