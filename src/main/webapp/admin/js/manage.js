@@ -279,14 +279,15 @@ adminModule.controller('orderController', function ($scope, $http) {
     };
 
     $scope.delete = function (orderId) {
-        console.log(orderId);
-        $http.post(app + '/order/delete/' + orderId, {}).success(function (data) {
-            alert("删除成功！");
-            location.reload();
-        }).error(function (data, status, headers, configs) {
-            alert(decodeURI(headers().message));
-            console.log(headers)
-        });
+        if (confirm("确认删除该订单")) {
+            $http.post(app + '/order/delete/' + orderId, {}).success(function (data) {
+                alert("删除成功！");
+                location.reload();
+            }).error(function (data, status, headers, configs) {
+                alert(decodeURI(headers().message));
+                console.log(headers)
+            });
+        }
     }
 });
 
