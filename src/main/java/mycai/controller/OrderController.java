@@ -6,6 +6,7 @@ import mycai.pojo.Order;
 import mycai.pojo.OrderStatus;
 import mycai.service.OrderService;
 import mycai.util.EmojiFilter;
+import mycai.util.PropertyHolder;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +50,18 @@ public class OrderController {
     @ResponseBody
     List<Order> getOrders(@PathVariable("wechatid") String wechatid) {
         return orderService.getList(wechatid);
+    }
+
+    @RequestMapping(value = "/delete/{orderId}", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void deleteOrder(@PathVariable("orderId") int orderId, HttpServletResponse response) throws UnsupportedEncodingException {
+        try {
+            orderService.deleteOrder(orderId);
+        } catch (Exception e) {
+            response.setHeader(PropertyHolder.HEADER_MSG, URLEncoder.encode(e.getMessage(), "utf-8"));
+            response.setStatus(HttpStatus.CONFLICT.value());
+        }
     }
 
     @RequestMapping(value = "/confirm_code/{confirm_code}", method = RequestMethod.GET)

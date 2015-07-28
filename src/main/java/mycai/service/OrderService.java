@@ -172,4 +172,14 @@ public class OrderService {
     public List<String> getStatusList() {
         return Arrays.asList(OrderStatus.NOT_DELIVERED, OrderStatus.IN_DELIVERY, OrderStatus.DELIVERED_NOT_PAID, OrderStatus.DELIVERED_PAID);
     }
+
+    @Transactional
+    public void deleteOrder(int orderId) {
+        Order order = getById(orderId);
+        if (order.getStatus().equals(OrderStatus.NOT_DELIVERED.toString())) {
+            orderDao.deleteOrder(orderId);
+        } else {
+            throw new IllegalStateException(String.format("无法删除[订单状态为%s]", order.getStatus()));
+        }
+    }
 }

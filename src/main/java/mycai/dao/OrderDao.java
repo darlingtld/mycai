@@ -24,7 +24,7 @@ public class OrderDao {
     public void save(Order order) {
         try {
             sessionFactory.getCurrentSession().save(order);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             order.setUserId("songda user");
             sessionFactory.getCurrentSession().save(order);
@@ -73,5 +73,9 @@ public class OrderDao {
 
     public List<Order> getOrderListByStatus(String notDelivered) {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Order where status='%s'", notDelivered)).list();
+    }
+
+    public void deleteOrder(int orderId) {
+        sessionFactory.getCurrentSession().createQuery(String.format("delete Order where id=%d", orderId)).executeUpdate();
     }
 }
