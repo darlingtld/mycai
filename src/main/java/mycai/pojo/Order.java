@@ -25,6 +25,8 @@ public class Order {
     private String orderTs;
     @Column(name = "shop_info")
     private String shopInfo;
+    @Column(name = "shop_address")
+    private String shopAddress;
     @Column(name = "consignee")
     private String consignee;
     @Column(name = "consignee_contact")
@@ -49,6 +51,7 @@ public class Order {
                 ", deliveryTs='" + deliveryTs + '\'' +
                 ", orderTs='" + orderTs + '\'' +
                 ", shopInfo='" + shopInfo + '\'' +
+                ", shopAddress='" + shopAddress + '\'' +
                 ", consignee='" + consignee + '\'' +
                 ", consigneeContact='" + consigneeContact + '\'' +
                 ", status='" + status + '\'' +
@@ -56,6 +59,14 @@ public class Order {
                 ", confirmBill='" + confirmBill + '\'' +
                 ", confirmTs='" + confirmTs + '\'' +
                 '}';
+    }
+
+    public String getShopAddress() {
+        return shopAddress;
+    }
+
+    public void setShopAddress(String shopAddress) {
+        this.shopAddress = shopAddress;
     }
 
     public String getConfirmTs() {

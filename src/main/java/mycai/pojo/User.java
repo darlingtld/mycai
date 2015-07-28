@@ -35,7 +35,7 @@ public class User {
     private String openid;
     @Column(name = "nickname")
     private String nickname;
-//    @Column(name = "username")
+    //    @Column(name = "username")
 //    private String username;
     @Column(name = "role")
     private String role;
@@ -59,10 +59,10 @@ public class User {
     private String consigneeContact;
     @Column(name = "shop_info")
     private String shopInfo;
+    @Column(name = "shop_address")
+    private String shopAddress;
 //    @Column(name = "email")
 //    private String email;
-//    @Column(name = "mobile")
-//    private String mobile;
 
     @Override
     public String toString() {
@@ -70,7 +70,6 @@ public class User {
                 "id=" + id +
                 ", openid='" + openid + '\'' +
                 ", nickname='" + nickname + '\'' +
-//                ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 ", sex='" + sex + '\'' +
                 ", province='" + province + '\'' +
@@ -82,12 +81,22 @@ public class User {
                 ", consignee='" + consignee + '\'' +
                 ", consigneeContact='" + consigneeContact + '\'' +
                 ", shopInfo='" + shopInfo + '\'' +
-//                ", email='" + email + '\'' +
-//                ", mobile='" + mobile + '\'' +
+                ", shopAddress='" + shopAddress + '\'' +
                 '}';
     }
 
-//    public String getMobile() {
+    public String getShopAddress() {
+        return shopAddress;
+    }
+
+    public void setShopAddress(String shopAddress) {
+        this.shopAddress = shopAddress;
+    }
+
+//    @Column(name = "mobile")
+//    private String mobile;
+
+    //    public String getMobile() {
 //        return mobile;
 //    }
 //

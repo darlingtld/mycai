@@ -26,29 +26,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private OrderService orderService;
-
     @RequestMapping(value = "/code/{code}", method = RequestMethod.GET)
     public
     @ResponseBody
     User getUserInformation(@PathVariable("code") String code, HttpServletResponse response) {
         logger.info("Get user information with code {}", code);
 
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        return  userService.getUserByWechatId("o5Irvt5957jQ4xmdHmDp59epk0UU");
         User user = userService.getUserInformation(code);
-//
         if (user == null) {
             response.setStatus(HttpStatus.EXPECTATION_FAILED.value());
             return null;
         }
-//        List<Order> orderList = orderService.getList(user.getOpenid());
-//        user.setOrderInfoList(orderList);
         logger.info(user.toString());
         return user;
     }

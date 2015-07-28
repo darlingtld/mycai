@@ -7,6 +7,7 @@ import mycai.dao.OrderDao;
 import mycai.dao.ProductDao;
 import mycai.dao.UserDao;
 import mycai.pojo.*;
+import mycai.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by darlingtld on 2015/5/16.
@@ -39,6 +41,7 @@ public class OrderService {
             user.setConsignee(order.getConsignee());
             user.setConsigneeContact(order.getConsigneeContact());
             user.setShopInfo(order.getShopInfo());
+            user.setShopAddress(order.getShopAddress());
             userDao.update(user);
         } else {
             order.setUserId("songda user");
@@ -48,6 +51,11 @@ public class OrderService {
             code = generateConfirmCode();
         }
         order.setConfirmCode(code);
+
+        JSONObject jsonObject = JSON.parseObject(order.getBill());
+        double totalPrice = jsonObject.getDouble("totalPrice");
+        jsonObject.put("totalPrice", Utils.formatDouble(totalPrice));
+        order.setBill(jsonObject.toJSONString());
         orderDao.save(order);
     }
 
@@ -166,7 +174,7 @@ public class OrderService {
     }
 
     private String getKeyInfo(Order order, Integer amount, String unit) {
-        return String.format("[数量]%s%s [送货时间]%s [收件人]%s %s [电话]%s [下单时间]%s", amount, unit, order.getDeliveryTs(), order.getConsignee(), order.getShopInfo(), order.getConsigneeContact(), order.getOrderTs());
+        return String.format("[数量]%s%s [送货时间]%s [收件人]%s %s [收货地址]%s [电话]%s [下单时间]%s", amount, unit, order.getDeliveryTs(), order.getConsignee(), order.getShopInfo(), order.getShopAddress(), order.getConsigneeContact(), order.getOrderTs());
     }
 
     public List<String> getStatusList() {

@@ -237,6 +237,7 @@ adminModule.controller('orderController', function ($scope, $http) {
         $('#orderTs').val(order.orderTs);
         $('#deliveryTs').val(order.deliveryTs);
         $('#shopInfo').val(order.shopInfo);
+        $('#shopAddress').val(order.shopAddress);
         $('#consignee').val(order.consignee);
         $('#consigneeContact').val(order.consigneeContact);
 
@@ -253,6 +254,7 @@ adminModule.controller('orderController', function ($scope, $http) {
         }
         order.deliveryTs = $('#deliveryTs').val();
         order.shopInfo = $('#shopInfo').val();
+        order.shopAddress = $('#shopAddress').val();
         order.consignee = $('#consignee').val();
         order.consigneeContact = $('#consigneeContact').val();
         order.status = $('#orderStatus').val();

@@ -18,6 +18,7 @@ function _initialPage() {
             $("#orderTs").text(data.orderTs);
             $("#deliveryTs").text(data.deliveryTs);
             $("#shopInfo").text(data.shopInfo);
+            $("#shopAddress").text(data.shopAddress);
             $("#consignee").text(data.consignee);
             $("#contact").text(data.consigneeContact);
             $("#status").text(data.status);

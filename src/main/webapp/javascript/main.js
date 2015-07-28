@@ -19,8 +19,9 @@ if (isTest) {
         openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
         headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0',
         consignee: '灵达',
-        consignee_contact: '13402188638',
-        shop_info: '新中源大楼'
+        consigneeContact: '13402188638',
+        shopInfo: '新中源大楼',
+        shopAddress: '长阳路1930号'
     }
     wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
 }
@@ -190,10 +191,10 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
 
             $scope.bill = bill;
 
-            var sendTs = DateAdd("d ", 1, new Date());
-            sendTs.setHours(7);
-            sendTs.setMinutes(0);
-            sendTs.setSeconds(0);
+            //var sendTs = DateAdd("d ", 1, new Date());
+            //sendTs.setHours(7);
+            //sendTs.setMinutes(0);
+            //sendTs.setSeconds(0);
             //$scope.send = {
             //    ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
             //}
@@ -201,54 +202,60 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
 
             if (user != undefined) {
                 $('#shop_info').val(user.shopInfo);
+                $('#shop_address').val(user.shopAddress);
                 $('#consignee').val(user.consignee);
                 $('#consignee_contact').val(user.consigneeContact);
             } else if (getLocalStorage('shop_info') != undefined && getLocalStorage('shop_info') != null) {
                 $('#shop_info').val(getLocalStorage('shop_info'));
+                $('#shop_address').val(getLocalStorage('shop_address'));
                 $('#consignee').val(getLocalStorage('consignee'));
                 $('#consignee_contact').val(getLocalStorage('consignee_contact'));
             }
 
             $('div.checkout').on('click', 'a.next', function () {
-                if (user == undefined) {
-                    user = {
-                        nickname: 'songda',
-                        openid: 'songda'
+                    if (user == undefined) {
+                        user = {
+                            nickname: 'songda',
+                            openid: 'songda'
+                        }
+                    }
+                    var order = {
+                        userId: user.nickname,
+                        wechatId: user.openid,
+                        bill: JSON.stringify(bill),
+                        orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
+                        deliveryTs: $('#delivery_ts').val(),
+                        shopInfo: $('#shop_info').val(),
+                        shopAddress: $('#shop_address').val(),
+                        consignee: $('#consignee').val(),
+                        consigneeContact: $('#consignee_contact').val()
+                    };
+
+                    if (validateOrder(order)) {
+                        goToOrderHistory();
+                        $('#content').html('<h2 class="text-center">订单提交中！</h2>');
+                        $http.post(app + "/order/submit", JSON.stringify(order)).
+                            success(function (data, status, headers, config) {
+                                alert('提交订单成功！');
+                                clearLocalStorage();
+                                setLocalStorage('shop_info', order.shopInfo);
+                                setLocalStorage('shop_address', order.shopAddress);
+                                setLocalStorage('consignee', order.consignee);
+                                setLocalStorage('consignee_contact', order.consigneeContact);
+                                clearBill();
+                                init();
+                                $location.path('/order/history');
+                            }).error(function () {
+                                alert(data.status);
+                            });
                     }
                 }
-                var order = {
-                    userId: user.nickname,
-                    wechatId: user.openid,
-                    bill: JSON.stringify(bill),
-                    orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
-                    deliveryTs: $('#delivery_ts').val(),
-                    shopInfo: $('#shop_info').val(),
-                    consignee: $('#consignee').val(),
-                    consigneeContact: $('#consignee_contact').val()
-                };
-
-                if (validateOrder(order)) {
-                    goToOrderHistory();
-                    $('#content').html('<h2 class="text-center">订单提交中！</h2>');
-                    $http.post(app + "/order/submit", JSON.stringify(order)).
-                        success(function (data, status, headers, config) {
-                            alert('提交订单成功！');
-                            clearLocalStorage();
-                            setLocalStorage('shop_info', order.shopInfo);
-                            setLocalStorage('consignee', order.consignee);
-                            setLocalStorage('consignee_contact', order.consigneeContact);
-                            clearBill();
-                            init();
-                            $location.path('/order/history');
-                        }).error(function () {
-                            alert(data.status);
-                        });
-                }
-            })
+            )
 
         }
     }
-);
+)
+;
 
 mycaiModule.controller('orderController', function ($http, $scope) {
     goToOrderHistory();
@@ -635,7 +642,8 @@ function goToConfirm() {
     $('#subCategoryBlock').hide();
     $('#mainListBlock').css('width', '100%');
     $('.checkout').html('<div><a class="next">提交</a>');
-    $('a.next').css('margin-left', '45%');
+    $('a.next').css('margin-left', '43%');
+    $('a.next').css('font-size', 'x-large');
 }
 
 function goToOrderHistory() {
