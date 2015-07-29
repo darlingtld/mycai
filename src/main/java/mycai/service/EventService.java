@@ -91,6 +91,7 @@ public class EventService {
     }
 
     public String doGetNewOrders(String fromUserName, String toUserName) {
+        List<Order> orderList = orderService.getByStatus(OrderStatus.NOT_DELIVERED);
         NewsMessage newsMessage = new NewsMessage();
         newsMessage.setToUserName(fromUserName);
         newsMessage.setFromUserName(toUserName);
@@ -100,18 +101,20 @@ public class EventService {
         List<Article> articleList = new ArrayList<>();
         Article article = new Article();
         article.setTitle("最新订单");
-        article.setDescription("点击查询商品");
-        article.setPicUrl(PropertyHolder.SERVER);
+        article.setDescription("送达最新订单查看——目前共有" + orderList.size() + "笔新订单");
+        article.setPicUrl(PropertyHolder.SERVER + "/images/latest_order_inquiry.jpg");
         articleList.add(article);
-        StringBuffer sb = new StringBuffer();
-        List<Order> orderList =  orderService.getByStatus(OrderStatus.NOT_DELIVERED);
-        if(orderList.isEmpty()){
-            sb.append("暂无新订单");
+        if (orderList.isEmpty()) {
+            Article oArticle = new Article();
+            article.setTitle("暂无新订单");
+            articleList.add(oArticle);
         } else {
-            for(Order order : orderList){
-                sb.append("[下单时间]").append(order.getOrderTs());
-                sb.append("[商户信息]").append(order.getShopInfo());
-//                sb.append("")
+            for (int i = 0; i < Math.min(5, orderList.size()); i++) {
+                Order order = orderList.get(i);
+                Article oArticle = new Article();
+                article.setTitle(String.format("下单时间:%s\n商户信息:%s", order.getOrderTs(), order.getShopInfo()));
+                article.setUrl(PropertyHolder.SERVER + "/myorder.html#/order/details/" + order.getId());
+                articleList.add(oArticle);
             }
         }
         newsMessage.setArticleCount(articleList.size());
@@ -127,5 +130,18 @@ public class EventService {
                 break;
         }
         return msg;
+    }
+
+    public String doCodeIntro(String fromUserName, String toUserName) {
+        TextMessage textMessage = new TextMessage();
+        textMessage.setToUserName(fromUserName);
+        textMessage.setFromUserName(toUserName);
+        textMessage.setCreateTime(new Date().getTime());
+        textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+        StringBuffer sb = new StringBuffer();
+        sb.append("代码介绍").append("\n");
+        sb.append(ZUIXINDINGDAN).append(" : ").append("最新订单").append("\n");
+        textMessage.setContent(sb.toString());
+        return MessageUtil.messageToXml(textMessage);
     }
 }

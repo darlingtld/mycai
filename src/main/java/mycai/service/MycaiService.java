@@ -51,7 +51,7 @@ public class MycaiService {
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
                 String eventType = requestMap.get("Event");
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
-                    String respContent = "您好，欢迎关注送达！";
+                    String respContent = "您好，欢迎关注送达\n我们提供各类蔬菜/水果/酒水等食材的送达服务！";
                     TextMessage textMessage = new TextMessage();
                     textMessage.setToUserName(fromUserName);
                     textMessage.setFromUserName(toUserName);
@@ -71,7 +71,9 @@ public class MycaiService {
                     }
                 }
             } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-                if (eventService.getCodeSet().contains(content)) {
+                if ("code".equals(content)) {
+                    return eventService.doCodeIntro(fromUserName, toUserName);
+                } else if (eventService.getCodeSet().contains(content)) {
                     return eventService.respond(content, fromUserName, toUserName);
                 } else if (Pattern.compile("\\d{9}").matcher(content).find()) {
                     //check if the request comes from a deliveryman

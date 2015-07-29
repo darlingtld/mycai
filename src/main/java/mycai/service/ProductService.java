@@ -142,6 +142,11 @@ public class ProductService {
         }
     }
 
+    @Transactional
+    public void saveOrUpdateProcurement(Procurement procurement) {
+        productDao.saveOrUpdateProcurement(procurement);
+    }
+
     public Map<Type, List<Category>> getTypeMap() {
         Map<Type, List<Category>> typeListMap = new TreeMap<>();
         List<Category> shucaishuiguoList = new ArrayList<>();

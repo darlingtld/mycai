@@ -85,7 +85,8 @@ public class ProductDaoTest {
 
     @Test
     public void importImages() {
-        String imgSrcDir = "C:\\Users\\darlingtld\\IdeaProjects\\mycai_main\\src\\main\\webapp\\product_images";
+        String imgSrcDir = "D:\\MyProjects\\Archive";
+        String dstSrcDir = "C:\\Users\\darlingtld\\IdeaProjects\\mycai_main\\src\\main\\webapp\\product_images";
         File file = new File(imgSrcDir);
         File[] imgFiles = file.listFiles();
         for (File imgFile : imgFiles) {
@@ -95,12 +96,15 @@ public class ProductDaoTest {
             product.setType(Type.SHUCAISHUIGUO);
             product.setCategory(Category.YECAILEI);
             product.setDescription("精选" + imgFile.getName().substring(0, imgFile.getName().indexOf(".")));
-            product.setPrice(2.68);
+            product.setPrice(868.7);
             product.setUnit("斤");
             product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
             product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
+//            product.setProcindex(1.15);
+//            product.setPrice(product.getPrice() * 1.15);
+//            productService.update(product);
             System.out.println(product);
-            imgFile.renameTo(new File(imgSrcDir + "\\" + product.generatePicurlHash() + ".jpg"));
+            imgFile.renameTo(new File(dstSrcDir + "\\" + product.generatePicurlHash() + ".jpg"));
             productService.save(product);
 //            break;
         }
@@ -237,6 +241,15 @@ public class ProductDaoTest {
             product.setProcindex(1.15);
             product.setPrice(product.getPrice() * 1.15);
             productService.update(product);
+        }
+    }
+
+    @Test
+    public void formatPrice() {
+        List<Procurement> procurementList = productService.getProcurement();
+        for (Procurement product : procurementList) {
+            product.setProcprice(Utils.formatDouble(product.getProcprice()));
+            productService.saveOrUpdateProcurement(product);
         }
     }
 

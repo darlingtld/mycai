@@ -467,7 +467,10 @@ function validateOrder(order) {
         alert('请选择配送时间');
         return false;
     } else if (order.shopInfo.trim() == '') {
-        alert('请输入商店信息');
+        alert('请输入商户信息');
+        return false;
+    } else if (order.shopAddress.trim() == '') {
+        alert('请输入商户地址');
         return false;
     } else if (order.consignee.trim() == '') {
         alert('请输入收货人姓名');
