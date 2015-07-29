@@ -71,23 +71,8 @@ public class MycaiService {
                     }
                 }
             } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-                if ("1".equals(content)) {
-                    NewsMessage newsMessage = new NewsMessage();
-                    newsMessage.setToUserName(fromUserName);
-                    newsMessage.setFromUserName(toUserName);
-                    newsMessage.setCreateTime(new Date().getTime());
-                    newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-                    newsMessage.setFuncFlag(0);
-                    List<Article> articleList = new ArrayList<Article>();
-                    Article article = new Article();
-                    article.setTitle("TEST");
-                    article.setDescription("上海三林地区最大的农产品移动电商平台̨");
-                    article.setPicUrl(PropertyHolder.SERVER + "/images/logo.jpg");
-                    article.setUrl(PropertyHolder.SERVER + "/meicai/preview.html");
-                    articleList.add(article);
-                    newsMessage.setArticleCount(articleList.size());
-                    newsMessage.setArticles(articleList);
-                    return MessageUtil.messageToXml(newsMessage);
+                if (eventService.getCodeSet().contains(content)) {
+                    return eventService.respond(content, fromUserName, toUserName);
                 } else if (Pattern.compile("\\d{9}").matcher(content).find()) {
                     //check if the request comes from a deliveryman
                     User user = userService.getUserByWechatId(fromUserName);

@@ -72,7 +72,7 @@ public class OrderDao {
     }
 
     public List<Order> getOrderListByStatus(String notDelivered) {
-        return sessionFactory.getCurrentSession().createQuery(String.format("from Order where status='%s'", notDelivered)).list();
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Order where status='%s' order by orderTs desc", notDelivered)).list();
     }
 
     public void deleteOrder(int orderId) {

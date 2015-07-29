@@ -1,22 +1,40 @@
 package mycai.service;
 
 
+import mycai.pojo.Order;
+import mycai.pojo.OrderStatus;
 import mycai.pojo.message.req.TextMessage;
 import mycai.pojo.message.resp.Article;
 import mycai.pojo.message.resp.NewsMessage;
 import mycai.util.MessageUtil;
 import mycai.util.PropertyHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import javax.annotation.PostConstruct;
+import java.util.*;
 
 /**
  * Created by darlingtld on 2015/4/26.
  */
 @Service
 public class EventService {
+
+    @Autowired
+    private OrderService orderService;
+
+    private static final String ZUIXINDINGDAN = "zxdd";
+
+    public Set<String> getCodeSet() {
+        return codeSet;
+    }
+
+    private Set<String> codeSet = new HashSet<>();
+
+    @PostConstruct
+    private void init() {
+        codeSet.add(ZUIXINDINGDAN);
+    }
 
     public String doAboutUs(String fromUserName, String toUserName) {
         NewsMessage newsMessage = new NewsMessage();
@@ -65,10 +83,49 @@ public class EventService {
         StringBuffer sb = new StringBuffer();
         sb.append("提供各类蔬菜/水果/酒水等食材的送达服务").append("\n");
         sb.append("如果您有任何问题，请拨打售后服务热线").append("\n");
-        sb.append("18616021572").append("\n");
-        sb.append("15801911483").append("\n");
-        sb.append("13402188638").append("\n");
+        sb.append("18616021572 茹先生").append("\n");
+        sb.append("15801911483 陈先生").append("\n");
+        sb.append("13402188638 唐先生").append("\n");
         textMessage.setContent(sb.toString());
         return MessageUtil.messageToXml(textMessage);
+    }
+
+    public String doGetNewOrders(String fromUserName, String toUserName) {
+        NewsMessage newsMessage = new NewsMessage();
+        newsMessage.setToUserName(fromUserName);
+        newsMessage.setFromUserName(toUserName);
+        newsMessage.setCreateTime(new Date().getTime());
+        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+        newsMessage.setFuncFlag(0);
+        List<Article> articleList = new ArrayList<>();
+        Article article = new Article();
+        article.setTitle("最新订单");
+        article.setDescription("点击查询商品");
+        article.setPicUrl(PropertyHolder.SERVER);
+        articleList.add(article);
+        StringBuffer sb = new StringBuffer();
+        List<Order> orderList =  orderService.getByStatus(OrderStatus.NOT_DELIVERED);
+        if(orderList.isEmpty()){
+            sb.append("暂无新订单");
+        } else {
+            for(Order order : orderList){
+                sb.append("[下单时间]").append(order.getOrderTs());
+                sb.append("[商户信息]").append(order.getShopInfo());
+//                sb.append("")
+            }
+        }
+        newsMessage.setArticleCount(articleList.size());
+        newsMessage.setArticles(articleList);
+        return MessageUtil.messageToXml(newsMessage);
+    }
+
+    public String respond(String content, String fromUserName, String toUserName) {
+        String msg = null;
+        switch (content) {
+            case ZUIXINDINGDAN:
+                msg = doGetNewOrders(fromUserName, toUserName);
+                break;
+        }
+        return msg;
     }
 }
