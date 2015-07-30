@@ -106,14 +106,14 @@ public class EventService {
         articleList.add(article);
         if (orderList.isEmpty()) {
             Article oArticle = new Article();
-            article.setTitle("暂无新订单");
+            oArticle.setTitle("暂无新订单");
             articleList.add(oArticle);
         } else {
             for (int i = 0; i < Math.min(5, orderList.size()); i++) {
                 Order order = orderList.get(i);
                 Article oArticle = new Article();
-                article.setTitle(String.format("下单时间:%s\n商户信息:%s", order.getOrderTs(), order.getShopInfo()));
-                article.setUrl(PropertyHolder.SERVER + "/myorder.html#/order/details/" + order.getId());
+                oArticle.setTitle(String.format("下单时间:%s\n商户信息:%s", order.getOrderTs(), order.getShopInfo()));
+                oArticle.setUrl(PropertyHolder.SERVER + "/checkorder.html#/order/details/" + order.getId());
                 articleList.add(oArticle);
             }
         }
