@@ -96,7 +96,7 @@ public class ProductDaoTest {
             product.setType(Type.SHUCAISHUIGUO);
             product.setCategory(Category.YECAILEI);
             product.setDescription("精选" + imgFile.getName().substring(0, imgFile.getName().indexOf(".")));
-            product.setPrice(868.7);
+            product.setPrice(100.0);
             product.setUnit("斤");
             product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
             product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
