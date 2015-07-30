@@ -238,6 +238,7 @@ adminModule.controller('orderController', function ($scope, $http) {
         $('#deliveryTs').val(order.deliveryTs);
         $('#shopInfo').val(order.shopInfo);
         $('#shopAddress').val(order.shopAddress);
+        $('#orderStatus').val(order.status);
         $('#consignee').val(order.consignee);
         $('#consigneeContact').val(order.consigneeContact);
 
