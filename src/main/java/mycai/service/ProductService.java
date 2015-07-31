@@ -47,6 +47,11 @@ public class ProductService {
     }
 
     @Transactional
+    public List<Product> getListSortByPinyin(String category, String field, String direction) {
+        return productDao.getListSortByPinyin(category, field, direction);
+    }
+
+    @Transactional
     public List<Product> getLatest(int limit) {
         return productDao.getLatest(limit);
     }

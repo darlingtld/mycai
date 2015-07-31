@@ -49,6 +49,13 @@ public class ProductController {
         return productService.getListByFavourites(category, wechatid);
     }
 
+    @RequestMapping(value = "/category/{category}/pinyin/asc", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Product> getListByPy(@PathVariable("category") String category) {
+        return productService.getListSortByPinyin(category, "name", "asc");
+    }
+
     @RequestMapping(value = "/zuixincaipin/{limit}", method = RequestMethod.GET)
     public
     @ResponseBody

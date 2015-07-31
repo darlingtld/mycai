@@ -48,6 +48,10 @@ public class ProductDao {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Product where type = '%s' and category='%s'", type.toUpperCase(), category.toUpperCase())).list();
     }
 
+    public List<Product> getListSortByPinyin(String category, String field, String direction) {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Product where category='%s' order by convert(%s, gbk)", category.toUpperCase(), field)).list();
+    }
+
     public List<Product> getLatest(int limit) {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Product p order by p.dataChangeLastTime desc")).setMaxResults(limit).list();
 

@@ -101,7 +101,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         $scope.typeMap = data;
     });
 
-    var productUrl = app + '/product/category/' + $routeParams.category + '/wechatid/0';
+    var productUrl = app + '/product/category/' + $routeParams.category + '/pinyin/asc';
 
     function getProcurement4Product(procurement, id) {
         for (var i = 0; i < procurement.length; i++) {
