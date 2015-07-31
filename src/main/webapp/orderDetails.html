@@ -76,10 +76,10 @@
             <td>商品名称：<span ng-bind="item.productName"></span></td>
         </tr>
         <tr>
-            <td>商品单价：<span ng-bind="item.productPrice"></span></td>
+            <td>商品单价：<span ng-bind="item.productPrice"></span>元/<span ng-bind="item.productUnit"></span></td>
         </tr>
         <tr>
-            <td>商品数量：<span ng-bind="item.amount"></span></td>
+            <td>商品数量：<span ng-bind="item.amount"></span><span ng-bind="item.productUnit"></span></td>
         </tr>
         </tbody>
     </table>
