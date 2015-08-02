@@ -35,6 +35,7 @@ public class EventService {
     @PostConstruct
     private void init() {
         codeSet.add(ZUIXINDINGDAN);
+        codeSet.add(XIUGAIDINGDAN);
     }
 
     public String doAboutUs(String fromUserName, String toUserName) {
