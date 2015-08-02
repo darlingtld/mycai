@@ -268,11 +268,13 @@ adminModule.controller('orderController', function ($scope, $http) {
             data: JSON.stringify(order),
             success: function (data) {
                 alert('保存成功！');
-                location.reload();
+                window.location.href = app + '/admin/manage.html#/order';
+                window.location.reload();
             },
             error: function (data) {
                 alert('保存失败');
-                location.reload();
+                window.location.href = app + '/admin/manage.html#/order';
+                window.location.reload();
             }
         });
     }
