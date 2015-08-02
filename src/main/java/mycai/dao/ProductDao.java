@@ -90,4 +90,8 @@ public class ProductDao {
             }
         }
     }
+
+    public void delete(int productId) {
+        sessionFactory.getCurrentSession().createQuery(String.format("delete Product where id=%d", productId)).executeUpdate();
+    }
 }

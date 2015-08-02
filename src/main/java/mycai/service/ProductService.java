@@ -218,4 +218,8 @@ public class ProductService {
         return productDao.getProcurement();
     }
 
+    @Transactional
+    public void delete(int productId) {
+        productDao.delete(productId);
+    }
 }

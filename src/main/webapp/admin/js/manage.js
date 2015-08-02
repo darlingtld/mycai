@@ -170,6 +170,17 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
 
     };
 
+    $scope.delete = function (id) {
+        if (confirm('确认删除该菜品')) {
+            $http.post(app + '/product/delete/' + id, {}).success(function () {
+                alert('删除成功！');
+                location.reload();
+            }).error(function () {
+                alert('删除失败！');
+            });
+        }
+    }
+
     $scope.create = function () {
         $('#myDialog').attr('method', 'create');
         $('#myDialog .title').text('新增菜品');

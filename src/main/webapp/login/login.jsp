@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label for="password">ÃÜÂë</label>
-                <input type="text" class="form-control" id="password" name="j_password"
+                <input type="password" class="form-control" id="password" name="j_password"
                        placeholder="ÇëÊäÈëÃÜÂë">
             </div>
             <button type="submit" class="btn btn-default">µÇÂ¼</button>

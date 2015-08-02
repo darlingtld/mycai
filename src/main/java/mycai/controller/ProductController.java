@@ -92,10 +92,17 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, headers = "Content-Type=application/json")
+     public
+     @ResponseBody
+     void update(@RequestBody Product product) {
+        productService.update(product);
+    }
+
+    @RequestMapping(value = "/delete/{product_id}", method = RequestMethod.POST)
     public
     @ResponseBody
-    void update(@RequestBody Product product) {
-        productService.update(product);
+    void delete(@PathVariable("product_id") int productId) {
+        productService.delete(productId);
     }
 
     @RequestMapping(value = "/type_map", method = RequestMethod.GET)
