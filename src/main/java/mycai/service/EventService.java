@@ -24,6 +24,7 @@ public class EventService {
     private OrderService orderService;
 
     private static final String ZUIXINDINGDAN = "zxdd";
+    private static final String XIUGAIDINGDAN = "xgdd";
 
     public Set<String> getCodeSet() {
         return codeSet;
@@ -100,8 +101,8 @@ public class EventService {
         newsMessage.setFuncFlag(0);
         List<Article> articleList = new ArrayList<>();
         Article article = new Article();
-        article.setTitle("最新订单");
-        article.setDescription("送达最新订单查看——目前共有" + orderList.size() + "笔新订单");
+        article.setTitle("最新订单——共有" + orderList.size() + "笔新订单");
+//        article.setDescription("送达最新订单查看——目前共有" + orderList.size() + "笔新订单");
         article.setPicUrl(PropertyHolder.SERVER + "/images/latest_order_inquiry.jpg");
         articleList.add(article);
         if (orderList.isEmpty()) {
@@ -128,8 +129,36 @@ public class EventService {
             case ZUIXINDINGDAN:
                 msg = doGetNewOrders(fromUserName, toUserName);
                 break;
+            case XIUGAIDINGDAN:
+                msg = doModifyOrders(fromUserName, toUserName);
+                break;
         }
         return msg;
+    }
+
+    private String doModifyOrders(String fromUserName, String toUserName) {
+        List<Order> orderList = orderService.getByStatus(OrderStatus.NOT_DELIVERED);
+        NewsMessage newsMessage = new NewsMessage();
+        newsMessage.setToUserName(fromUserName);
+        newsMessage.setFromUserName(toUserName);
+        newsMessage.setCreateTime(new Date().getTime());
+        newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+        newsMessage.setFuncFlag(0);
+        List<Article> articleList = new ArrayList<>();
+        Article article = new Article();
+        article.setTitle("修改订单——修改未配送订单重量");
+        article.setPicUrl(PropertyHolder.SERVER + "/images/modify_order.png");
+        articleList.add(article);
+        if (orderList.isEmpty()) {
+            Article oArticle = new Article();
+            oArticle.setTitle("暂无新订单");
+            articleList.add(oArticle);
+        } else {
+            article.setUrl(PropertyHolder.SERVER+"/modifyorder.html");
+        }
+        newsMessage.setArticleCount(articleList.size());
+        newsMessage.setArticles(articleList);
+        return MessageUtil.messageToXml(newsMessage);
     }
 
     public String doCodeIntro(String fromUserName, String toUserName) {

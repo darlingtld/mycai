@@ -164,10 +164,7 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
             init();
             $location.path('/');
         } else {
-            //if (user == undefined || user.username == undefined) {
-            //    alert('您尚未注册，请先注册~')
-            //    $location.path('/register');
-            //}
+
             goToConfirm();
             if (user == undefined || user == null) {
                 var code = getURLParameter('code');
@@ -180,25 +177,18 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
                     });
                 });
             }
-            $('.datetime').mobiscroll().datetime({
-                theme: 'sense-ui',     // Specify theme like: theme: 'ios' or omit setting to use default
-                mode: 'scroller',       // Specify scroller mode like: mode: 'mixed' or omit setting to use default
-                lang: 'zh',       // Specify language like: lang: 'pl' or omit setting to use default
-                minDate: new Date(),  // More info about minDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-minDate
-                maxDate: new Date(2020, 1, 1, 1, 1),   // More info about maxDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-maxDate
-                //stepMinute: 10  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
-            });
+            //$('.datetime').mobiscroll().datetime({
+            //    theme: 'sense-ui',     // Specify theme like: theme: 'ios' or omit setting to use default
+            //    mode: 'scroller',       // Specify scroller mode like: mode: 'mixed' or omit setting to use default
+            //    lang: 'zh',       // Specify language like: lang: 'pl' or omit setting to use default
+            //    minDate: new Date(),  // More info about minDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-minDate
+            //    maxDate: new Date(2020, 1, 1, 1, 1),   // More info about maxDate: http://docs.mobiscroll.com/2-14-0/datetime#!opt-maxDate
+            //    //stepMinute: 10  // More info about stepMinute: http://docs.mobiscroll.com/2-14-0/datetime#!opt-stepMinute
+            //});
 
             $scope.bill = bill;
 
-            //var sendTs = DateAdd("d ", 1, new Date());
-            //sendTs.setHours(7);
-            //sendTs.setMinutes(0);
-            //sendTs.setSeconds(0);
-            //$scope.send = {
-            //    ts: sendTs.Format("yyyy-MM-dd hh:mm:ss")
-            //}
-
+            $('#delivery_ts').val('次日上午8:00到10:30间');
 
             if (user != undefined) {
                 $('#shop_info').val(user.shopInfo);

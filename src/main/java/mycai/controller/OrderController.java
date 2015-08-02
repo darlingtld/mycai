@@ -52,6 +52,13 @@ public class OrderController {
         return orderService.getList(wechatid);
     }
 
+    @RequestMapping(value = "/all/modify", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Order> getOrders2Modify() {
+        return orderService.getByStatus(OrderStatus.NOT_DELIVERED);
+    }
+
     @RequestMapping(value = "/delete/{orderId}", method = RequestMethod.POST)
     public
     @ResponseBody

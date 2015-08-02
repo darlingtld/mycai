@@ -71,12 +71,12 @@ public class MycaiService {
                     }
                 }
             } else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-                if ("code".equals(content)) {
+                if ("code".equals(content.toLowerCase())) {
                     User user = userService.getUserByWechatId(fromUserName);
                     if (user != null && Role.DELIVERYMAN.toString().equalsIgnoreCase(user.getRole())) {
                         return eventService.doCodeIntro(fromUserName, toUserName);
                     }
-                } else if (eventService.getCodeSet().contains(content)) {
+                } else if (eventService.getCodeSet().contains(content.toLowerCase())) {
                     return eventService.respond(content, fromUserName, toUserName);
                 } else if (Pattern.compile("\\d{9}").matcher(content).find()) {
                     //check if the request comes from a deliveryman

@@ -6,6 +6,7 @@ var isTest = false;
 var user;
 var wechatId;
 var confirmCode;
+var type;
 var orderStatus = {
     NOT_DELIVERED: "未配送",
     IN_DELIVERY: "配送中",
@@ -34,12 +35,10 @@ var bill = {
 
 delivModule.config(function () {
         confirmCode = getURLParameter('confirm_code');
-        //var html = '';
-        //html += '<button class="btn btn-info btn-block" ng-click="confirm($event)">' + orderStatus.NOT_DELIVERED + '</button><br>'
-        //html += '<button class="btn btn-success btn-block" ng-click="confirm($event)">' + orderStatus.IN_DELIVERY + '</button><br>'
-        //html += '<button class="btn btn-danger btn-block" ng-click="confirm($event)">' + orderStatus.DELIVERED_NOT_PAID + '</button><br>'
-        //html += '<button class="btn btn-primary btn-block" ng-click="confirm($event)">' + orderStatus.DELIVERED_PAID + '</button><br>'
-        //$('#order-status').html(html);
+        type = getURLParameter('type')
+        if (type != null && type == 'update') {
+            $('#confirmBtn').attr('data-target', '#updateModal');
+        }
     }
 );
 
@@ -52,14 +51,27 @@ delivModule.controller('mainController', function ($scope, $http) {
             alert('该订单已配送（已付款）！');
             $('body').html('订单已确认！');
         }
+        if ($scope.order.confirmBill != undefined) {
+            $scope.actItems = JSON.parse($scope.order.confirmBill).items;
+            $scope.totalPrice = JSON.parse($scope.order.confirmBill).totalPrice;
+        } else {
+            $scope.totalPrice = JSON.parse($scope.order.bill).totalPrice;
+        }
         $scope.items = JSON.parse($scope.order.bill).items;
         for (var i = 0; i < $scope.items.length; i++) {
             var amount = $scope.items[i].amount;
             var price = $scope.items[i].productPrice;
-            $scope.items[i].totalPrice = (amount * price).toFixed(2);
-            $scope.items[i].actAmount = amount;
+            if ($scope.actItems != undefined) {
+                $scope.items[i].totalPrice = ($scope.actItems[i].amount * price).toFixed(2);
+                $scope.items[i].actAmount = $scope.actItems[i].amount;
+            } else {
+                $scope.items[i].totalPrice = (amount * price).toFixed(2);
+                $scope.items[i].actAmount = amount;
+            }
+
         }
-        $scope.totalPrice = JSON.parse($scope.order.bill).totalPrice;
+
+
     });
 
     $scope.updateTotalPrice = function () {
@@ -70,12 +82,12 @@ delivModule.controller('mainController', function ($scope, $http) {
 
     function modifyBill(order, item) {
         var totalPrice = 0;
-        var bill = JSON.parse(order.bill);
+        bill = order.confirmBill == undefined ? JSON.parse(order.bill) : JSON.parse(order.confirmBill);
         for (var i = 0; i < bill.items.length; i++) {
-            if (item.id == bill.items[i].id) {
+            if (item.productId == bill.items[i].productId) {
                 bill.items[i].amount = item.actAmount;
             }
-            totalPrice += item.actAmount * item.productPrice;
+            totalPrice += bill.items[i].amount * bill.items[i].productPrice;
 
         }
         bill.totalPrice = totalPrice.toFixed(2);
@@ -88,12 +100,31 @@ delivModule.controller('mainController', function ($scope, $http) {
         $scope.order.status = target.target.innerText;
         console.log($scope.order);
 
+        $scope.order.confirmBill = JSON.stringify(bill);
+        $scope.order.confirmTs = new Date().Format("yyyy-MM-dd hh:mm:ss");
+
         $http.post(app + "/order/update", JSON.stringify($scope.order)).
             success(function (data, status, headers, config) {
                 alert('确认成功！');
                 $('body').html('订单已确认！');
             }).error(function () {
                 alert('确认失败!');
+            });
+    }
+
+    $scope.update = function () {
+        $scope.order.status = orderStatus.NOT_DELIVERED;
+        console.log($scope.order);
+        $scope.order.confirmBill = JSON.stringify(bill);
+        $scope.order.confirmTs = new Date().Format("yyyy-MM-dd hh:mm:ss");
+
+        $http.post(app + "/order/update", JSON.stringify($scope.order)).
+            success(function (data, status, headers, config) {
+                alert('修改成功！');
+                $('body').html('订单已修改！');
+                window.location.href = app + '/modifyorder.html';
+            }).error(function () {
+                alert('修改失败!');
             });
     }
 });
