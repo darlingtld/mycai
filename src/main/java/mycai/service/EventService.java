@@ -171,6 +171,7 @@ public class EventService {
         StringBuffer sb = new StringBuffer();
         sb.append("代码介绍").append("\n");
         sb.append(ZUIXINDINGDAN).append(" : ").append("最新订单").append("\n");
+        sb.append(XIUGAIDINGDAN).append(" : ").append("修改订单").append("\n");
         textMessage.setContent(sb.toString());
         return MessageUtil.messageToXml(textMessage);
     }
