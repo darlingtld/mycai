@@ -225,7 +225,51 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
             }
         });
     }
-});
+
+    $scope.upload = function () {
+        var product = new FormData();
+        product.append("name", $('#uname').val());
+        product.append("description", $('#udescription').val());
+        product.append("type", $('#utype').val());
+        product.append("category", $('#ucategory').val());
+        product.append("price", $('#uprice').val());
+        product.append("unit", $('#uunit').val());
+        product.append("pic", $("#upic").get(0).files[0]);
+        //var product = {
+        //    name: $('#uname').val(),
+        //    description: $('#udescription').val(),
+        //    type: $('#utype').val(),
+        //    category: $('#ucategory').val(),
+        //    price: $('#uprice').val(),
+        //    unit: $('#uunit').val(),
+        //    pic: document.getElementById("upic").files[0]
+        //};
+        //
+        //$http.post(app + "/product/upload", product, {
+        //    headers: {'Content-Type': 'multipart/form-data; charset=UTF-8'}
+        //}).success(function () {
+        //    alert("添加成功");
+        //
+        //}).error(function () {
+        //    alert("添加失败");
+        //    //location.reload();
+        //});
+
+        $.ajax({
+            type: 'POST',
+            url: app + "/product/upload",
+            data: product,
+            processData : false,
+            contentType : false,
+            success: function(){
+            },
+            error:function(){
+            }
+        });
+
+    }
+})
+;
 
 adminModule.controller('orderController', function ($scope, $http) {
     $('li[role]').removeClass('active');

@@ -2,12 +2,15 @@ package mycai.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import mycai.excel.ExcelFactory;
 import mycai.pojo.Category;
 import mycai.pojo.Procurement;
 import mycai.pojo.Product;
 import mycai.pojo.Type;
 import mycai.service.ProductService;
+import mycai.util.PropertyHolder;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +21,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -92,9 +99,9 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, headers = "Content-Type=application/json")
-     public
-     @ResponseBody
-     void update(@RequestBody Product product) {
+    public
+    @ResponseBody
+    void update(@RequestBody Product product) {
         productService.update(product);
     }
 
@@ -140,4 +147,52 @@ public class ProductController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
     }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void uploadProduct(@RequestParam("pic") MultipartFile pic,
+                       @RequestParam("name") String name,
+                       @RequestParam("description") String description,
+                       @RequestParam("type") String type,
+                       @RequestParam("category") String category,
+                       @RequestParam("price") double price,
+                       @RequestParam("unit") String unit,
+                       HttpServletResponse response) {
+        if (type == null || name == null || pic == null || description == null || category == null || price == 0 || unit == null) {
+            response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+            return;
+        }
+        String fileName = pic.getOriginalFilename();
+        String path = fileName;
+        String uriPath = path;
+        System.out.println("uriPath =" + uriPath);
+
+        Product product = new Product();
+        product.setName(name);
+        product.setDescription(description);
+        product.setType(Type.valueOf(type));
+        product.setCategory(Category.valueOf(category));
+        product.setPrice(price);
+        product.setUnit(unit);
+        product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
+        product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
+        String dstFilePath = "product_images/" + product.generatePicurlHash() + ".jpg";
+        System.out.println("dstFilePath =" + dstFilePath);
+
+        File picFile = new File(dstFilePath);
+        if (!picFile.exists()) {
+            if (!picFile.getParentFile().exists()) {
+                picFile.getParentFile().mkdirs();
+            }
+            try {
+                pic.transferTo(picFile);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

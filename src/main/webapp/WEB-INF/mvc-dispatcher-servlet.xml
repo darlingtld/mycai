@@ -51,6 +51,9 @@
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
 
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
     <!--<task:scheduled-tasks scheduler="myScheduler">-->
     <!--<task:scheduled ref="productCrawler" method="crawl" cron="0 0 1 * * ?"/>-->
     <!--<task:scheduled ref="imageCrawler" method="fullfillImages" cron="0 0 */1 * * ?"/>-->
