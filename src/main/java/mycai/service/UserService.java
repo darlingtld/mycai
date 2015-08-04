@@ -106,7 +106,7 @@ public class UserService {
         User user = JSONObject.parseObject(userData, User.class);
         logger.info("[Parsed User info] {}", user);
         codeUserMap.put(code, user);
-        logger.info("[CodeUserMap]{}", codeUserMap);
+//        logger.info("[CodeUserMap]{}", codeUserMap);
 //save user information
         saveOrUpdate(user);
         return user;

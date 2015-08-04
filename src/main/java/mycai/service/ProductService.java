@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import mycai.dao.ProductDao;
 import mycai.pojo.*;
+import mycai.util.PathUtil;
 import mycai.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -221,6 +222,10 @@ public class ProductService {
 
     @Transactional
     public void delete(int productId) {
+        Product product = getById(productId);
+        File picFile = new File(PathUtil.getWebInfPath() + "/" + product.getPicurl());
+        picFile.delete();
+        logger.info("delete " + picFile.getAbsolutePath());
         productDao.delete(productId);
     }
 }
