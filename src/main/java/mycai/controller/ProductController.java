@@ -168,10 +168,6 @@ public class ProductController {
             response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
             return;
         }
-        String fileName = pic.getOriginalFilename();
-        String path = fileName;
-        String uriPath = path;
-        System.out.println("uriPath =" + uriPath);
 
         Product product = new Product();
         product.setName(name);
@@ -183,7 +179,7 @@ public class ProductController {
         product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
         product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
         productService.save(product);
-        String dstFilePath = PathUtil.getWebInfPath() + "/product_images/" + product.generatePicurlHash() + ".jpg";
+        String dstFilePath = "/" + PathUtil.getWebInfPath() + "/product_images/" + product.generatePicurlHash() + ".jpg";
         System.out.println("dstFilePath =" + dstFilePath);
 
         File picFile = new File(dstFilePath);

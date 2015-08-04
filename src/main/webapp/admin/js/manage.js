@@ -167,7 +167,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         $('#category').attr('value', '');
         $('#price').val(product.price);
         $('#unit').val(product.unit);
-        $('#pic').attr('src', app + '/' + product.picurl);
+        $('#pic').attr('src', app + "/" + product.picurl);
 
     };
 
@@ -296,7 +296,6 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     }
 
     $scope.saveSort = function () {
-        $('body').html('<h3 class="text-center">正在保存菜品顺序</h3>');
         var orderArr = $('#sortable li span.orderIndex');
         var productArr = $('#sortable li span.productId');
         var data = [];
@@ -304,6 +303,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
             console.log(productArr[i].innerText + " ==> " + orderArr[i].innerText);
             data.push({productId: productArr[i].innerText, orderIndex: i})
         }
+        $('body').html('<h3 class="text-center">正在保存菜品顺序</h3>');
         $http.post(app + "/product/save_sort", data).success(function () {
             alert('保存成功');
             location.reload();
