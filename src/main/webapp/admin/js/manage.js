@@ -167,6 +167,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         $('#category').attr('value', '');
         $('#price').val(product.price);
         $('#unit').val(product.unit);
+        $('#pic').attr('src', app + '/' + product.picurl);
 
     };
 
