@@ -35,6 +35,16 @@ public class Product {
     private double procprice;
     @Transient
     private double procindex;
+    @Column(name = "order_index")
+    private int orderIndex;
+
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
 
     public double getProcprice() {
         return procprice;

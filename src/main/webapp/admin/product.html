@@ -1,47 +1,45 @@
 <div class="container">
 
-    <button id="add_product" class="btn btn-info btn-sm" ng-click="create()" data-toggle="modal"
+    <button id="add_product" class="menu-product btn btn-info btn-sm" ng-click="create()" data-toggle="modal"
             data-target="#uploadDialog">新增菜品
     </button>
-    <button id="export_product" class="btn btn-success btn-sm" ng-click="export()">导出Excel</button>
+    <button id="sort_product" class="menu-product btn btn-primary btn-sm" ng-click="sort()">修改顺序
+    </button>
+
+    <button id="save_sort" class="menu-product btn btn-primary btn-sm" ng-click="saveSort()" style="display: none">保存顺序
+    </button>
+
+    <button id="export_product" class="menu-product btn btn-success btn-sm" ng-click="export()">导出Excel</button>
     <select class="product-picker form-control" ng-model="categorySelected" ng-change="changedValue(categorySelected)">
 
     </select>
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
-            <th ng-click="f='name'; rev=!rev">名字 <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
-            <th ng-click="f='description'; rev=!rev">描述 <span class="glyphicon glyphicon-sort"
-                                                              aria-hidden="true"></span></th>
-            <th ng-click="f='type'; rev=!rev">大类 <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
-            <th ng-click="f='category'; rev=!rev">小类 <span class="glyphicon glyphicon-sort" aria-hidden="true"></span>
-            </th>
-            <th ng-click="f='procprice'; rev=!rev">采购价（元） <span class="glyphicon glyphicon-sort"
-                                                                aria-hidden="true"></span>
-            </th>
-            <th ng-click="f='procindex'; rev=!rev">系数 <span class="glyphicon glyphicon-sort" aria-hidden="true"></span>
-            </th>
-            <th ng-click="f='price'; rev=!rev">出售价格（元） <span class="glyphicon glyphicon-sort" aria-hidden="true"></span>
-            </th>
-            <th ng-click="f='unit'; rev=!rev">单位 <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
-            <th>操作</th>
+            <th>名字</th>
+            <th>描述</th>
+            <th>大类</th>
+            <th>小类</th>
+            <th>采购价（元）</th>
+            <th>利润系数</th>
+            <th>出售价格（元）</th>
+            <th>单位</th>
+            <th class="operation">操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="product in products | orderBy: f : rev">
+        <tr ng-repeat="product in products">
             <td ng-bind="product.name"></td>
             <td ng-bind="product.description"></td>
             <td ng-bind="(product.type | translate:'t' )"></td>
             <td ng-bind="(product.category | translate :'c' )"></td>
-            <!--<td ng-bind="product.procprice"></td>-->
-            <!--<td ng-bind="product.procindex"></td>-->
             <td><input class="form-control" value="{{product.procprice}}" ng-model='product.procprice'
                        ng-change="updateProduct()"></td>
             <td><input class="form-control" value="{{product.procindex}}" ng-model='product.procindex'
                        ng-change="updateProduct()"></td>
             <td ng-bind="product.price"></td>
             <td ng-bind="product.unit"></td>
-            <td>
+            <td class="operation">
                 <button ng-click="modify(product.id)" class="btn btn-primary btn-sm" data-toggle="modal"
                         data-target="#myDialog">修改
                 </button>
@@ -51,6 +49,23 @@
         </tr>
         </tbody>
     </table>
+
+    <ul id="sortable" hidden>
+
+        <li class="ui-state-default" ng-repeat="product in products">
+            <span class="glyphicon glyphicon-sort" aria-hidden="true"></span>
+            <span class="productId" ng-bind="product.id" hidden></span>
+            <span ng-bind="product.name"></span>
+            <span ng-bind="product.description"></span>
+            <span ng-bind="(product.type | translate:'t' )"></span>
+            <span ng-bind="(product.category | translate :'c' )"></span>
+            <span ng-bind="product.procprice"></span>
+            <span ng-bind="product.procindex"></span>
+            <span ng-bind="product.price"></span>
+            <span ng-bind="product.unit"></span>
+            <span class="orderIndex" ng-bind="$index"></span>
+        </li>
+    </ul>
 
 </div>
 <div id="myDialog" class="modal fade" method="update" role="dialog">

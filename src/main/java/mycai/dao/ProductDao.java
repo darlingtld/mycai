@@ -2,6 +2,7 @@ package mycai.dao;
 
 import mycai.pojo.Procurement;
 import mycai.pojo.Product;
+import mycai.pojo.ProductOrder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,7 @@ public class ProductDao {
     }
 
     public List<Product> getList(String category) {
-        return sessionFactory.getCurrentSession().createQuery(String.format("from Product where category='%s'", category.toUpperCase())).list();
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Product where category='%s' order by orderIndex", category.toUpperCase())).list();
     }
 
     public List<Procurement> getProcurement() {
@@ -93,5 +94,12 @@ public class ProductDao {
 
     public void delete(int productId) {
         sessionFactory.getCurrentSession().createQuery(String.format("delete Product where id=%d", productId)).executeUpdate();
+    }
+
+    public void saveProductSortOrder(List<ProductOrder> productOrderList) {
+        Session session = sessionFactory.getCurrentSession();
+        for (ProductOrder po : productOrderList) {
+            session.createQuery(String.format("update Product set orderIndex=%d where id=%d", po.getOrderIndex(), po.getProductId())).executeUpdate();
+        }
     }
 }

@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import mycai.excel.ExcelFactory;
-import mycai.pojo.Category;
-import mycai.pojo.Procurement;
-import mycai.pojo.Product;
-import mycai.pojo.Type;
+import mycai.pojo.*;
 import mycai.service.ProductService;
 import mycai.util.PathUtil;
 import mycai.util.PropertyHolder;
@@ -62,6 +59,13 @@ public class ProductController {
     @ResponseBody
     List<Product> getListByPy(@PathVariable("category") String category) {
         return productService.getListSortByPinyin(category, "name", "asc");
+    }
+
+    @RequestMapping(value = "/admin/category/{category}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Product> getList4Admin(@PathVariable("category") String category) {
+        return productService.getList(category);
     }
 
     @RequestMapping(value = "/zuixincaipin/{limit}", method = RequestMethod.GET)
@@ -190,6 +194,14 @@ public class ProductController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/save_sort", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void saveSort(@RequestBody List<ProductOrder> productOrderList) {
+        System.out.println(productOrderList);
+        productService.saveProductSortOrder(productOrderList);
     }
 
 }

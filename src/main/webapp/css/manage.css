@@ -8,10 +8,38 @@ select.product-picker {
 
 }
 
-#add_product, #export_product, #export_order, #export_dispatch {
+#export_order, #export_dispatch {
+    margin-top: 20px;
+}
+
+.menu-product {
     margin-top: 20px;
 }
 
 #export_product, #export_order, #export_dispatch {
     float: right;
+}
+
+#sortable span {
+    padding: 10px;
+}
+
+#sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    /*width: 60%;*/
+}
+
+#sortable li {
+    margin: 0 3px 3px 3px;
+    padding: 0.4em;
+    padding-left: 1.5em;
+    font-size: 1.4em;
+    /*height: 28px;*/
+}
+
+#sortable li span {
+    /*position: absolute;*/
+    /*margin-left: -1.3em;*/
 }

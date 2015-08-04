@@ -228,4 +228,9 @@ public class ProductService {
         logger.info("delete " + picFile.getAbsolutePath());
         productDao.delete(productId);
     }
+
+    @Transactional
+    public void saveProductSortOrder(List<ProductOrder> productOrderList) {
+        productDao.saveProductSortOrder(productOrderList);
+    }
 }

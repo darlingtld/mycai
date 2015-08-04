@@ -101,7 +101,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         $scope.typeMap = data;
     });
 
-    var productUrl = app + '/product/category/' + $routeParams.category + '/pinyin/asc';
+    var productUrl = app + '/product/admin/category/' + $routeParams.category;
 
     function getProcurement4Product(procurement, id) {
         for (var i = 0; i < procurement.length; i++) {
@@ -284,8 +284,31 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
             location.reload();
         }
     }
-})
-;
+
+    $scope.sort = function () {
+        $('button.menu-product').hide();
+        $('select.product-picker').hide();
+        $('table').hide();
+        $('#save_sort').show();
+        $('#sortable').removeAttr('hidden');
+        $('#sortable').sortable();
+        $('#sortable').disableSelection();
+    }
+
+    $scope.saveSort = function () {
+        var orderArr = $('#sortable li span.orderIndex');
+        var productArr = $('#sortable li span.productId');
+        var data = [];
+        for (var i = 0; i < orderArr.length; i++) {
+            console.log(productArr[i].innerText + " ==> " + orderArr[i].innerText);
+            data.push({productId: productArr[i].innerText, orderIndex: orderArr[i].innerText})
+        }
+        $http.post(app + "/product/save_sort", data).success(function () {
+
+        })
+    }
+
+});
 
 adminModule.controller('orderController', function ($scope, $http) {
     $('li[role]').removeClass('active');
