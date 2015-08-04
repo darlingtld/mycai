@@ -39,7 +39,6 @@ select.product-picker {
     /*height: 28px;*/
 }
 
-#sortable li span {
-    /*position: absolute;*/
-    /*margin-left: -1.3em;*/
+#sortable  {
+    margin-top: 20px;
 }

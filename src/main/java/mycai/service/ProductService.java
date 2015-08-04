@@ -59,6 +59,50 @@ public class ProductService {
     }
 
     @Transactional
+    public List<Product> getListByAdminOrder(String category, String wechatId) {
+        logger.info("User {} get {}", wechatId, category);
+        List<Product> productList = getList(category);
+
+        List<Order> orderList = orderService.getLatestList(wechatId, 5);
+        Map<String, AtomicInteger> boughtItemsMap = new HashMap<>();
+
+        for (Order order : orderList) {
+            JSONObject jsonObject = JSON.parseObject(order.getBill());
+            JSONArray jsonArray = jsonObject.getJSONArray("items");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                String productName = jsonArray.getJSONObject(i).getString("productName");
+                if (boughtItemsMap.containsKey(productName)) {
+                    boughtItemsMap.get(productName).incrementAndGet();
+                } else {
+                    boughtItemsMap.put(productName, new AtomicInteger(1));
+                }
+            }
+
+        }
+        List<Map.Entry<String, AtomicInteger>> sortedFavProductList = new ArrayList<>(boughtItemsMap.entrySet());
+        Collections.sort(sortedFavProductList, new Comparator<Map.Entry<String, AtomicInteger>>() {
+
+            @Override
+            public int compare(Map.Entry<String, AtomicInteger> o1, Map.Entry<String, AtomicInteger> o2) {
+                return o1.getValue().intValue() - o2.getValue().intValue();
+            }
+        });
+
+        LinkedList<Product> retProductList = new LinkedList<>();
+        for (Product product : productList) {
+            for (Map.Entry<String, AtomicInteger> entry : sortedFavProductList) {
+                if (retProductList.contains(product)) continue;
+                if (product.getName().equals(entry.getKey())) {
+                    retProductList.addFirst(product);
+                }
+            }
+            if (!retProductList.contains(product))
+                retProductList.addLast(product);
+        }
+        return retProductList;
+    }
+
+    @Transactional
     public List<Product> getListByFavourites(String category, String wechatId) {
         logger.info("User {} get {}", wechatId, category);
         List<Product> productList = getList(category);

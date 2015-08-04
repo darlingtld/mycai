@@ -296,15 +296,17 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     }
 
     $scope.saveSort = function () {
+        $('body').html('<h3 class="text-center">正在保存菜品顺序</h3>');
         var orderArr = $('#sortable li span.orderIndex');
         var productArr = $('#sortable li span.productId');
         var data = [];
         for (var i = 0; i < orderArr.length; i++) {
             console.log(productArr[i].innerText + " ==> " + orderArr[i].innerText);
-            data.push({productId: productArr[i].innerText, orderIndex: orderArr[i].innerText})
+            data.push({productId: productArr[i].innerText, orderIndex: i})
         }
         $http.post(app + "/product/save_sort", data).success(function () {
-
+            alert('保存成功');
+            location.reload();
         })
     }
 
