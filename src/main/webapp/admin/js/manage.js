@@ -226,47 +226,62 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         });
     }
 
+    function validateProduct() {
+        if ($('#uname').val() == '') {
+            alert("请填写名字");
+            return false;
+        } else if ($('#udescription').val() == '') {
+            alert("请填写描述");
+            return false;
+        } else if ($('#utype').val() == '') {
+            alert("请填写大类");
+            return false;
+        } else if ($('#ucategory').val() == '') {
+            alert("请填写小类");
+            return false;
+        } else if ($('#uprice').val() == '') {
+            alert("请填写价格");
+            return false;
+        } else if ($('#uunit').val() == '') {
+            alert("请填写单位");
+            return false;
+        } else if ($('#upic').val() == '') {
+            alert("请上传图片");
+            return false;
+        }
+        return true;
+    }
+
     $scope.upload = function () {
-        var product = new FormData();
-        product.append("name", $('#uname').val());
-        product.append("description", $('#udescription').val());
-        product.append("type", $('#utype').val());
-        product.append("category", $('#ucategory').val());
-        product.append("price", $('#uprice').val());
-        product.append("unit", $('#uunit').val());
-        product.append("pic", $("#upic").get(0).files[0]);
-        //var product = {
-        //    name: $('#uname').val(),
-        //    description: $('#udescription').val(),
-        //    type: $('#utype').val(),
-        //    category: $('#ucategory').val(),
-        //    price: $('#uprice').val(),
-        //    unit: $('#uunit').val(),
-        //    pic: document.getElementById("upic").files[0]
-        //};
-        //
-        //$http.post(app + "/product/upload", product, {
-        //    headers: {'Content-Type': 'multipart/form-data; charset=UTF-8'}
-        //}).success(function () {
-        //    alert("添加成功");
-        //
-        //}).error(function () {
-        //    alert("添加失败");
-        //    //location.reload();
-        //});
+        if (validateProduct()) {
+            var product = new FormData();
+            product.append("name", $('#uname').val());
+            product.append("description", $('#udescription').val());
+            product.append("type", $('#utype').val());
+            product.append("category", $('#ucategory').val());
+            product.append("price", $('#uprice').val());
+            product.append("unit", $('#uunit').val());
+            product.append("pic", $("#upic").get(0).files[0]);
 
-        $.ajax({
-            type: 'POST',
-            url: app + "/product/upload",
-            data: product,
-            processData : false,
-            contentType : false,
-            success: function(){
-            },
-            error:function(){
-            }
-        });
 
+            $.ajax({
+                type: 'POST',
+                url: app + "/product/upload",
+                data: product,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    alert("添加成功");
+                    location.reload();
+                },
+                error: function () {
+                    alert("添加失败");
+                    location.reload();
+                }
+            });
+        } else {
+            location.reload();
+        }
     }
 })
 ;

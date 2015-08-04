@@ -10,6 +10,7 @@ import mycai.pojo.Procurement;
 import mycai.pojo.Product;
 import mycai.pojo.Type;
 import mycai.service.ProductService;
+import mycai.util.PathUtil;
 import mycai.util.PropertyHolder;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -177,21 +178,17 @@ public class ProductController {
         product.setUnit(unit);
         product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
         product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
-        String dstFilePath = "product_images/" + product.generatePicurlHash() + ".jpg";
+        productService.save(product);
+        String dstFilePath = PathUtil.getWebInfPath() + "/product_images/" + product.generatePicurlHash() + ".jpg";
         System.out.println("dstFilePath =" + dstFilePath);
 
         File picFile = new File(dstFilePath);
-        if (!picFile.exists()) {
-            if (!picFile.getParentFile().exists()) {
-                picFile.getParentFile().mkdirs();
-            }
-            try {
-                pic.transferTo(picFile);
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            pic.transferTo(picFile);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
