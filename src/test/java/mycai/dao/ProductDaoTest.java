@@ -111,6 +111,26 @@ public class ProductDaoTest {
     }
 
     @Test
+    public void importImages3() {
+        String imgSrcDir = "D:\\MyProjects\\Archive";
+        String dstSrcDir = "C:\\Users\\darlingtld\\IdeaProjects\\mycai_main\\src\\main\\webapp\\product_images";
+        File file = new File(imgSrcDir);
+        File[] imgFiles = file.listFiles();
+        List<Product> productList = productService.getAll();
+        for (File imgFile : imgFiles) {
+            System.out.println(imgFile.getName());
+            for(Product product : productList){
+                if(imgFile.getName().substring(0, imgFile.getName().indexOf(".")).equals(product.getName())){
+                    System.out.println(product.getName());
+                    product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
+                    imgFile.renameTo(new File(dstSrcDir + "\\" + product.generatePicurlHash() + ".jpg"));
+                    productService.update(product);
+                }
+            }
+        }
+    }
+
+    @Test
     public void getProductByFavourites() {
         String category = "yecailei";
         String wechatId = "o5Irvt5957jQ4xmdHmDp59epk0UU";
