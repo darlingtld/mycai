@@ -90,7 +90,7 @@
                 <div class="input-group input-group">
                     <span class="input-group-addon">大类:</span>
                     <select id="type" ng-model="selectedType" ng-options="t.name for t in typeMap track by t.value"
-                            class="form-control">
+                            class="form-control"  style="color: red;">
                         <option value="">--- 请选择 ---</option>
                     </select>
                 </div>
@@ -98,7 +98,7 @@
                     <span class="input-group-addon">小类:</span>
                     <select id="category" ng-model="selectedCategory"
                             ng-options="c.key for c in selectedType.list track by c.value"
-                            class="form-control">
+                            class="form-control" style="color: red;">
                         <option value="">--- 请选择 ---</option>
                     </select>
                 </div>
@@ -148,7 +148,7 @@
                 <div class="input-group input-group">
                     <span class="input-group-addon">大类:</span>
                     <select id="utype" ng-model="selectedType" ng-options="t.name for t in typeMap track by t.value"
-                            class="form-control">
+                            class="form-control"  style="color: red;">
                         <option value="">--- 请选择 ---</option>
                     </select>
                 </div>
@@ -156,7 +156,7 @@
                     <span class="input-group-addon">小类:</span>
                     <select id="ucategory" ng-model="selectedCategory"
                             ng-options="c.key for c in selectedType.list track by c.value"
-                            class="form-control">
+                            class="form-control"  style="color: red;">
                         <option value="">--- 请选择 ---</option>
                     </select>
                 </div>
