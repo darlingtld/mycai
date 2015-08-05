@@ -168,7 +168,7 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
         $('#price').val(product.price);
         $('#unit').val(product.unit);
         $('#pic').attr('src', app + "/" + product.picurl);
-
+        $('#ppic').val('');
     };
 
     $scope.delete = function (id) {
@@ -183,15 +183,14 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     }
 
     $scope.create = function () {
-        $('#myDialog').attr('method', 'create');
-        $('#myDialog .title').text('新增菜品');
-        $('#pid').val('');
-        $('#name').val('');
-        $('#description').val('');
-        $('#type').val('');
-        $('#category').val('');
-        $('#price').val('');
-        $('#unit').val('');
+        $('#upid').val('');
+        $('#uname').val('');
+        $('#udescription').val('');
+        $('#utype').val('');
+        $('#ucategory').val('');
+        $('#uprice').val('');
+        $('#uunit').val('');
+        $('#upic').val('');
     };
 
     $scope.export = function () {
@@ -199,32 +198,57 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
     };
 
     $scope.save = function () {
-        var method = $('#myDialog').attr('method');
-        var product = {
-            name: $('#name').val(),
-            description: $('#description').val(),
-            type: $('#type').val(),
-            category: $('#category').val(),
-            price: $('#price').val(),
-            unit: $('#unit').val()
-        };
-        if (method == 'update') {
-            product.id = $('#pid').val();
+        if ($('#ppic').val() != '') {
+            var product = new FormData();
+            product.append("id", $('#pid').val());
+            product.append("name", $('#name').val());
+            product.append("description", $('#description').val());
+            product.append("type", $('#type').val());
+            product.append("category", $('#category').val());
+            product.append("price", $('#price').val());
+            product.append("unit", $('#unit').val());
+            product.append("pic", $("#ppic").get(0).files[0]);
+            $.ajax({
+                type: 'POST',
+                url: app + "/product/upload",
+                data: product,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    alert("修改成功");
+                    location.reload();
+                },
+                error: function () {
+                    alert("修改失败");
+                    location.reload();
+                }
+            });
+        } else {
+            var product = {
+                id: $('#pid').val(),
+                name: $('#name').val(),
+                description: $('#description').val(),
+                type: $('#type').val(),
+                category: $('#category').val(),
+                price: $('#price').val(),
+                unit: $('#unit').val()
+            };
+
+            $.ajax({
+                type: "post",
+                url: app + "/product/update",
+                contentType: "application/json",
+                data: JSON.stringify(product),
+                success: function (data) {
+                    alert('保存成功！');
+                    location.reload();
+                },
+                error: function (data) {
+                    alert('保存失败!');
+                    location.reload();
+                }
+            });
         }
-        $.ajax({
-            type: "post",
-            url: app + "/product/" + method,
-            contentType: "application/json",
-            data: JSON.stringify(product),
-            success: function (data) {
-                alert('保存成功！');
-                location.reload();
-            },
-            error: function (data) {
-                alert('保存失败');
-                location.reload();
-            }
-        });
     }
 
     function validateProduct() {
@@ -308,6 +332,10 @@ adminModule.controller('productController', function ($scope, $http, $routeParam
             alert('保存成功');
             location.reload();
         })
+    }
+
+    $scope.modifyPic = function () {
+        $('div.upload_file').show();
     }
 
 });

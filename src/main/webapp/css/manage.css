@@ -42,3 +42,7 @@ select.product-picker {
 #sortable  {
     margin-top: 20px;
 }
+
+div.upload_file{
+    display: none;
+}

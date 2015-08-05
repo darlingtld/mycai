@@ -110,9 +110,14 @@
                     <span class="input-group-addon">单位:</span>
                     <input type="text" class="form-control" id="unit">
                 </div>
-                <div class="input-group input-group">
+                <div class="input-group input-group" style="display: table;">
                     <span class="input-group-addon">图片:</span>
-                    <img id="pic" width="120px"/>
+                    <img id="pic" width="120px" style="margin-left: 30%;"/>
+                    <button class="btn btn-info btn-sm" ng-click="modifyPic()" style="margin-left: 20%;">修改图片</button>
+                    <div class="upload_file">
+                        <input type="file" class="form-control" id="ppic">
+                        <span style="color: red;">请上传300x300 50KB以下的jpg图片</span>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

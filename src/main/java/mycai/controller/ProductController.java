@@ -156,7 +156,8 @@ public class ProductController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public
     @ResponseBody
-    void uploadProduct(@RequestParam("pic") MultipartFile pic,
+    void uploadProduct(@RequestParam(value = "pic", required = false) MultipartFile pic,
+                       @RequestParam(value = "id", required = false) Integer id,
                        @RequestParam("name") String name,
                        @RequestParam("description") String description,
                        @RequestParam("type") String type,
@@ -168,27 +169,41 @@ public class ProductController {
             response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
             return;
         }
-
-        Product product = new Product();
+        Product product;
+        if (id != null) {
+            product = productService.getById(id);
+        } else {
+            product = new Product();
+        }
         product.setName(name);
         product.setDescription(description);
         product.setType(Type.valueOf(type));
         product.setCategory(Category.valueOf(category));
         product.setPrice(price);
         product.setUnit(unit);
-        product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
-        product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
-        productService.save(product);
-        String dstFilePath = "/" + PathUtil.getWebInfPath() + "/product_images/" + product.generatePicurlHash() + ".jpg";
+        // for Linux
+//        String dstFilePath = "/" + PathUtil.getWebInfPath() + "/product_images/" + product.generatePicurlHash() + ".jpg";
+        // for Windows
+        String dstFilePath = PathUtil.getWebInfPath() + "/product_images/" + product.generatePicurlHash() + ".jpg";
         System.out.println("dstFilePath =" + dstFilePath);
+        if (pic != null) {
+            product.setPicurl("product_images/" + product.generatePicurlHash() + ".jpg");
 
-        File picFile = new File(dstFilePath);
-        try {
-            pic.transferTo(picFile);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            File picFile = new File(dstFilePath);
+
+            try {
+                pic.transferTo(picFile);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        product.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
+        if (id != null) {
+            productService.update(product);
+        } else {
+            productService.save(product);
         }
     }
 

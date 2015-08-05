@@ -178,7 +178,9 @@ public class ProductService {
             productInDB.setPrice(Utils.formatDouble(product.getPrice()));
             productInDB.setUnit(product.getUnit());
             productInDB.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
-//            productInDB.setPicurl(product.getPicurl());
+            if (product.getPicurl() != null) {
+                productInDB.setPicurl(product.getPicurl());
+            }
         }
         productDao.update(productInDB);
         if (product.getProcindex() < 0.01 && product.getProcprice() < 0.01) {
