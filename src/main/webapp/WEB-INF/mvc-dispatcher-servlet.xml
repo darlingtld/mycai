@@ -2,15 +2,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:component-scan base-package="mycai"/>
 
     <mvc:annotation-driven/>
     <tx:annotation-driven/>
+    <aop:aspectj-autoproxy/>
+    <bean class="mycai.advice.MethodAdvice"></bean>
+    <bean class="mycai.advice.StatAdvice"></bean>
 
     <mvc:resources location="/" mapping="/**"/>
 
@@ -52,7 +55,7 @@
     </bean>
 
     <bean id="multipartResolver"
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
     <!--<task:scheduled-tasks scheduler="myScheduler">-->
     <!--<task:scheduled ref="productCrawler" method="crawl" cron="0 0 1 * * ?"/>-->
