@@ -132,9 +132,11 @@ public class UserService {
 
         User userInDB = userDao.getUserByWechatId(user.getOpenid());
         if (userInDB == null) {
+            logger.info("save user");
             user.setRole(Role.USER.toString());
             userDao.save(user);
         } else {
+            logger.info("update user");
             userInDB.setNickname(user.getNickname());
 //            userInDB.setUsername(user.getUsername());
             userInDB.setHeadimgurl(user.getHeadimgurl());
