@@ -2,7 +2,6 @@
  * Created by darlingtld on 2015/7/4 0004.
  */
 var delivModule = angular.module('DelivModule', []);
-var isTest = false;
 var user;
 var wechatId;
 var confirmCode;
@@ -14,18 +13,6 @@ var orderStatus = {
     DELIVERED_PAID: "已配送（已付款）"
 }
 
-if (isTest) {
-    user = {
-        nickname: 'lingda',
-        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
-        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0',
-        consignee: '灵达',
-        consignee_contact: '13402188638',
-        shop_info: '新中源大楼'
-    }
-
-    wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
-}
 var app = '/mycai';
 var bill = {
     items: [],

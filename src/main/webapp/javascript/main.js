@@ -2,7 +2,7 @@
  * Created by darlingtld on 2015/7/4 0004.
  */
 var mycaiModule = angular.module('MycaiModule', ['ngRoute']);
-var isTest = false;
+
 var app = '/mycai';
 var bill = {
     items: [],
@@ -13,18 +13,6 @@ var user;
 var wechatId;
 var username;
 
-if (isTest) {
-    user = {
-        nickname: 'lingda',
-        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
-        headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0',
-        consignee: '灵达',
-        consigneeContact: '13402188638',
-        shopInfo: '新中源大楼',
-        shopAddress: '长阳路1930号'
-    }
-    wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
-}
 
 mycaiModule.service('authService', function ($http) {
     this.getUserInfo = function (callback) {
@@ -107,8 +95,11 @@ mycaiModule.controller('productController', function ($scope, $http, $routeParam
             user = data;
             wechatId = user.openid;
             $('img.user-icon').attr('src', user.headimgurl);
-
+            setLocalStorage('wechatid', wechatId);
         });
+    }
+    if (wechatId == undefined) {
+        wechatId = getLocalStorage('wechatid');
     }
     var url = app + '/product/category/' + $routeParams.category + '/wechatid/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
@@ -125,7 +116,11 @@ mycaiModule.controller('mostBuyController', function ($scope, $http, $routeParam
             user = data;
             wechatId = user.openid;
             $('img.user-icon').attr('src', user.headimgurl);
+            setLocalStorage('wechatid', wechatId);
         });
+    }
+    if (wechatId == undefined) {
+        wechatId = getLocalStorage('wechatid');
     }
     var url = app + '/product/most_bought/' + $routeParams.frequent + '/wechatid/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
@@ -175,6 +170,7 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
                     $http.post(app + "/user/save_or_update", JSON.stringify(user)).success(function (data, status, headers, config) {
                         user = data;
                     });
+                    setLocalStorage('wechatid', wechatId);
                 });
             }
             //$('.datetime').mobiscroll().datetime({
@@ -211,7 +207,7 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
                     }
                     var order = {
                         userId: user.nickname,
-                        wechatId: user.openid,
+                        wechatId: wechatId,
                         bill: JSON.stringify(bill),
                         orderTs: new Date().Format("yyyy-MM-dd hh:mm:ss"),
                         deliveryTs: $('#delivery_ts').val(),
