@@ -23,7 +23,7 @@ function _initialPage() {
             $("#contact").text(data.consigneeContact);
             $("#status").text(data.status);
             var bill = JSON.parse(data.bill);
-            $("#totalAmount").text(bill.totalAmount);
+            $("#totalAmount").text(bill.items.length);
             $("#totalPrice").text(bill.totalPrice);
             var html = "";
             for (var i = 0; i < bill.items.length; i++) {
