@@ -34,7 +34,7 @@ public class ProductService {
 
     @Transactional
     public int save(Product product) {
-        product.setPrice(Utils.formatDouble(product.getPrice()));
+        product.setPrice(Utils.formatDouble(product.getPrice(), 2));
         return productDao.save(product);
     }
 
@@ -175,7 +175,7 @@ public class ProductService {
             productInDB.setDescription(product.getDescription());
             productInDB.setType(product.getType());
             productInDB.setCategory(product.getCategory());
-            productInDB.setPrice(Utils.formatDouble(product.getPrice()));
+            productInDB.setPrice(Utils.formatDouble(product.getPrice(), 2));
             productInDB.setUnit(product.getUnit());
             productInDB.setDataChangeLastTime(new Timestamp(System.currentTimeMillis()));
             if (product.getPicurl() != null) {

@@ -7,7 +7,6 @@ import mycai.crawler.ImageCrawler;
 import mycai.pojo.*;
 import mycai.service.OrderService;
 import mycai.service.ProductService;
-import mycai.util.ImageUtil;
 import mycai.util.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -268,7 +267,7 @@ public class ProductDaoTest {
     public void formatPrice() {
         List<Procurement> procurementList = productService.getProcurement();
         for (Procurement product : procurementList) {
-            product.setProcprice(Utils.formatDouble(product.getProcprice()));
+            product.setProcprice(Utils.formatDouble(product.getProcprice(), 2));
             productService.saveOrUpdateProcurement(product);
         }
     }
@@ -276,7 +275,7 @@ public class ProductDaoTest {
     @Test
     public void testOverflow() {
         System.out.println(1.15 * 2.3);
-        System.out.println(Utils.formatDouble(1.15 * 2.3));
+        System.out.println(Utils.formatDouble(1.15 * 2.3, 2));
 
     }
 }

@@ -1,9 +1,16 @@
 package mycai.pojo;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import mycai.util.Utils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by tangld on 2015/5/20.
@@ -38,7 +45,6 @@ public class Order {
     @Column(name = "confirm_bill")
     private String confirmBill;
     @Column(name = "confirm_ts")
-
     private String confirmTs;
 
     @Override
@@ -172,4 +178,48 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public double evalBillTotalMoney() {
+        return evalTotalMoney(bill);
+    }
+
+    public double evalConfirmBillTotalMoney() {
+        return evalTotalMoney(confirmBill);
+    }
+
+    private double evalTotalMoney(String bill) {
+        double total = 0;
+        Map<Product, Double> billMap = parseBill(bill);
+        for (Product key : billMap.keySet()) {
+            total += key.getPrice() * billMap.get(key);
+        }
+        return Utils.formatDouble(total, 2);
+    }
+
+    public Map<Product, Double> evalParsedBill() {
+        return parseBill(this.bill);
+    }
+
+    public Map<Product, Double> evalParsedConfirmBill() {
+        return parseBill(this.confirmBill);
+    }
+
+    private Map<Product, Double> parseBill(String bill) {
+        Map<Product, Double> billMap = new HashMap<>();
+        JSONArray items = JSON.parseObject(this.bill).getJSONArray("items");
+        for (int i = 0; i < items.size(); i++) {
+            JSONObject object = items.getJSONObject(i);
+            Product product = new Product();
+            product.setId(object.getInteger("productId"));
+            product.setName(object.getString("productName"));
+            product.setDescription(object.getString("description"));
+            product.setPrice(object.getDouble("productPrice"));
+            product.setUnit(object.getString("productUnit"));
+            product.setPicurl(object.getString("picurl"));
+            Double amount = object.getDouble("amount");
+            billMap.put(product, amount);
+        }
+        return billMap;
+    }
+
 }

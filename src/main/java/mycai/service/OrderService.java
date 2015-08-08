@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by darlingtld on 2015/5/16.
@@ -54,7 +53,7 @@ public class OrderService {
 
         JSONObject jsonObject = JSON.parseObject(order.getBill());
         double totalPrice = jsonObject.getDouble("totalPrice");
-        jsonObject.put("totalPrice", Utils.formatDouble(totalPrice));
+        jsonObject.put("totalPrice", Utils.formatDouble(totalPrice, 2));
         order.setBill(jsonObject.toJSONString());
         orderDao.save(order);
     }
