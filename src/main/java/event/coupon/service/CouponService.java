@@ -2,6 +2,7 @@ package event.coupon.service;
 
 import event.coupon.dao.CouponDao;
 import event.coupon.pojo.Coupon;
+import event.coupon.pojo.Voucher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,11 @@ public class CouponService {
     public List<Coupon> getCouponList(String openid){
         logger.info("Get coupon list of {}", openid);
         return couponDao.getCouponList(openid);
+    }
+
+    @Transactional
+    public List<Voucher> getCouponList(String wechatid, Class<Voucher> voucherClass) {
+        logger.info("Get voucher list of {}", wechatid);
+        return couponDao.getCouponList(wechatid, voucherClass);
     }
 }

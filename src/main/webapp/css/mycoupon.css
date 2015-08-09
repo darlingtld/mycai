@@ -29,7 +29,7 @@
     -moz-border-radius: 50%;
     border-radius: 50%;
     max-height: 35px;
-    margin-left: 50%;
+    margin-left: auto;
 }
 
 .msg {
