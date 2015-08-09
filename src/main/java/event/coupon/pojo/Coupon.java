@@ -19,33 +19,38 @@ public abstract class Coupon {
     protected static Logger logger = LoggerFactory.getLogger(Coupon.class);
     @Id
     private int id;
-//    @Column(name = "coupon_type")
-//    private String couponType;
     @Column(name = "openid")
     private String openid;
     @Column(name = "start_time")
     private Date startTime;
     @Column(name = "end_time")
     private Date endTime;
+    @Transient
+    private String detailInfo;
+    @Transient
+    private String timeLimit;
+
+    public void setDetailInfo(String detailInfo) {
+        this.detailInfo = detailInfo;
+    }
+
+    public void setTimeLimit(String timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
+    public abstract String generateDetailInfo();
+
+    public abstract String generateTimeLimit();
 
     @Override
     public String toString() {
         return "Coupon{" +
                 "id=" + id +
-//                ", couponType='" + couponType + '\'' +
                 ", openid='" + openid + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 '}';
     }
-
-//    public String getCouponType() {
-//        return couponType;
-//    }
-//
-//    public void setCouponType(String couponType) {
-//        this.couponType = couponType;
-//    }
 
     public int getId() {
         return id;

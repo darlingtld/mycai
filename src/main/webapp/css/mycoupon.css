@@ -177,7 +177,27 @@ table.register span {
 }
 
 .coupon {
-    border: 2px solid;
+    text-align: center;
+    border: 2px solid #a1a1a1;
+    padding: 10px 40px;
+    background: #1ab667 url("../images/coupon.jpg");
+    background-size: cover;
+    width: 100%;
     border-radius: 25px;
     -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    height: 80px;
+    margin-top: 10px;
+}
+
+.coupon-info {
+    color: chocolate;
+    display: block;
+    font-family: fantasy;
+    font-size: xx-large;
+}
+
+.coupon-limit {
+    font-size: small;
+    float: right;
 }

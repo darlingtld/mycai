@@ -24,4 +24,8 @@ public class Utils {
         }
         return null;
     }
+
+    public static String chineseDateFormat(Date startTime) {
+        return new SimpleDateFormat("yyyy年MM月dd日").format(startTime);
+    }
 }
