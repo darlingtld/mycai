@@ -176,3 +176,8 @@ table.register span {
     display: inline-block;
 }
 
+.coupon {
+    border: 2px solid;
+    border-radius: 25px;
+    -moz-border-radius: 25px;
+}
