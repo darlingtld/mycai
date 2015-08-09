@@ -182,7 +182,7 @@ public class ProductDaoTest {
         Calendar now = Calendar.getInstance();
         Calendar then = Calendar.getInstance();
         then.add(Calendar.MONTH, -frequency);
-        List<Product> productList = orderService.getListByTimeFrame(wechatid, then, now);
+        List<Product> productList = orderService.getListByTimeFrame(wechatid, then, now, "shucaishuiguo");
         System.out.println(productList.size());
         for (Product product : productList) {
             System.out.println(product);

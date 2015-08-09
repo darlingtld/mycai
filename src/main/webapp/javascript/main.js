@@ -122,7 +122,7 @@ mycaiModule.controller('mostBuyController', function ($scope, $http, $routeParam
     if (wechatId == undefined) {
         wechatId = getLocalStorage('wechatid');
     }
-    var url = app + '/product/most_bought/' + $routeParams.frequent + '/wechatid/' + wechatId;
+    var url = app + '/product/most_bought/' + $routeParams.type + '/wechatid/' + wechatId;
     $http.get(url).success(function (data, status, headers, config) {
         $scope.products = data;
         fillSpinner($scope.products);
@@ -360,7 +360,7 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'productController',
             templateUrl: 'product.html'
         })
-        .when('/product/most_bought/:frequent', {
+        .when('/product/most_bought/:type', {
             controller: 'mostBuyController',
             templateUrl: 'product.html'
         })

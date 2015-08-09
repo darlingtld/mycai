@@ -102,4 +102,8 @@ public class ProductDao {
             session.createQuery(String.format("update Product set orderIndex=%d where id=%d", po.getOrderIndex(), po.getProductId())).executeUpdate();
         }
     }
+
+    public List<Product> getByType(String type) {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Product where type='%s'", type.toUpperCase())).list();
+    }
 }

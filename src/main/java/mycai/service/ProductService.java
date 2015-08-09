@@ -254,11 +254,11 @@ public class ProductService {
     }
 
     @Transactional
-    public List<Product> getMostBought(String wechatid, int frequency) {
+    public List<Product> getMostBought(String wechatid, String type) {
         Calendar now = Calendar.getInstance();
         Calendar then = Calendar.getInstance();
-        then.add(Calendar.MONTH, -frequency);
-        return orderService.getListByTimeFrame(wechatid, then, now);
+        then.add(Calendar.MONTH, -3);
+        return orderService.getListByTimeFrame(wechatid, then, now, type);
     }
 
     @Transactional

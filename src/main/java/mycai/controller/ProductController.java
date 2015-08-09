@@ -40,18 +40,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-//    @RequestMapping(value = "/{type}/{category}", method = RequestMethod.GET)
-//    public
-//    @ResponseBody
-//    List<Product> getList(@PathVariable("type") String type, @PathVariable("category") String category) {
-//        return productService.getList(type, category);
-//    }
-
     @RequestMapping(value = "/category/{category}/wechatid/{wechatid}", method = RequestMethod.GET)
     public
     @ResponseBody
     List<Product> getList(@PathVariable("category") String category, @PathVariable("wechatid") String wechatid) {
-        return productService.getListByFavourites(category, wechatid);
+//        return productService.getListByFavourites(category, wechatid);
+        return productService.getList(category);
     }
 
     @RequestMapping(value = "/category/{category}/pinyin/asc", method = RequestMethod.GET)
@@ -75,11 +69,11 @@ public class ProductController {
         return productService.getLatest(limit);
     }
 
-    @RequestMapping(value = "/most_bought/{frequency}/wechatid/{wechatid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/most_bought/{type}/wechatid/{wechatid}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Product> getMostBought(@PathVariable("frequency") int frequency, @PathVariable("wechatid") String wechatid) {
-        return productService.getMostBought(wechatid, frequency);
+    List<Product> getMostBought(@PathVariable("type") String type, @PathVariable("wechatid") String wechatid) {
+        return productService.getMostBought(wechatid, type);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)

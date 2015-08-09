@@ -109,11 +109,11 @@ public class OrderService {
     }
 
     @Transactional
-    public List<Product> getListByTimeFrame(String wechatid, Calendar then, Calendar now) {
-        logger.info("Get order of {} from {} to {}", wechatid, then.getTime().toString(), now.getTime().toString());
+    public List<Product> getListByTimeFrame(String wechatid, Calendar then, Calendar now, String type) {
+        logger.info("Get order of {} from {} to {} of type {}", wechatid, then.getTime().toString(), now.getTime().toString(), type);
         List<Order> orderList = orderDao.getListByTimeFrame(wechatid, then, now);
         List<Product> productList = new ArrayList<>();
-        List<Product> allProductList = productDao.getAll();
+        List<Product> allProductList = productDao.getByType(type);
         HashMap<Integer, Product> allProductMap = new HashMap<>();
         for (Product product : allProductList) {
             allProductMap.put(product.getId(), product);
