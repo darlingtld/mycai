@@ -176,3 +176,29 @@ table.register span {
     display: inline-block;
 }
 
+.message {
+    text-align: center;
+    border: 2px solid #a1a1a1;
+    padding: 10px 40px;
+    background: cornsilk;
+    background-size: cover;
+    width: 100%;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    height: 80px;
+    margin-top: 10px;
+}
+
+.message-info {
+    color: darkcyan;
+    display: block;
+    font-family: fantasy;
+    font-size:large;
+}
+
+.message-ts {
+    display: block;
+    font-size: small;
+    text-align: left;
+}

@@ -254,6 +254,27 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
 )
 ;
 
+mycaiModule.controller('messageController', function ($scope, $location, $http) {
+    goToMessage();
+    if (user == undefined || user == null) {
+        var code = getURLParameter('code');
+        $http.get(app + "/user/code/" + code).success(function (data, status, headers, config) {
+            user = data;
+            wechatId = user.openid;
+            $('img.user-icon').attr('src', user.headimgurl);
+            setLocalStorage('wechatid', wechatId);
+        });
+    }
+    if (wechatId == undefined) {
+        wechatId = getLocalStorage('wechatid');
+    }
+    var url = app + '/message/wechatid/' + wechatId;
+    $http.get(url).success(function (data, status, headers, config) {
+        $scope.messages = data;
+    });
+
+});
+
 mycaiModule.controller('orderController', function ($http, $scope) {
     goToOrderHistory();
     var url = app + '/order/get/' + wechatId;
@@ -406,6 +427,10 @@ mycaiModule.config(['$routeProvider', function ($routeProvider) {
         .when('/router', {
             controller: 'routerController',
             template: ''
+        })
+        .when('/message', {
+            controller: 'messageController',
+            templateUrl: 'message_all.html'
         })
         .otherwise({
             redirectTo: '/product/category/yecailei'
@@ -664,6 +689,12 @@ function goToProduct() {
     $('#ma-menu-bar').show();
     $('#subCategoryBlock').show();
     $('#mainListBlock').css('width', '75%');
+}
+
+function goToMessage() {
+    $('#subCategoryBlock').hide();
+    $('#mainListBlock').css('width', '100%');
+    $('footer').hide();
 }
 
 function saveToLocalStorage(bill) {

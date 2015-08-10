@@ -41,6 +41,7 @@
                 <value>event.coupon.pojo.Coupon</value>
                 <value>event.coupon.pojo.Voucher</value>
                 <value>event.coupon.pojo.Discount</value>
+                <value>event.message.pojo.Message</value>
             </list>
         </property>
         <property name="hibernateProperties">
