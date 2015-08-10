@@ -24,4 +24,10 @@ public class MessageService {
         logger.info("Get message of {}", openid);
         return messageDao.getMessageList(openid);
     }
+
+    @Transactional
+    public void createMessage(Message message) {
+        logger.info("Create message {}", message.toString());
+        messageDao.createMessage(message);
+    }
 }

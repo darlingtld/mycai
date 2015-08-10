@@ -1,9 +1,6 @@
 package event.message.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -20,6 +17,9 @@ public class Message {
     private String content;
     @Column(name = "ts")
     private Date ts;
+    @Column(name="has_read")
+//    @Transient
+    private boolean read;
 
     @Override
     public String toString() {
@@ -28,7 +28,16 @@ public class Message {
                 ", openid='" + openid + '\'' +
                 ", content='" + content + '\'' +
                 ", ts=" + ts +
+                ", read=" + read +
                 '}';
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
     public String getOpenid() {

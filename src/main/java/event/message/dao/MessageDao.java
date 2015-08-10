@@ -18,4 +18,8 @@ public class MessageDao {
     public List<Message> getMessageList(String openid) {
         return sessionFactory.getCurrentSession().createQuery(String.format("from Message where openid='%s'", openid)).list();
     }
+
+    public void createMessage(Message message) {
+        sessionFactory.getCurrentSession().save(message);
+    }
 }

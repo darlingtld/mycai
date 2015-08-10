@@ -30,7 +30,7 @@ public class CouponServiceTest {
     @Autowired
     private OrderService orderService;
 
-    String openid = "o5Irvt5957jQ4xmdHmDp59epk0UU";
+    String openid = "o5Irvtx1HMDEgD18RESTS_tZ89rQ";
 
     @Test
     public void createCouponTest() {
@@ -43,6 +43,7 @@ public class CouponServiceTest {
         voucher.setEndTime(endTime.toDate());
         voucher.setReachedMoney(12);
         voucher.setDeductedMoney(1);
+        voucher.setUsed(false);
         couponService.createCoupon(voucher);
 
         // 0.95
@@ -51,6 +52,7 @@ public class CouponServiceTest {
         discount.setStartTime(startTime.toDate());
         discount.setEndTime(endTime.toDate());
         discount.setDiscountFactor(0.95);
+        discount.setUsed(false);
         couponService.createCoupon(discount);
     }
 
