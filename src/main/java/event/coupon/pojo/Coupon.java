@@ -1,6 +1,7 @@
 package event.coupon.pojo;
 
 import mycai.pojo.Order;
+import mycai.util.Utils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,16 @@ public abstract class Coupon {
     @Transient
     private String timeLimit;
 
+    public String getDetailInfo() {
+        return detailInfo;
+    }
+
     public void setDetailInfo(String detailInfo) {
         this.detailInfo = detailInfo;
+    }
+
+    public String getTimeLimit() {
+        return timeLimit;
     }
 
     public void setTimeLimit(String timeLimit) {
@@ -40,7 +49,9 @@ public abstract class Coupon {
 
     public abstract String generateDetailInfo();
 
-    public abstract String generateTimeLimit();
+    public String generateTimeLimit(){
+        return Utils.chineseDateFormat(getStartTime())+"——"+Utils.chineseDateFormat(getEndTime());
+    }
 
     @Override
     public String toString() {

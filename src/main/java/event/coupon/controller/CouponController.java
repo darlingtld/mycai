@@ -30,7 +30,7 @@ public class CouponController {
     @RequestMapping(value = "/all/wechatid/{wechatid}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Coupon> getList(@PathVariable("wechatid") String wechatid) {
+    List<Coupon> getCouponList(@PathVariable("wechatid") String wechatid) {
         return couponService.getCouponList(wechatid);
     }
 

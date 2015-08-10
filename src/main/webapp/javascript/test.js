@@ -12,7 +12,7 @@ if (isTest) {
         shopInfo: '新中源大楼',
         shopAddress: '长阳路1930号'
     }
-    wechatId = 'o5Irvtx1HMDEgD18RESTS_tZ89rQ';
+    wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
 }
 
 Date.prototype.Format = function (fmt) { //author: meizz

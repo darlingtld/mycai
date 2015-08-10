@@ -37,12 +37,7 @@ public class Voucher extends Coupon {
 
     @Override
     public String generateDetailInfo() {
-        return String.format("每笔订单满%s减%s",reachedMoney, deductedMoney);
-    }
-
-    @Override
-    public String generateTimeLimit() {
-        return Utils.chineseDateFormat(getStartTime())+"——"+Utils.chineseDateFormat(getEndTime());
+        return String.format("单笔订单满%s减%s",reachedMoney, deductedMoney);
     }
 
     @Override

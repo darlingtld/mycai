@@ -26,6 +26,11 @@ public class Discount extends Coupon {
     }
 
     @Override
+    public String generateDetailInfo() {
+        return String.format("单笔订单%s折优惠", discountFactor * 10);
+    }
+
+    @Override
     public double deduct(Order order) {
         if (new DateTime(getStartTime().getTime()).isBefore(Utils.yyyyMMddHHmmssParse(order.getOrderTs()).getTime()) && new DateTime(getEndTime().getTime()).isAfter(Utils.yyyyMMddHHmmssParse(order.getOrderTs()).getTime())) {
             logger.info("Order {} reached discount {} standards", order.getId(), this.getId());

@@ -28,7 +28,12 @@ public class CouponDao {
     }
 
     public List<Coupon> getCouponList(String openid) {
-        return sessionFactory.getCurrentSession().createQuery(String.format("from Coupon where openid='%s'", openid)).list();
+        List<Coupon> couponList = sessionFactory.getCurrentSession().createQuery(String.format("from Coupon where openid='%s'", openid)).list();
+        for (Coupon coupon : couponList) {
+            coupon.setDetailInfo(coupon.generateDetailInfo());
+            coupon.setTimeLimit(coupon.generateTimeLimit());
+        }
+        return couponList;
     }
 
     public List<Voucher> getCouponList(String wechatid, Class<Voucher> voucherClass) {
