@@ -206,7 +206,7 @@ public class Order {
 
     private Map<Product, Double> parseBill(String bill) {
         Map<Product, Double> billMap = new HashMap<>();
-        JSONArray items = JSON.parseObject(this.bill).getJSONArray("items");
+        JSONArray items = JSON.parseObject(bill).getJSONArray("items");
         for (int i = 0; i < items.size(); i++) {
             JSONObject object = items.getJSONObject(i);
             Product product = new Product();

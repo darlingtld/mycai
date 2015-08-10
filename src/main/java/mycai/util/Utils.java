@@ -28,4 +28,8 @@ public class Utils {
     public static String chineseDateFormat(Date startTime) {
         return new SimpleDateFormat("yyyy年MM月dd日").format(startTime);
     }
+
+    public static String yyyyMMddHHmmssFormat(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+    }
 }

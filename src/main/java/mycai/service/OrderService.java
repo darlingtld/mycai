@@ -3,6 +3,10 @@ package mycai.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import event.coupon.dao.CouponDao;
+import event.coupon.pojo.Coupon;
+import event.coupon.pojo.Discount;
+import event.coupon.pojo.Voucher;
 import mycai.dao.OrderDao;
 import mycai.dao.ProductDao;
 import mycai.dao.UserDao;
@@ -33,6 +37,9 @@ public class OrderService {
     @Autowired
     private ProductDao productDao;
 
+    @Autowired
+    private CouponDao couponDao;
+
     @Transactional
     public void save(Order order) {
         User user = userDao.getUserByWechatId(order.getWechatId());
@@ -55,7 +62,22 @@ public class OrderService {
         double totalPrice = jsonObject.getDouble("totalPrice");
         jsonObject.put("totalPrice", Utils.formatDouble(totalPrice, 2));
         order.setBill(jsonObject.toJSONString());
+        markUsedCoupon(jsonObject.getString("usedCoupon"));
         orderDao.save(order);
+    }
+
+    private void markUsedCoupon(String couponJson) {
+        Coupon coupon = JSON.parseObject(couponJson, Voucher.class);
+        if (coupon == null) {
+            coupon = JSON.parseObject(couponJson, Discount.class);
+        }
+
+        if (coupon == null) {
+            return;
+        } else {
+            coupon.setUsed(true);
+            couponDao.updateCoupon(coupon);
+        }
     }
 
     @Transactional

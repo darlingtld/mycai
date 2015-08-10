@@ -28,7 +28,7 @@ public class CouponDao {
     }
 
     public List<Coupon> getCouponList(String openid) {
-        List<Coupon> couponList = sessionFactory.getCurrentSession().createQuery(String.format("from Coupon where openid='%s'", openid)).list();
+        List<Coupon> couponList = sessionFactory.getCurrentSession().createQuery(String.format("from Coupon where openid='%s' and used=false", openid)).list();
         for (Coupon coupon : couponList) {
             coupon.setDetailInfo(coupon.generateDetailInfo());
             coupon.setTimeLimit(coupon.generateTimeLimit());
@@ -40,5 +40,9 @@ public class CouponDao {
         Criteria cr = sessionFactory.getCurrentSession().createCriteria(voucherClass);
         cr.add(Restrictions.eq("openid", wechatid));
         return cr.list();
+    }
+
+    public void updateCoupon(Coupon coupon) {
+        sessionFactory.getCurrentSession().update(coupon);
     }
 }

@@ -26,10 +26,30 @@ public abstract class Coupon {
     private Date startTime;
     @Column(name = "end_time")
     private Date endTime;
+    @Column(name = "used")
+    private boolean used;
     @Transient
     private String detailInfo;
     @Transient
     private String timeLimit;
+    @Transient
+    private double modifiedTotalPrice;
+
+    public boolean isUsed() {
+        return used;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
+
+    public double getModifiedTotalPrice() {
+        return modifiedTotalPrice;
+    }
+
+    public void setModifiedTotalPrice(double modifiedTotalPrice) {
+        this.modifiedTotalPrice = modifiedTotalPrice;
+    }
 
     public String getDetailInfo() {
         return detailInfo;
@@ -49,8 +69,8 @@ public abstract class Coupon {
 
     public abstract String generateDetailInfo();
 
-    public String generateTimeLimit(){
-        return Utils.chineseDateFormat(getStartTime())+"——"+Utils.chineseDateFormat(getEndTime());
+    public String generateTimeLimit() {
+        return Utils.chineseDateFormat(getStartTime()) + "——" + Utils.chineseDateFormat(getEndTime());
     }
 
     @Override

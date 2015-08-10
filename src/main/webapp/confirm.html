@@ -20,11 +20,23 @@
                             <td><p>总价：<span ng-bind="bill.totalPrice | number : 2"></span>&nbsp;&nbsp;元</p></td>
                         </tr>
                         <tr class="active">
+                            <td colspan="2"><span class="text-info">优惠券</span></td>
+                        </tr>
+                        <tr>
+                            <td><span>使用优惠券</span></td>
+                            <td><select id="coupon" ng-model="selectedCoupon"
+                                        ng-options="c.detailInfo for c in couponList track by c.id"
+                                        class="form-control" style="color: chocolate;" ng-change="modifyTotalPrice()">
+                                <option value="">--- 不使用优惠券 ---</option>
+                            </select></td>
+                        </tr>
+                        <tr class="active">
                             <td colspan="2"><span class="text-info">收货信息</span></td>
                         </tr>
                         <tr>
                             <td><span>收货时间</span></td>
-                            <td><input id="delivery_ts" type="text" class="form-control datetime" placeholder="次日上午8:00到10:30间" disabled>
+                            <td><input id="delivery_ts" type="text" class="form-control datetime"
+                                       placeholder="次日上午8:00到10:30间" disabled>
                             </td>
                         </tr>
                         <tr>

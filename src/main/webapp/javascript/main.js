@@ -183,6 +183,17 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
             //});
 
             $scope.bill = bill;
+            var url = app + '/coupon/calc/wechatid/' + wechatId;
+            $http({
+                url: url,
+                params: {bill: encodeURI(JSON.stringify($scope.bill))}
+            }).success(function (data, status, headers, config) {
+                $scope.couponList = data;
+            });
+            $scope.modifyTotalPrice = function () {
+                $scope.bill.totalPrice = $scope.selectedCoupon.modifiedTotalPrice;
+                $scope.bill.usedCoupon = $scope.selectedCoupon;
+            }
 
             $('#delivery_ts').val('次日上午8:00到10:30间');
 
