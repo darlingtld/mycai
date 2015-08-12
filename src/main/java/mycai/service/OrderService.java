@@ -50,7 +50,16 @@ public class OrderService {
             user.setShopAddress(order.getShopAddress());
             userDao.update(user);
         } else {
-            order.setUserId("songda user");
+            String unknownUser = "songda user";
+            order.setUserId(unknownUser);
+            user = new User();
+            user.setOpenid(order.getWechatId());
+            user.setNickname(unknownUser);
+            user.setConsignee(order.getConsignee());
+            user.setConsigneeContact(order.getConsigneeContact());
+            user.setShopInfo(order.getShopInfo());
+            user.setShopAddress(order.getShopAddress());
+            userDao.save(user);
         }
         String code = generateConfirmCode();
         while (isConfirmCodeExisted(code)) {
