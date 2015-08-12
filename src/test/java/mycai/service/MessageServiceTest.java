@@ -7,6 +7,7 @@ import event.coupon.service.CouponService;
 import event.message.pojo.Message;
 import event.message.service.MessageService;
 import mycai.pojo.Order;
+import mycai.pojo.User;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,17 +30,22 @@ public class MessageServiceTest {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private UserService userService;
+
     String openid = "o5Irvtx1HMDEgD18RESTS_tZ89rQ";
 
     @Test
     public void createMessageTest() {
+        for (User user : userService.getAll()) {
             Message message = new Message();
-            message.setOpenid(openid);
-            message.setContent("你有新的优惠券可以领取");
+            message.setOpenid(user.getOpenid());
+            message.setContent("送达优惠券功能上线啦");
             DateTime ts = new DateTime();
             message.setTs(ts.toDate());
             message.setRead(false);
             messageService.createMessage(message);
+        }
     }
 
 }

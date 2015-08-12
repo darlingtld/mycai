@@ -69,13 +69,21 @@ mycaiModule.config(function () {
 )
 
 
-mycaiModule.controller('mainController', function ($location, authService) {
+mycaiModule.controller('mainController', function ($scope, $location, authService) {
     authService.getUserInfo();
     var isOrderHistory = getURLParameter('order_history');
     if (isOrderHistory != null) {
         goToOrderHistory();
         sleep(2000);
         $location.path("/order/history");
+    }
+    $scope.clearAndReload = function () {
+        //if (confirm('确认清空缓存?')) {
+            console.log('clear local storage');
+            localStorage.removeItem('bill');
+            localStorage.removeItem('wechatId');
+            location.reload();
+        //}
     }
 });
 
