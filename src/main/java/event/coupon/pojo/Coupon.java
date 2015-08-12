@@ -118,4 +118,5 @@ public abstract class Coupon {
 
     public abstract double deduct(Order order);
 
+    public abstract boolean isSuitableFor(Order order);
 }

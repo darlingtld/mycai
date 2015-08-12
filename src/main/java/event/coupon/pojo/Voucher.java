@@ -50,4 +50,14 @@ public class Voucher extends Coupon {
             return order.evalBillTotalMoney();
         }
     }
+
+    @Override
+    public boolean isSuitableFor(Order order) {
+        if (new DateTime(getStartTime()).isBefore(Utils.yyyyMMddHHmmssParse(order.getOrderTs()).getTime()) && new DateTime(getEndTime()).isAfter(Utils.yyyyMMddHHmmssParse(order.getOrderTs()).getTime()) && reachedMoney <= order.evalBillTotalMoney()) {
+            logger.info("Order {} reached voucher {} standards", order.getId(), this.getId());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

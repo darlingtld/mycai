@@ -40,4 +40,14 @@ public class Discount extends Coupon {
             return order.evalBillTotalMoney();
         }
     }
+
+    @Override
+    public boolean isSuitableFor(Order order) {
+        if (new DateTime(getStartTime().getTime()).isBefore(Utils.yyyyMMddHHmmssParse(order.getOrderTs()).getTime()) && new DateTime(getEndTime().getTime()).isAfter(Utils.yyyyMMddHHmmssParse(order.getOrderTs()).getTime())) {
+            logger.info("Order {} reached discount {} standards", order.getId(), this.getId());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

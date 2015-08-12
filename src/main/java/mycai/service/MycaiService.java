@@ -1,5 +1,7 @@
 package mycai.service;
 
+import event.message.pojo.Message;
+import event.message.service.MessageService;
 import mycai.pojo.OrderStatus;
 import mycai.pojo.Role;
 import mycai.pojo.User;
@@ -8,6 +10,7 @@ import mycai.pojo.message.resp.Article;
 import mycai.pojo.message.resp.NewsMessage;
 import mycai.util.MessageUtil;
 import mycai.util.PropertyHolder;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,9 @@ public class MycaiService {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private MessageService messageService;
+
     public String processRequest(HttpServletRequest request) {
         String fromUserName;
         String toUserName;
@@ -58,6 +64,15 @@ public class MycaiService {
                     textMessage.setCreateTime(new Date().getTime());
                     textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
                     textMessage.setContent(respContent);
+
+                    Message message = new Message();
+                    message.setOpenid(fromUserName);
+                    message.setContent("欢迎您使用送达");
+                    DateTime ts = new DateTime();
+                    message.setTs(ts.toDate());
+                    message.setRead(false);
+                    messageService.createMessage(message);
+
                     return MessageUtil.messageToXml(textMessage);
                 } else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
                 } else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {

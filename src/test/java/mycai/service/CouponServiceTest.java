@@ -35,7 +35,7 @@ public class CouponServiceTest {
     @Autowired
     private UserService userService;
 
-    String openid = "o5Irvtx1HMDEgD18RESTS_tZ89rQ";
+    String openid = "o5Irvt3tty06NYT8W-nJa0gPERvM";
 
     @Test
     public void createCouponTest() {

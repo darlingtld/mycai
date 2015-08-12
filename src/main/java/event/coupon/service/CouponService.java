@@ -58,7 +58,9 @@ public class CouponService {
         Order order = transformOrderFromBill(billJson);
         List<Coupon> couponList = couponDao.getCouponList(wechatid);
         for (Coupon coupon : couponList) {
-            coupon.setModifiedTotalPrice(coupon.deduct(order));
+            if (coupon.isSuitableFor(order)) {
+                coupon.setModifiedTotalPrice(coupon.deduct(order));
+            }
         }
         return couponList;
     }
