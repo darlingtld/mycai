@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,12 +58,14 @@ public class CouponService {
         logger.info("Get calculated coupon list of {}", wechatid);
         Order order = transformOrderFromBill(billJson);
         List<Coupon> couponList = couponDao.getCouponList(wechatid);
+        List<Coupon> suitableCouponList = new ArrayList<>();
         for (Coupon coupon : couponList) {
             if (coupon.isSuitableFor(order)) {
                 coupon.setModifiedTotalPrice(coupon.deduct(order));
+                suitableCouponList.add(coupon);
             }
         }
-        return couponList;
+        return suitableCouponList;
     }
 
     private Order transformOrderFromBill(String billJson) {

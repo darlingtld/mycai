@@ -198,9 +198,16 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
             }).success(function (data, status, headers, config) {
                 $scope.couponList = data;
             });
+            var origTotalPrice=$scope.bill.totalPrice;
             $scope.modifyTotalPrice = function () {
-                $scope.bill.totalPrice = $scope.selectedCoupon.modifiedTotalPrice;
-                $scope.bill.usedCoupon = $scope.selectedCoupon;
+                if($scope.selectedCoupon==null){
+                    $scope.bill.totalPrice = origTotalPrice;
+                    $scope.bill.usedCoupon = null;
+                } else {
+                    $scope.bill.totalPrice = $scope.selectedCoupon.modifiedTotalPrice;
+                    $scope.bill.usedCoupon = $scope.selectedCoupon;
+                }
+
             }
 
             $('#delivery_ts').val('次日上午8:00到10:30间');
