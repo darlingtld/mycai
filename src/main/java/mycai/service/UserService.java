@@ -150,4 +150,9 @@ public class UserService {
         }
         return userDao.getUserByWechatId(user.getOpenid());
     }
+
+    @Transactional
+    public List<User> getAll() {
+        return userDao.getAll();
+    }
 }

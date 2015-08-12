@@ -5,6 +5,8 @@ import event.coupon.pojo.Discount;
 import event.coupon.pojo.Voucher;
 import event.coupon.service.CouponService;
 import mycai.pojo.Order;
+import mycai.pojo.Role;
+import mycai.pojo.User;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,30 +32,40 @@ public class CouponServiceTest {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private UserService userService;
+
     String openid = "o5Irvtx1HMDEgD18RESTS_tZ89rQ";
 
     @Test
     public void createCouponTest() {
-        // 12 - 1
-        Voucher voucher = new Voucher();
-        voucher.setOpenid(openid);
-        DateTime startTime = new DateTime(2015, 6, 30, 0, 0, 0);
-        DateTime endTime = new DateTime(2015, 8, 31, 0, 0, 0);
-        voucher.setStartTime(startTime.toDate());
-        voucher.setEndTime(endTime.toDate());
-        voucher.setReachedMoney(12);
-        voucher.setDeductedMoney(1);
-        voucher.setUsed(false);
-        couponService.createCoupon(voucher);
+//        for (User user : userService.getAll()) {
+//            if (!user.getRole().equals(Role.DELIVERYMAN.toString())) {
+//                continue;
+//            }
+//            openid = user.getOpenid();
+            // 12 - 1
+            Voucher voucher = new Voucher();
+            voucher.setOpenid(openid);
+            DateTime startTime = new DateTime(2015, 7, 30, 0, 0, 0);
+            DateTime endTime = new DateTime(2015, 8, 31, 0, 0, 0);
+            voucher.setStartTime(startTime.toDate());
+            voucher.setEndTime(endTime.toDate());
+            voucher.setReachedMoney(100);
+            voucher.setDeductedMoney(8);
+            voucher.setUsed(false);
+            couponService.createCoupon(voucher);
 
-        // 0.95
-        Discount discount = new Discount();
-        discount.setOpenid(openid);
-        discount.setStartTime(startTime.toDate());
-        discount.setEndTime(endTime.toDate());
-        discount.setDiscountFactor(0.95);
-        discount.setUsed(false);
-        couponService.createCoupon(discount);
+            // 0.95
+            Discount discount = new Discount();
+            discount.setOpenid(openid);
+            discount.setStartTime(startTime.toDate());
+            discount.setEndTime(endTime.toDate());
+            discount.setDiscountFactor(0.95);
+            discount.setUsed(false);
+            couponService.createCoupon(discount);
+//        }
+
     }
 
     @Test

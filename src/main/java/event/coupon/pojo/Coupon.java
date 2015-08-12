@@ -14,6 +14,7 @@ import java.util.Date;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "coupon")
 @DiscriminatorColumn(name = "coupon_type")
 @DiscriminatorValue("coupon")
 public abstract class Coupon {
@@ -70,7 +71,7 @@ public abstract class Coupon {
     public abstract String generateDetailInfo();
 
     public String generateTimeLimit() {
-        return Utils.chineseDateFormat(getStartTime()) + "——" + Utils.chineseDateFormat(getEndTime());
+        return Utils.chineseDateFormat(getStartTime()) + "—" + Utils.chineseDateFormat(getEndTime());
     }
 
     @Override

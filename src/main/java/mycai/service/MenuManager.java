@@ -56,6 +56,10 @@ public class MenuManager {
         btn21.setUrl(oauthUrl.replace("$appid", PropertyHolder.APPID).replace("$redirect_uri", URLEncoder.encode(PropertyHolder.SERVER + "/myorder.html", "UTF-8")));
 //        btn21.setUrl(PropertyHolder.SERVER + "?order_history=true");
 
+        ViewButton btn22 = new ViewButton();
+        btn22.setName(PropertyHolder.MENU_MY_COUPON);
+        btn22.setUrl(oauthUrl.replace("$appid", PropertyHolder.APPID).replace("$redirect_uri", URLEncoder.encode(PropertyHolder.SERVER + "/mycoupon.html", "UTF-8")));
+
         ClickButton btn31 = new ClickButton();
         btn31.setName(PropertyHolder.MENU_POST_SALE_SERVICE);
         btn31.setKey(PropertyHolder.MENU_POST_SALE_SERVICE);
@@ -69,8 +73,8 @@ public class MenuManager {
         mainBtn1.setSub_button(new ViewButton[]{btn11});
 
         ComplexButton mainBtn2 = new ComplexButton();
-        mainBtn2.setName(PropertyHolder.MENU_MY_ORDER);
-        mainBtn2.setSub_button(new ViewButton[]{btn21});
+        mainBtn2.setName(PropertyHolder.MENU_MY_SONGDA);
+        mainBtn2.setSub_button(new ViewButton[]{btn21, btn22});
 
         ComplexButton mainBtn3 = new ComplexButton();
         mainBtn3.setName(PropertyHolder.MENU_POST_SALE_SERVICE);
@@ -78,7 +82,7 @@ public class MenuManager {
 
         JSONArray jsonArray = new JSONArray();
         jsonArray.add(btn11);
-        jsonArray.add(btn21);
+        jsonArray.add(mainBtn2);
         jsonArray.add(mainBtn3);
 
         JSONObject menu = new JSONObject();
