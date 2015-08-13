@@ -74,4 +74,9 @@ public class CouponService {
         order.setOrderTs(Utils.yyyyMMddHHmmssFormat(new Date()));
         return order;
     }
+
+    @Transactional
+    public List<Coupon> getAllCouponList() {
+        return couponDao.getAll();
+    }
 }

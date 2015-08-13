@@ -45,4 +45,8 @@ public class CouponDao {
     public void updateCoupon(Coupon coupon) {
         sessionFactory.getCurrentSession().update(coupon);
     }
+
+    public List<Coupon> getAll() {
+        return sessionFactory.getCurrentSession().createQuery(String.format("from Coupon order by startTime desc")).list();
+    }
 }

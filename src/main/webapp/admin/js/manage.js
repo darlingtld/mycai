@@ -433,6 +433,31 @@ adminModule.controller('dispatchController', function ($scope, $http) {
 
 });
 
+adminModule.controller('couponController', function ($scope, $http) {
+    $('li[role]').removeClass('active');
+    $('li[role="manage_coupon"]').addClass('active');
+    $http.get(app + '/coupon/all/list').success(function (data) {
+        $scope.couponList = data;
+    });
+
+    $scope.export = function () {
+        window.location.href = app + '/coupon/export/';
+    };
+
+});
+
+adminModule.controller('messageController', function ($scope, $http) {
+    $('li[role]').removeClass('active');
+    $('li[role="manage_message"]').addClass('active');
+    $http.get(app + '/message/list').success(function (data) {
+        $scope.messageList = data;
+    });
+
+    $scope.export = function () {
+        window.location.href = app + '/message/export/';
+    };
+
+});
 adminModule.filter('translate', function () {
     return function (text, type) {
         if (!angular.isString(text)) {
@@ -475,6 +500,14 @@ adminModule.config(['$routeProvider', function ($routeProvider) {
         .when('/dispatch', {
             controller: 'dispatchController',
             templateUrl: 'dispatch.html'
+        })
+        .when('/coupon', {
+            controller: 'couponController',
+            templateUrl: 'coupon.html'
+        })
+        .when('/message', {
+            controller: 'messageController',
+            templateUrl: 'message.html'
         })
         .otherwise({
             redirectTo: '/product/category/yecailei'

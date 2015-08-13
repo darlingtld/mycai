@@ -47,6 +47,13 @@ public class CouponController {
         return couponService.getCouponList(wechatid);
     }
 
+    @RequestMapping(value = "/all/list", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<Coupon> getAllCouponList() {
+        return couponService.getAllCouponList();
+    }
+
     @RequestMapping(value = "/voucher/wechatid/{wechatid}", method = RequestMethod.GET)
     public
     @ResponseBody
