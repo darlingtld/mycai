@@ -443,6 +443,15 @@ adminModule.controller('couponController', function ($scope, $http) {
     $scope.export = function () {
         window.location.href = app + '/coupon/export/';
     };
+    $scope.createdCoupon = {
+        reachedMoney: 10,
+        deductedMoney: 5,
+    }
+
+    $scope.updateDescription = function () {
+        $scope.createdCoupon.description = '单笔订单满' + $scope.createdCoupon.reachedMoney + '减' + $scope.createdCoupon.deductedMoney
+    }
+
 
 });
 

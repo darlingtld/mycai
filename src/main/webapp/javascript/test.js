@@ -5,7 +5,7 @@ var isTest = true;
 if (isTest) {
     user = {
         nickname: 'lingda',
-        openid: 'o5Irvtx1HMDEgD18RESTS_tZ89rQ',
+        openid: 'o5Irvt5957jQ4xmdHmDp59epk0UU',
         headimgurl: 'http://wx.qlogo.cn/mmopen/0pygn8iaZdEeVBqUntWJB9rzhkKIyKnQFzIqswrYFrhHefEXiaCOhJnBqIicxMRd0IeOHe9ffAtKTvXzOfokp9UhS2BlYXh5PxO/0',
         consignee: '灵达',
         consigneeContact: '13402188638',
