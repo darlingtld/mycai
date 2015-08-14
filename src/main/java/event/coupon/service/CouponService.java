@@ -3,10 +3,14 @@ package event.coupon.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import event.coupon.dao.CouponDao;
 import event.coupon.pojo.Coupon;
 import event.coupon.pojo.Voucher;
+import mycai.dao.UserDao;
 import mycai.pojo.Order;
+import mycai.pojo.User;
 import mycai.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by darlingtld on 2015/8/8 0008.
@@ -28,6 +33,9 @@ public class CouponService {
 
     @Autowired
     private CouponDao couponDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Transactional
     public void createCoupon(Coupon coupon) {
@@ -77,6 +85,18 @@ public class CouponService {
 
     @Transactional
     public List<Coupon> getAllCouponList() {
-        return couponDao.getAll();
+        List<User> userList = userDao.getAll();
+        Map<String, User> userMap = Maps.uniqueIndex(userList, new Function<User, String>() {
+            public String apply(User from) {
+                return from.getOpenid();
+            }
+        });
+        List<Coupon> couponList = couponDao.getAll();
+        for (Coupon coupon : couponList) {
+            coupon.setDetailInfo(coupon.generateDetailInfo());
+            coupon.setTimeLimit(coupon.generateTimeLimit());
+            coupon.setUser(userMap.get(coupon.getOpenid()));
+        }
+        return couponList;
     }
 }

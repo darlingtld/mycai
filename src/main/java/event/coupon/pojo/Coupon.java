@@ -1,6 +1,7 @@
 package event.coupon.pojo;
 
 import mycai.pojo.Order;
+import mycai.pojo.User;
 import mycai.util.Utils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -35,6 +36,24 @@ public abstract class Coupon {
     private String timeLimit;
     @Transient
     private double modifiedTotalPrice;
+    @Transient
+    private User user;
+    @Transient
+    private String cType;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public abstract String getcType();
+
+    public void setcType(String cType) {
+        this.cType = cType;
+    }
 
     public boolean isUsed() {
         return used;

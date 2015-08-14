@@ -26,6 +26,11 @@ public class Discount extends Coupon {
     }
 
     @Override
+    public String getcType() {
+        return "打折券";
+    }
+
+    @Override
     public String generateDetailInfo() {
         return String.format("单笔订单%s折优惠", discountFactor * 10);
     }

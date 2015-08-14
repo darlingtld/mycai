@@ -8,15 +8,16 @@ select.product-picker {
 
 }
 
-#export_order, #export_dispatch {
-    margin-top: 20px;
-}
+/*#export_order, #export_dispatch {*/
+    /*margin-top: 20px;*/
+/*}*/
 
 .menu-product {
     margin-top: 20px;
 }
 
-#export_product, #export_order, #export_dispatch {
+.export_button{
+    margin-top: 20px;
     float: right;
 }
 

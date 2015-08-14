@@ -36,6 +36,11 @@ public class Voucher extends Coupon {
     }
 
     @Override
+    public String getcType() {
+        return "代金券";
+    }
+
+    @Override
     public String generateDetailInfo() {
         return String.format("单笔订单满%s减%s",reachedMoney, deductedMoney);
     }

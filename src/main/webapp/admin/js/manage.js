@@ -487,6 +487,16 @@ adminModule.filter('translate', function () {
     };
 });
 
+adminModule.filter('tochinese', function () {
+    return function (text) {
+        if (text == true) {
+            return '是'
+        } else {
+            return '否'
+        }
+    };
+});
+
 adminModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/order', {
