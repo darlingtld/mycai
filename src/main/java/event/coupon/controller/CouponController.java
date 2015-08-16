@@ -1,10 +1,13 @@
 package event.coupon.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import event.coupon.pojo.Coupon;
+import event.coupon.pojo.Discount;
 import event.coupon.pojo.Voucher;
 import event.coupon.service.CouponService;
 import mycai.pojo.Order;
+import mycai.pojo.OrderStatus;
 import mycai.pojo.Product;
 import mycai.service.ProductService;
 import org.slf4j.Logger;
@@ -38,6 +41,20 @@ public class CouponController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @RequestMapping(value = "/voucher/create", method = RequestMethod.POST, headers = "Content-Type=application/json")
+    public
+    @ResponseBody
+    void createVoucher(@RequestBody Voucher voucher) {
+        couponService.createCoupon(voucher);
+    }
+
+    @RequestMapping(value = "/discount/create", method = RequestMethod.POST, headers = "Content-Type=application/json")
+    public
+    @ResponseBody
+    void createDiscount(@RequestBody Discount discount) {
+        couponService.createCoupon(discount);
     }
 
     @RequestMapping(value = "/all/wechatid/{wechatid}", method = RequestMethod.GET)

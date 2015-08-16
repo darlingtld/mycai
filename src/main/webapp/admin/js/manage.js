@@ -433,7 +433,7 @@ adminModule.controller('dispatchController', function ($scope, $http) {
 
 });
 
-adminModule.controller('couponController', function ($scope, $http) {
+adminModule.controller('couponController', function ($scope, $http, $location) {
     $('li[role]').removeClass('active');
     $('li[role="manage_coupon"]').addClass('active');
     $http.get(app + '/coupon/all/list').success(function (data) {
@@ -443,16 +443,44 @@ adminModule.controller('couponController', function ($scope, $http) {
     $scope.export = function () {
         window.location.href = app + '/coupon/export/';
     };
-    $scope.createdCoupon = {
-        reachedMoney: 10,
-        deductedMoney: 5,
+    $scope.createdCoupon = {};
+
+    $scope.print = function () {
+        console.log($scope.createdCoupon.cType);
     }
 
     $scope.updateDescription = function () {
-        $scope.createdCoupon.description = '单笔订单满' + $scope.createdCoupon.reachedMoney + '减' + $scope.createdCoupon.deductedMoney
+        if ($scope.createdCoupon.cType == 'voucher') {
+            $scope.createdCoupon.description = '单笔订单满' + $scope.createdCoupon.reachedMoney + '减' + $scope.createdCoupon.deductedMoney
+        } else if ($scope.createdCoupon.cType == 'discount') {
+            $scope.createdCoupon.description = '单笔订单' + $scope.createdCoupon.discountFactor * 10 + '折优惠'
+        }
     }
 
-
+    $scope.save = function () {
+        console.log($scope.createdCoupon);
+        var coupon = {};
+        if ($scope.createdCoupon.cType == 'discount') {
+            coupon = {
+                discountFactor: $scope.createdCoupon.discountFactor
+            }
+        } else if ($scope.createdCoupon.cType == 'voucher') {
+            coupon = {
+                reachedMoney: $scope.createdCoupon.reachedMoney,
+                deductedMoney: $scope.createdCoupon.deductedMoney
+            }
+        }
+        coupon.used = false;
+        $http.post(app + '/coupon/' + $scope.createdCoupon.cType + '/create', coupon).success(function () {
+            alert('优惠券创建成功');
+            window.location.href = app + '/admin/manage.html#/coupon';
+            window.location.reload();
+        }).error(function () {
+            alert('优惠券创建失败');
+            window.location.href = app + '/admin/manage.html#/coupon';
+            window.location.reload();
+        });
+    }
 });
 
 adminModule.controller('messageController', function ($scope, $http) {
