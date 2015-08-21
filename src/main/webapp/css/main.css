@@ -24,19 +24,24 @@
     display: inline-block;
 }
 
+.home {
+    float: left;
+    color: #dfb16d;
+}
+
 .user-icon {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     max-height: 35px;
-    margin-left: 50%;
+    /*margin-left: 50%;*/
 }
 
 .msg {
     float: right;
 }
 
-.msg span {
+.home span, .msg span {
     margin-top: 30%;
     font-size: large;
 }
