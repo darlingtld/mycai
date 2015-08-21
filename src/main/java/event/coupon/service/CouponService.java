@@ -40,7 +40,11 @@ public class CouponService {
     @Transactional
     public void createCoupon(Coupon coupon) {
         logger.info("Create coupon {}", coupon.toString());
-        couponDao.createCoupon(coupon);
+        List<User> userList = userDao.getAll();
+        for (User user : userList) {
+            coupon.setOpenid(user.getOpenid());
+            couponDao.createCoupon(coupon);
+        }
     }
 
     @Transactional

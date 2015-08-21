@@ -1,8 +1,6 @@
 package mycai.controller;
 
-import mycai.pojo.Order;
 import mycai.pojo.User;
-import mycai.service.OrderService;
 import mycai.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,5 +53,13 @@ public class UserController {
     User getUser(@PathVariable("wechatId") String wechatId) {
         logger.info("Get user information with wechatId {}", wechatId);
         return userService.getUserByWechatId(wechatId);
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<User> getAllUser() {
+        logger.info("Get all users");
+        return userService.getAll();
     }
 }

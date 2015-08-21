@@ -32,4 +32,11 @@ public class MessageController {
         return messageService.getMessageList(wechatid);
     }
 
+    @RequestMapping(value = "/create", method = RequestMethod.POST, headers = "Content-Type=application/json")
+    public
+    @ResponseBody
+    void sendMessage(@RequestBody Message message) {
+        messageService.createMessage(message);
+    }
+
 }
