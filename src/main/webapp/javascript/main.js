@@ -47,7 +47,7 @@ mycaiModule.config(function () {
 
         if (typeof(Storage) != "undefined") {
             try {
-                var ls = localStorage.getItem('bill');
+                var ls = getLocalStorage('bill');
                 if (ls != undefined) {
                     bill = JSON.parse(ls);
                     refreshCheckoutUI(bill.totalAmount, bill.totalPrice);
@@ -79,10 +79,10 @@ mycaiModule.controller('mainController', function ($scope, $location, authServic
     }
     $scope.clearAndReload = function () {
         //if (confirm('确认清空缓存?')) {
-            console.log('clear local storage');
-            localStorage.removeItem('bill');
-            localStorage.removeItem('wechatId');
-            location.reload();
+        console.log('clear local storage');
+        setLocalStorage('bill', null);
+        setLocalStorage('wechatId', null);
+        location.reload();
         //}
     }
 });
@@ -198,9 +198,9 @@ mycaiModule.controller('confirmController', function ($scope, $http, $location) 
             }).success(function (data, status, headers, config) {
                 $scope.couponList = data;
             });
-            var origTotalPrice=$scope.bill.totalPrice;
+            var origTotalPrice = $scope.bill.totalPrice;
             $scope.modifyTotalPrice = function () {
-                if($scope.selectedCoupon==null){
+                if ($scope.selectedCoupon == null) {
                     $scope.bill.totalPrice = origTotalPrice;
                     $scope.bill.usedCoupon = null;
                 } else {
@@ -716,23 +716,6 @@ function saveToLocalStorage(bill) {
     setLocalStorage('bill', JSON.stringify(bill));
 }
 
-function setLocalStorage(key, value) {
-    if (typeof(Storage) != "undefined") {
-        localStorage.setItem(key, value);
-        //console.log('[' + key + ']:[' + value + ']');
-    } else {
-        console.log("local storage is not supported!")
-    }
-}
-
-function getLocalStorage(key) {
-    if (typeof(Storage) != "undefined") {
-        return localStorage.getItem(key);
-    } else {
-        console.log("local storage is not supported!");
-    }
-}
-
 function clearLocalStorage() {
     if (typeof(Storage) != "undefined") {
         localStorage.removeItem('bill');
@@ -741,6 +724,3 @@ function clearLocalStorage() {
     }
 }
 
-function sleep(d) {
-    for (var t = Date.now(); Date.now() - t <= d;);
-}

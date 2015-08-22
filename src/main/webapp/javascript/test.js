@@ -1,7 +1,7 @@
 /**
  * Created by tangl9 on 2015-08-06.
  */
-var isTest = true;
+var isTest = false;
 if (isTest) {
     user = {
         nickname: 'lingda',
@@ -12,7 +12,7 @@ if (isTest) {
         shopInfo: '新中源大楼',
         shopAddress: '长阳路1930号'
     }
-    wechatId = 'o5Irvt5957jQ4xmdHmDp59epk0UU';
+    wechatId = 'o5Irvtx1HMDEgD18RESTS_tZ89rQ';
 }
 
 Date.prototype.Format = function (fmt) { //author: meizz
@@ -40,7 +40,7 @@ function getURLParameter(key) {
 
 function setLocalStorage(key, value) {
     if (typeof(Storage) != "undefined") {
-        localStorage.setItem(key, value);
+        localStorage.setItem(app + '_' + key, value);
         //console.log('[' + key + ']:[' + value + ']');
     } else {
         console.log("local storage is not supported!")
@@ -49,7 +49,7 @@ function setLocalStorage(key, value) {
 
 function getLocalStorage(key) {
     if (typeof(Storage) != "undefined") {
-        return localStorage.getItem(key);
+        return localStorage.getItem(app + '_' + key);
     } else {
         console.log("local storage is not supported!");
     }

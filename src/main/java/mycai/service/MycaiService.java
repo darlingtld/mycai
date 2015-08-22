@@ -43,7 +43,7 @@ public class MycaiService {
     private MessageService messageService;
 
     public String processRequest(HttpServletRequest request) {
-        String fromUserName;
+        final String fromUserName;
         String toUserName;
         try {
             Map<String, String> requestMap = MessageUtil.parseXml(request);
@@ -72,6 +72,17 @@ public class MycaiService {
                     message.setTs(ts.toDate());
                     message.setRead(false);
                     messageService.createMessage(message);
+
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            User user = new User();
+                            user.setOpenid(fromUserName);
+                            user.setRole(Role.USER.toString());
+                            userService.saveOrUpdate(user);
+                        }
+                    }.start();
+
 
                     return MessageUtil.messageToXml(textMessage);
                 } else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
