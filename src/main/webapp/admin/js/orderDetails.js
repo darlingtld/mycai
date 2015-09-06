@@ -22,7 +22,7 @@ function _initialPage() {
             $("#consignee").text(data.consignee);
             $("#contact").text(data.consigneeContact);
             $("#status").text(data.status);
-            var bill = JSON.parse(data.bill);
+            var bill = data.confirmBill == null ? JSON.parse(data.bill) : JSON.parse(data.confirmBill);
             $("#totalAmount").text(bill.items.length);
             $("#totalPrice").text(bill.totalPrice);
             var html = "";
